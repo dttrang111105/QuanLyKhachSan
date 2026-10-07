@@ -2,302 +2,180 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Chi tiết nhân viên";
-    string displayName = string.IsNullOrWhiteSpace(Model.FullName)
-        ? "Nhân viên"
-        : Model.FullName;
+    string displayName = string.IsNullOrWhiteSpace(Model.FullName) ? "Nhân viên" : Model.FullName;
     string avatarUrl = string.IsNullOrWhiteSpace(Model.Avatar)
-        ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(displayName)}&size=220&background=c8a96a&color=111111"
+        ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(displayName)}&size=220&background=c5a880&color=0b1c30&bold=true"
         : Model.Avatar;
-    string statusText = Model.Status ? "Đang làm việc" : "Ngừng hoạt động";
-    string statusClass = Model.Status ? "success" : "secondary";
 }
-<style>
-    .employee-details-page {
-        max-width: 1120px;
-        margin: 0 auto;
-    }
-    .employee-details-heading {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 18px;
-        margin-bottom: 24px;
-    }
-    .employee-details-kicker {
-        display: block;
-        margin-bottom: 6px;
-        color: #b58a42;
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 1.7px;
-        text-transform: uppercase;
-    }
-    .employee-details-heading h2 {
-        margin: 0;
-        color: #252a35;
-        font-size: 30px;
-        font-weight: 800;
-    }
-    .employee-details-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 9px;
-    }
-    .employee-details-button {
-        min-height: 42px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 9px 16px;
-        border-radius: 11px;
-        font-size: 13px;
-        font-weight: 700;
-        text-decoration: none;
-    }
-        .employee-details-button.back {
-            border: 1px solid #dfe2e8;
-            background: #ffffff;
-            color: #555c69;
-        }
-        .employee-details-button.edit {
-            border: 1px solid #b58a42;
-            background: linear-gradient(145deg,#d8b25e,#a8752d);
-            color: #ffffff;
-        }
-    .employee-details-card {
-        overflow: hidden;
-        border: 1px solid #e7e9ee;
-        border-radius: 20px;
-        background: #ffffff;
-        box-shadow: 0 22px 55px rgba(34,38,51,.08);
-    }
-    .employee-details-header {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding: 28px;
-        background: radial-gradient(circle at 90% 10%, rgba(200,169,106,.25), transparent 28%), linear-gradient(135deg,#111111,#332717);
-        color: #ffffff;
-    }
-    .employee-details-avatar {
-        width: 94px;
-        height: 94px;
-        object-fit: cover;
-        border: 4px solid rgba(255,255,255,.18);
-        border-radius: 50%;
-    }
-    .employee-details-header h3 {
-        margin: 0 0 5px;
-        font-size: 27px;
-        font-weight: 800;
-    }
-    .employee-details-header p {
-        margin: 0 0 10px;
-        color: rgba(255,255,255,.65);
-    }
-    .employee-details-body {
-        padding: 30px;
-    }
-    .employee-summary-grid {
-        display: grid;
-        grid-template-columns: repeat(3,minmax(0,1fr));
-        gap: 16px;
-        margin-bottom: 28px;
-    }
-    .employee-summary-item {
-        padding: 20px;
-        border: 1px solid #e8e9ee;
-        border-radius: 16px;
-        background: #fcfcfd;
-    }
-        .employee-summary-item span {
-            display: block;
-            margin-bottom: 7px;
-            color: #8a909b;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .employee-summary-item strong {
-            color: #282d38;
-            font-size: 18px;
-            font-weight: 800;
-        }
-    .employee-info-grid {
-        display: grid;
-        grid-template-columns: repeat(2,minmax(0,1fr));
-        gap: 14px;
-    }
-    .employee-info-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 17px 18px;
-        border: 1px solid #eceef2;
-        border-radius: 14px;
-        background: #ffffff;
-    }
-        .employee-info-item i {
-            width: 38px;
-            height: 38px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex: 0 0 38px;
-            border-radius: 10px;
-            background: #f4ead7;
-            color: #8f692f;
-        }
-        .employee-info-item span {
-            display: block;
-            color: #8a909b;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .employee-info-item strong {
-            display: block;
-            color: #343944;
-            font-size: 13px;
-            word-break: break-word;
-        }
-    @@media (max-width: 991.98px) {
-        .employee-summary-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-    @@media (max-width: 767.98px) {
-        .employee-details-heading {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-        .employee-details-actions {
-            width: 100%;
-        }
-        .employee-details-button {
-            flex: 1;
-        }
-        .employee-details-header {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-        .employee-info-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-<div class="employee-details-page">
-    <div class="employee-details-heading">
-        <div>
-            <span class="employee-details-kicker">Quản lý nhân viên</span>
-            <h2>Chi tiết nhân viên</h2>
-        </div>
-        <div class="employee-details-actions">
-            <a asp-controller="Employees"
-               asp-action="Index"
-               class="employee-details-button back">
-                <i class="bi bi-arrow-left"></i>
-                Quay lại
-            </a>
-            <a asp-controller="Employees"
-               asp-action="Edit"
-               asp-route-id="@Model.Id"
-               class="employee-details-button edit">
-                <i class="bi bi-pencil-square"></i>
+
+<div class="space-y-6">
+    <!-- Top Action / Breadcrumb -->
+    <div class="flex items-center justify-between">
+        <a asp-controller="Employees" asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Quay lại danh sách nhân viên
+        </a>
+        <div class="flex items-center gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 font-semibold text-sm transition-colors">
+                <span class="material-symbols-outlined text-base">edit</span>
                 Chỉnh sửa
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-sm transition-colors">
+                <span class="material-symbols-outlined text-base">person_remove</span>
+                Ngừng hoạt động / Xóa
             </a>
         </div>
     </div>
-    <div class="employee-details-card">
-        <div class="employee-details-header">
-            <img src="@avatarUrl"
-                 class="employee-details-avatar"
-                 alt="Ảnh nhân viên" />
-            <div>
-                <h3>@displayName</h3>
-                <p>@(Model.Account?.Username ?? "Chưa có tài khoản")</p>
-                <span class="badge bg-@statusClass">@statusText</span>
+
+    <!-- Main Profile Card -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <!-- Banner Header -->
+        <div class="bg-gradient-to-r from-[#0b1c30] via-[#131b2e] to-[#20293a] p-8 lg:p-10 text-white relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-10">
+                <span class="material-symbols-outlined text-[200px]">badge</span>
+            </div>
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-6">
+                    <img src="@avatarUrl" class="w-24 h-24 rounded-2xl object-cover border-2 border-[#c5a880] shadow-lg shadow-black/20" alt="@displayName" />
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <h1 class="font-serif text-2xl lg:text-3xl font-bold tracking-tight text-white">@displayName</h1>
+                            @if (Model.Status)
+                            {
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider">
+                                    Đang làm việc
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-500/20 text-slate-300 border border-slate-500/30 uppercase tracking-wider">
+                                    Ngừng hoạt động
+                                </span>
+                            }
+                        </div>
+                        <p class="text-slate-400 text-sm mt-1">
+                            Mã nhân viên: #@Model.Id • Chức vụ: @(string.IsNullOrWhiteSpace(Model.Position) ? "Chưa cập nhật" : Model.Position)
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="employee-details-body">
-            <div class="employee-summary-grid">
-                <div class="employee-summary-item">
-                    <span>Chức vụ</span>
-                    <strong>@(Model.Position ?? "Chưa cập nhật")</strong>
-                </div>
-                <div class="employee-summary-item">
-                    <span>Lương</span>
-                    <strong>@Model.Salary.ToString("N0") VNĐ</strong>
-                </div>
-                <div class="employee-summary-item">
-                    <span>Ngày vào làm</span>
-                    <strong>@Model.HireDate.ToString("dd/MM/yyyy")</strong>
-                </div>
-            </div>
-            <div class="employee-info-grid">
-                <div class="employee-info-item">
-                    <i class="bi bi-person-badge"></i>
+
+        <!-- Information Detail Grid -->
+        <div class="p-8 lg:p-10">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-base">info</span>
+                Hồ sơ nhân sự & hợp đồng
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Position -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">work</span>
+                    </div>
                     <div>
-                        <span>Tài khoản</span>
-                        <strong>@(Model.Account?.Username ?? "Chưa liên kết")</strong>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Chức vụ</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@(string.IsNullOrWhiteSpace(Model.Position) ? "Chưa cập nhật" : Model.Position)</span>
                     </div>
                 </div>
-                <div class="employee-info-item">
-                    <i class="bi bi-shield-check"></i>
+
+                <!-- Salary -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">payments</span>
+                    </div>
                     <div>
-                        <span>Vai trò</span>
-                        <strong>@(Model.Account?.Role.ToString() ?? "Chưa xác định")</strong>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Mức lương</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@Model.Salary.ToString("N0") VNĐ</span>
                     </div>
                 </div>
-                <div class="employee-info-item">
-                    <i class="bi bi-gender-ambiguous"></i>
+
+                <!-- Account -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">account_circle</span>
+                    </div>
                     <div>
-                        <span>Giới tính</span>
-                        <strong>@(Model.Gender ?? "Chưa cập nhật")</strong>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Tài khoản Web</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@(Model.Account != null ? Model.Account.Username : "Chưa liên kết")</span>
                     </div>
                 </div>
-                <div class="employee-info-item">
-                    <i class="bi bi-calendar3"></i>
+
+                <!-- Phone -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">call</span>
+                    </div>
                     <div>
-                        <span>Ngày sinh</span>
-                        <strong>
-                            @(Model.DateOfBirth.HasValue
-                                                        ? Model.DateOfBirth.Value.ToString("dd/MM/yyyy")
-                                                        : "Chưa cập nhật")
-                        </strong>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Số điện thoại</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@(string.IsNullOrWhiteSpace(Model.Phone) ? "Chưa cập nhật" : Model.Phone)</span>
                     </div>
                 </div>
-                <div class="employee-info-item">
-                    <i class="bi bi-telephone"></i>
+
+                <!-- Email -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">mail</span>
+                    </div>
                     <div>
-                        <span>Số điện thoại</span>
-                        <strong>@(Model.Phone ?? "Chưa cập nhật")</strong>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Email</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block truncate max-w-[200px]" title="@Model.Email">@(string.IsNullOrWhiteSpace(Model.Email) ? "Chưa cập nhật" : Model.Email)</span>
                     </div>
                 </div>
-                <div class="employee-info-item">
-                    <i class="bi bi-envelope"></i>
+
+                <!-- Gender -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-slate-200/70 text-slate-700 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">wc</span>
+                    </div>
                     <div>
-                        <span>Email</span>
-                        <strong>@(Model.Email ?? "Chưa cập nhật")</strong>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Giới tính</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@(string.IsNullOrWhiteSpace(Model.Gender) ? "Chưa cập nhật" : Model.Gender)</span>
                     </div>
                 </div>
-                <div class="employee-info-item">
-                    <i class="bi bi-geo-alt"></i>
+
+                <!-- Date of Birth -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">cake</span>
+                    </div>
                     <div>
-                        <span>Địa chỉ</span>
-                        <strong>@(Model.Address ?? "Chưa cập nhật")</strong>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ngày sinh</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@(Model.DateOfBirth?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</span>
                     </div>
                 </div>
-                <div class="employee-info-item">
-                    <i class="bi bi-clock-history"></i>
+
+                <!-- Hire Date -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">event_available</span>
+                    </div>
                     <div>
-                        <span>Cập nhật gần nhất</span>
-                        <strong>
-                            @(Model.UpdatedAt.HasValue
-                                                        ? Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")
-                                                        : "Chưa cập nhật")
-                        </strong>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ngày vào làm</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@Model.HireDate.ToString("dd/MM/yyyy")</span>
+                    </div>
+                </div>
+
+                <!-- Created At -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-slate-200/70 text-slate-700 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">history</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ngày tạo hồ sơ</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4 md:col-span-2 lg:col-span-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">location_on</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Địa chỉ thường trú</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@(string.IsNullOrWhiteSpace(Model.Address) ? "Chưa cập nhật địa chỉ" : Model.Address)</span>
                     </div>
                 </div>
             </div>

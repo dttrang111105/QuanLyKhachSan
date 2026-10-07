@@ -2,17 +2,15 @@
 @using QuanLyKhachSan.Enums
 @{
     bool isAdmin = User.IsInRole("Admin");
-    bool isReceptionist =
-        User.IsInRole("Receptionist");
-    bool isCustomer =
-        User.IsInRole("Customer");
-    bool isAuthenticated =
-        User.Identity?.IsAuthenticated == true;
+    bool isReceptionist = User.IsInRole("Receptionist");
+    bool isCustomer = User.IsInRole("Customer");
+    bool isAuthenticated = User.Identity?.IsAuthenticated == true;
     RoomStatus? selectedStatus = ViewBag.SelectedStatus is RoomStatus roomStatus ? roomStatus : null;
     int totalRoomCount = ViewBag.TotalRoomCount ?? Model.Count();
     int availableCount = ViewBag.AvailableCount ?? Model.Count(room => room.Status == RoomStatus.Available);
     int occupiedCount = ViewBag.OccupiedCount ?? Model.Count(room => room.Status == RoomStatus.Occupied);
     int maintenanceCount = ViewBag.MaintenanceCount ?? Model.Count(room => room.Status == RoomStatus.Maintenance);
+
     string filteredTitle = selectedStatus switch
     {
         RoomStatus.Available => "Phòng còn trống",
@@ -20,6 +18,7 @@
         RoomStatus.Maintenance => "Phòng đang bảo trì",
         _ => "Tất cả phòng"
     };
+
     if (isAdmin)
     {
         Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -41,287 +40,174 @@
         ViewData["Title"] = "Danh sách phòng";
     }
 }
+
 @if (isAdmin || isReceptionist)
 {
-    <div class="room-filter-bar mb-4">
-        <a asp-controller="Rooms" asp-action="Index" class="room-filter-link @(selectedStatus == null ? "active" : "")">Tất cả (@totalRoomCount)</a>
-        <a asp-controller="Rooms" asp-action="Index" asp-route-status="Available" class="room-filter-link @(selectedStatus == RoomStatus.Available ? "active" : "")">Phòng trống (@availableCount)</a>
-        <a asp-controller="Rooms" asp-action="Index" asp-route-status="Occupied" class="room-filter-link @(selectedStatus == RoomStatus.Occupied ? "active" : "")">Có khách (@occupiedCount)</a>
-        <a asp-controller="Rooms" asp-action="Index" asp-route-status="Maintenance" class="room-filter-link @(selectedStatus == RoomStatus.Maintenance ? "active" : "")">Bảo trì (@maintenanceCount)</a>
-    </div>
-}
-@if (isAdmin)
-{
-    <div class="d-flex flex-column flex-md-row
-            justify-content-between align-items-md-center
-            gap-3 mb-4">
+    <!-- Admin & Receptionist Room Management Top Filter Ribbon -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
-            <span class="text-uppercase text-warning fw-semibold small">
-                Quản lý cơ sở vật chất
-            </span>
-            <h2 class="fw-bold mb-1">
-                Quản lý phòng
-            </h2>
-            <p class="text-muted mb-0">
-                Theo dõi và cập nhật toàn bộ phòng trong khách sạn.
-            </p>
+            <div class="flex items-center gap-2 text-xs font-bold text-secondary uppercase tracking-wider mb-1">
+                <span>Quản Lý Hệ Thống</span>
+                <span class="text-slate-400">/</span>
+                <span class="text-on-surface">Cơ Sở Buồng Phòng</span>
+            </div>
+            <h1 class="text-2xl lg:text-3xl font-bold text-on-surface font-serif tracking-tight">@filteredTitle</h1>
+            <p class="text-xs text-slate-500 mt-1">Giám sát trạng thái buồng phòng, phân bổ lưu trú và quản lý giá phòng theo thời gian thực.</p>
         </div>
-        <a asp-controller="Rooms"
-           asp-action="Create"
-           class="btn btn-primary">
-            <i class="bi bi-plus-circle me-1"></i>
-            Thêm phòng mới
-        </a>
+        @if (isAdmin)
+        {
+            <div class="flex items-center gap-2">
+                <a asp-controller="Rooms" asp-action="Create"
+                   class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary-container text-white text-xs font-bold shadow-sm hover:opacity-90 transition-all">
+                    <span class="material-symbols-outlined text-[18px] text-secondary-fixed">add_circle</span>
+                    <span>+ Thêm Phòng Mới</span>
+                </a>
+            </div>
+        }
     </div>
+
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="bi bi-check-circle-fill me-2"></i>
-            @TempData["Success"]
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="Đóng">
-            </button>
+        <div class="p-3.5 mb-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">check_circle</span>
+            <span>@TempData["Success"]</span>
         </div>
     }
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger alert-dismissible fade show">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            @TempData["Error"]
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="Đóng">
-            </button>
+        <div class="p-3.5 mb-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">error</span>
+            <span>@TempData["Error"]</span>
         </div>
     }
-    <!-- Thống kê nhanh -->
-    <div class="row g-3 mb-4">
-        <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between
-                            align-items-center">
-                        <div>
-                            <span class="text-muted small">
-                                Tổng số phòng
-                            </span>
-                            <h3 class="fw-bold mb-0">
-                                @totalRoomCount
-                            </h3>
-                        </div>
-                        <div class="bg-primary-subtle text-primary
-                                rounded-circle d-flex
-                                align-items-center justify-content-center"
-                             style="width: 50px; height: 50px;">
-                            <i class="bi bi-building fs-4"></i>
-                        </div>
-                    </div>
-                </div>
+
+    <!-- 4 Thẻ Trạng Thái Nhanh -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <a asp-controller="Rooms" asp-action="Index"
+           class="p-4 rounded-2xl border @(selectedStatus == null ? "bg-primary-container text-white border-primary-container" : "bg-white text-on-surface border-slate-200") shadow-sm transition-all flex items-center justify-between">
+            <div>
+                <div class="text-[11px] uppercase font-bold @(selectedStatus == null ? "text-slate-300" : "text-slate-500")">Tất Cả Phòng</div>
+                <div class="text-2xl font-bold mt-1">@totalRoomCount</div>
             </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between
-                            align-items-center">
-                        <div>
-                            <span class="text-muted small">
-                                Phòng còn trống
-                            </span>
-                            <h3 class="fw-bold text-success mb-0">
-                                @availableCount
-                            </h3>
-                        </div>
-                        <div class="bg-success-subtle text-success
-                                rounded-circle d-flex
-                                align-items-center justify-content-center"
-                             style="width: 50px; height: 50px;">
-                            <i class="bi bi-door-open fs-4"></i>
-                        </div>
-                    </div>
-                </div>
+            <span class="material-symbols-outlined text-2xl @(selectedStatus == null ? "text-secondary-fixed" : "text-slate-400")">hotel</span>
+        </a>
+
+        <a asp-controller="Rooms" asp-action="Index" asp-route-status="Available"
+           class="p-4 rounded-2xl border @(selectedStatus == RoomStatus.Available ? "bg-emerald-700 text-white border-emerald-700" : "bg-white text-on-surface border-slate-200") shadow-sm transition-all flex items-center justify-between">
+            <div>
+                <div class="text-[11px] uppercase font-bold @(selectedStatus == RoomStatus.Available ? "text-emerald-100" : "text-slate-500")">Còn Trống</div>
+                <div class="text-2xl font-bold @(selectedStatus == RoomStatus.Available ? "text-white" : "text-emerald-600") mt-1">@availableCount</div>
             </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between
-                            align-items-center">
-                        <div>
-                            <span class="text-muted small">
-                                Đang có khách
-                            </span>
-                            <h3 class="fw-bold text-danger mb-0">
-                                @occupiedCount
-                            </h3>
-                        </div>
-                        <div class="bg-danger-subtle text-danger
-                                rounded-circle d-flex
-                                align-items-center justify-content-center"
-                             style="width: 50px; height: 50px;">
-                            <i class="bi bi-person-check fs-4"></i>
-                        </div>
-                    </div>
-                </div>
+            <span class="material-symbols-outlined text-2xl @(selectedStatus == RoomStatus.Available ? "text-emerald-200" : "text-emerald-500")">door_open</span>
+        </a>
+
+        <a asp-controller="Rooms" asp-action="Index" asp-route-status="Occupied"
+           class="p-4 rounded-2xl border @(selectedStatus == RoomStatus.Occupied ? "bg-purple-800 text-white border-purple-800" : "bg-white text-on-surface border-slate-200") shadow-sm transition-all flex items-center justify-between">
+            <div>
+                <div class="text-[11px] uppercase font-bold @(selectedStatus == RoomStatus.Occupied ? "text-purple-100" : "text-slate-500")">Đang Có Khách</div>
+                <div class="text-2xl font-bold @(selectedStatus == RoomStatus.Occupied ? "text-white" : "text-purple-600") mt-1">@occupiedCount</div>
             </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between
-                            align-items-center">
-                        <div>
-                            <span class="text-muted small">
-                                Đang bảo trì
-                            </span>
-                            <h3 class="fw-bold text-secondary mb-0">
-                                @maintenanceCount
-                            </h3>
-                        </div>
-                        <div class="bg-secondary-subtle text-secondary
-                                rounded-circle d-flex
-                                align-items-center justify-content-center"
-                             style="width: 50px; height: 50px;">
-                            <i class="bi bi-tools fs-4"></i>
-                        </div>
-                    </div>
-                </div>
+            <span class="material-symbols-outlined text-2xl @(selectedStatus == RoomStatus.Occupied ? "text-purple-200" : "text-purple-500")">person_pin</span>
+        </a>
+
+        <a asp-controller="Rooms" asp-action="Index" asp-route-status="Maintenance"
+           class="p-4 rounded-2xl border @(selectedStatus == RoomStatus.Maintenance ? "bg-rose-800 text-white border-rose-800" : "bg-white text-on-surface border-slate-200") shadow-sm transition-all flex items-center justify-between">
+            <div>
+                <div class="text-[11px] uppercase font-bold @(selectedStatus == RoomStatus.Maintenance ? "text-rose-100" : "text-slate-500")">Bảo Trì / Dọn</div>
+                <div class="text-2xl font-bold @(selectedStatus == RoomStatus.Maintenance ? "text-white" : "text-rose-600") mt-1">@maintenanceCount</div>
             </div>
-        </div>
+            <span class="material-symbols-outlined text-2xl @(selectedStatus == RoomStatus.Maintenance ? "text-rose-200" : "text-rose-500")">build</span>
+        </a>
     </div>
-    <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white border-0 px-4 pt-4">
-            <h5 class="fw-bold mb-1">
-                Danh sách phòng
-            </h5>
-            <p class="text-muted small mb-0">
-                Tổng cộng @totalRoomCount phòng
-            </p>
-        </div>
-        <div class="card-body p-0 mt-3">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
+
+    @if (isAdmin)
+    {
+        <!-- Bảng quản lý phòng dành cho Admin -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-secondary uppercase tracking-wider">Danh mục phòng</span>
+                    <h2 class="text-base font-bold text-on-surface">Tất Cả Buồng Phòng (@Model.Count())</h2>
+                </div>
+                <span class="text-xs text-slate-500">Hiển thị dữ liệu thực tế</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 text-slate-500 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200/60">
                         <tr>
-                            <th class="ps-4">Phòng</th>
-                            <th>Loại phòng</th>
-                            <th>Tầng</th>
-                            <th>Giá/ngày</th>
-                            <th>Giá/tuần</th>
-                            <th>Sức chứa</th>
-                            <th>Diện tích</th>
-                            <th>Trạng thái</th>
-                            <th class="text-center pe-4">
-                                Thao tác
-                            </th>
+                            <th class="py-3 px-4">Số Phòng</th>
+                            <th class="py-3 px-4">Loại Phòng</th>
+                            <th class="py-3 px-4">Tầng</th>
+                            <th class="py-3 px-4">Giá/Ngày</th>
+                            <th class="py-3 px-4">Giá/Tuần</th>
+                            <th class="py-3 px-4">Sức Chứa</th>
+                            <th class="py-3 px-4">Diện Tích</th>
+                            <th class="py-3 px-4">Trạng Thái</th>
+                            <th class="py-3 px-4 text-right">Thao Tác</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
                         @if (Model != null && Model.Any())
                         {
                             foreach (var room in Model)
                             {
-                                <tr>
-                                    <td class="ps-4">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="bg-primary-subtle
-                                                            text-primary
-                                                            rounded-circle
-                                                            d-inline-flex
-                                                            align-items-center
-                                                            justify-content-center"
-                                                  style="width: 38px;
-                                                            height: 38px;">
-                                                <i class="bi bi-door-open"></i>
-                                            </span>
-                                            <strong>
-                                                @room.RoomNumber
-                                            </strong>
+                                <tr class="hover:bg-slate-50/80 transition-colors">
+                                    <td class="py-3 px-4 font-bold text-on-surface">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-7 h-7 rounded-lg bg-slate-100 text-secondary flex items-center justify-center font-bold">
+                                                <span class="material-symbols-outlined text-[16px]">door_front</span>
+                                            </div>
+                                            <span>Phòng @room.RoomNumber</span>
                                         </div>
                                     </td>
-                                    <td>
-                                        @(room.RoomType?.Name
-                                                                    ?? "Chưa xác định")
+                                    <td class="py-3 px-4 font-semibold text-slate-800">
+                                        @(room.RoomType?.Name ?? "Tiêu chuẩn")
                                     </td>
-                                    <td>
-                                        Tầng @room.Floor
+                                    <td class="py-3 px-4">Tầng @room.Floor</td>
+                                    <td class="py-3 px-4 font-bold text-secondary">
+                                        @room.PriceDay.ToString("N0") <small class="text-slate-400 font-normal">đ</small>
                                     </td>
-                                    <td class="fw-semibold text-danger">
-                                        @room.PriceDay.ToString("N0") VNĐ
+                                    <td class="py-3 px-4 text-slate-600">
+                                        @room.PriceWeek.ToString("N0") <small class="text-slate-400 font-normal">đ</small>
                                     </td>
-                                    <td>
-                                        @room.PriceWeek.ToString("N0") VNĐ
-                                    </td>
-                                    <td>
-                                        <i class="bi bi-people me-1"></i>
-                                        @room.MaxOccupancy người
-                                    </td>
-                                    <td>
-                                        @room.RoomSize m²
-                                    </td>
-                                    <td>
+                                    <td class="py-3 px-4">@room.MaxOccupancy người</td>
+                                    <td class="py-3 px-4">@room.RoomSize m²</td>
+                                    <td class="py-3 px-4">
                                         @switch (room.Status)
                                         {
                                             case RoomStatus.Available:
-                                                <span class="badge
-                                                                        bg-success-subtle
-                                                                        text-success
-                                                                        border
-                                                                        border-success-subtle">
-                                                    <i class="bi bi-check-circle me-1"></i>
+                                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
                                                     Còn trống
                                                 </span>
                                                 break;
                                             case RoomStatus.Occupied:
-                                                <span class="badge
-                                                                        bg-danger-subtle
-                                                                        text-danger
-                                                                        border
-                                                                        border-danger-subtle">
-                                                    <i class="bi bi-person-fill me-1"></i>
-                                                    Đang có khách
+                                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                                                    Có khách
                                                 </span>
                                                 break;
                                             case RoomStatus.Maintenance:
-                                                <span class="badge
-                                                                        bg-secondary-subtle
-                                                                        text-secondary
-                                                                        border
-                                                                        border-secondary-subtle">
-                                                    <i class="bi bi-tools me-1"></i>
+                                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">
                                                     Bảo trì
                                                 </span>
                                                 break;
                                         }
                                     </td>
-                                    <td class="text-center text-nowrap pe-4">
-                                        <a asp-controller="Rooms"
-                                           asp-action="Details"
-                                           asp-route-id="@room.Id"
-                                           class="btn btn-sm
-                                                        btn-outline-info"
-                                           title="Chi tiết">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a asp-controller="Rooms"
-                                           asp-action="Edit"
-                                           asp-route-id="@room.Id"
-                                           class="btn btn-sm
-                                                        btn-outline-warning"
-                                           title="Chỉnh sửa">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a asp-controller="Rooms"
-                                           asp-action="Delete"
-                                           asp-route-id="@room.Id"
-                                           class="btn btn-sm
-                                                        btn-outline-danger"
-                                           title="Xóa">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
+                                    <td class="py-3 px-4 text-right">
+                                        <div class="flex items-center justify-end gap-1.5">
+                                            <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id"
+                                               class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="Xem chi tiết">
+                                                <span class="material-symbols-outlined text-[16px]">visibility</span>
+                                            </a>
+                                            <a asp-controller="Rooms" asp-action="Edit" asp-route-id="@room.Id"
+                                               class="p-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 transition-colors" title="Chỉnh sửa">
+                                                <span class="material-symbols-outlined text-[16px]">edit</span>
+                                            </a>
+                                            <a asp-controller="Rooms" asp-action="Delete" asp-route-id="@room.Id"
+                                               class="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 transition-colors" title="Xóa">
+                                                <span class="material-symbols-outlined text-[16px]">delete</span>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -329,11 +215,9 @@
                         else
                         {
                             <tr>
-                                <td colspan="9" class="text-center text-muted py-5">
-                                    <i class="bi bi-door-closed
-                                                d-block fs-1 mb-2">
-                                    </i>
-                                    Chưa có phòng nào trong hệ thống.
+                                <td colspan="9" class="text-center py-10 text-slate-400">
+                                    <span class="material-symbols-outlined text-4xl mb-1 text-slate-300">meeting_room</span>
+                                    <div>Chưa có phòng nào theo bộ lọc đã chọn</div>
                                 </td>
                             </tr>
                         }
@@ -341,264 +225,177 @@
                 </table>
             </div>
         </div>
-    </div>
-}
-else if (isReceptionist)
-{
-    <div class="d-flex justify-content-between
-            align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-1">
-                @filteredTitle
-            </h2>
-            <p class="text-muted mb-0">
-                Đang hiển thị @Model.Count() phòng theo trạng thái đã chọn.
-            </p>
-        </div>
-        <a asp-controller="Bookings"
-           asp-action="Index"
-           class="btn btn-primary">
-            <i class="bi bi-calendar-check me-1"></i>
-            Quản lý Booking
-        </a>
-    </div>
-    <div class="row g-4">
-        @if (Model != null && Model.Any())
-        {
-            foreach (var room in Model)
+    }
+    else if (isReceptionist)
+    {
+        <!-- Grid phòng trực quan dành cho Lễ tân -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            @if (Model != null && Model.Any())
             {
-                string borderClass = room.Status == RoomStatus.Available
-                ? "border-success" : room.Status == RoomStatus.Occupied
-                ? "border-danger" : "border-secondary";
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card h-100 shadow-sm
-                                    border-0 border-start border-4
-                                    @borderClass">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between
-                                            align-items-start mb-3">
-                                <div>
-                                    <small class="text-muted">
-                                        @(room.RoomType?.Name
-                                                                    ?? "Chưa xác định")
-                                    </small>
-                                    <h3 class="fw-bold mb-0">
-                                        Phòng @room.RoomNumber
-                                    </h3>
-                                </div>
+                foreach (var room in Model)
+                {
+                    string borderStyle = room.Status == RoomStatus.Available ? "border-emerald-300 bg-emerald-50/20"
+                        : room.Status == RoomStatus.Occupied ? "border-purple-300 bg-purple-50/20"
+                        : "border-rose-300 bg-rose-50/20";
+
+                    <div class="p-4 rounded-2xl border @borderStyle bg-white shadow-sm flex flex-col justify-between group hover:shadow-md transition-all">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-slate-500 font-semibold">@(room.RoomType?.Name ?? "Tiêu chuẩn")</span>
                                 @if (room.Status == RoomStatus.Available)
                                 {
-                                    <span class="badge bg-success">
-                                        Trống
-                                    </span>
+                                    <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Trống</span>
                                 }
                                 else if (room.Status == RoomStatus.Occupied)
                                 {
-                                    <span class="badge bg-danger">
-                                        Có khách
-                                    </span>
+                                    <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 text-[10px] font-bold">Có khách</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">
-                                        Bảo trì
-                                    </span>
+                                    <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold">Bảo trì</span>
                                 }
                             </div>
-                            <p class="mb-2">
-                                <i class="bi bi-building me-2"></i>
-                                Tầng @room.Floor
-                            </p>
-                            <p class="mb-2">
-                                <i class="bi bi-people me-2"></i>
-                                @room.MaxOccupancy người
-                            </p>
-                            <p class="mb-3">
-                                <i class="bi bi-cash-stack me-2"></i>
-                                @room.PriceDay.ToString("N0") VNĐ/ngày
-                            </p>
-                            <a asp-controller="Rooms"
-                               asp-action="Details"
-                               asp-route-id="@room.Id"
-                               class="btn btn-outline-primary w-100">
-                                <i class="bi bi-eye me-1"></i>
-                                Xem chi tiết
-                            </a>
+                            <div class="text-xl font-bold font-serif text-on-surface mb-2">Phòng @room.RoomNumber</div>
+                            <div class="space-y-1 text-xs text-slate-600 mb-3">
+                                <div><span class="text-slate-400">Tầng:</span> @room.Floor</div>
+                                <div><span class="text-slate-400">Sức chứa:</span> @room.MaxOccupancy khách</div>
+                                <div><span class="text-slate-400">Giá:</span> <b class="text-secondary">@room.PriceDay.ToString("N0")</b> đ/đêm</div>
+                            </div>
                         </div>
+                        <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id"
+                           class="w-full py-2 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold text-center transition-all flex items-center justify-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">visibility</span>
+                            <span>Chi tiết phòng</span>
+                        </a>
                     </div>
-                </div>
+                }
             }
-        }
-        else
-        {
-            <div class="col-12">
-                <div class="alert alert-info text-center">
-                    Chưa có dữ liệu phòng.
-                </div>
-            </div>
-        }
-    </div>
+        </div>
+    }
 }
 else
 {
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <span class="text-uppercase text-warning fw-semibold">
-                Luxury Hotel
-            </span>
-            <h1 class="fw-bold mt-2 mb-3">
-                Danh sách phòng
-            </h1>
-            <p class="text-muted mx-auto"
-               style="max-width: 700px;">
-                Khám phá các phòng nghỉ tiện nghi,
-                lựa chọn loại phòng phù hợp với nhu cầu của bạn.
+    <!-- Giao diện khách hàng / Khách vãng lai -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <span class="text-xs font-bold text-secondary uppercase tracking-widest">GrandStay Resort Collection</span>
+            <h1 class="text-3xl sm:text-4xl font-bold font-serif text-on-surface mt-2 mb-3">Danh Sách Buồng Phòng Nghỉ Dưỡng</h1>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Khám phá không gian nghỉ ngơi thanh lịch hòa mình cùng thiên nhiên biển bán đảo Sơn Trà.
             </p>
-            <a asp-controller="Rooms"
-               asp-action="Search"
-               class="btn btn-warning fw-semibold">
-                <i class="bi bi-search me-1"></i>
-                Tìm phòng trống theo ngày
-            </a>
+            <div class="mt-4">
+                <a asp-controller="Rooms" asp-action="Search"
+                   class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-secondary hover:bg-secondary/90 text-white text-xs font-bold shadow-md transition-all">
+                    <span class="material-symbols-outlined text-[18px]">search</span>
+                    <span>Tìm Phòng Trống Theo Ngày</span>
+                </a>
+            </div>
         </div>
+
         @if (Model != null && Model.Any())
         {
-            <div class="row g-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach (var room in Model)
                 {
-                    string? mainImage = room.RoomImages?
-                    .FirstOrDefault(image => image.IsMain)?
-                    .ImageUrl ?? room.RoomImages?
-                    .FirstOrDefault()?
-                    .ImageUrl;
-                    <div class="col-xl-4 col-md-6">
-                        <div class="card h-100 border-0 shadow-sm
-                                        overflow-hidden">
-                            @if (!string.IsNullOrWhiteSpace(mainImage))
+                    string? mainImage = room.RoomImages?.FirstOrDefault(i => i.IsMain)?.ImageUrl
+                        ?? room.RoomImages?.FirstOrDefault()?.ImageUrl
+                        ?? "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80";
+
+                    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="@mainImage" alt="Phòng @room.RoomNumber"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                            @if (room.Status == RoomStatus.Available)
                             {
-                                <img src="@mainImage"
-                                     alt="Phòng @room.RoomNumber"
-                                     class="card-img-top"
-                                     style="height: 230px;
-                                                object-fit: cover;" />
+                                <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-wider">
+                                    Còn trống
+                                </span>
+                            }
+                            else if (room.Status == RoomStatus.Occupied)
+                            {
+                                <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-rose-500 text-white text-[10px] font-bold uppercase tracking-wider">
+                                    Có khách
+                                </span>
                             }
                             else
                             {
-                                <div class="bg-light d-flex
-                                                    flex-column align-items-center
-                                                    justify-content-center text-muted"
-                                     style="height: 230px;">
-                                    <i class="bi bi-image fs-1 mb-2"></i>
-                                    <span>
-                                        Chưa có hình ảnh
-                                    </span>
-                                </div>
+                                <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-500 text-white text-[10px] font-bold uppercase tracking-wider">
+                                    Bảo trì
+                                </span>
                             }
-                            <div class="card-body d-flex flex-column p-4">
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <div>
-                                        <small class="text-warning fw-semibold">
-                                            @(room.RoomType?.Name ?? "Phòng khách sạn")
-                                        </small>
-                                        <h3 class="fw-bold mb-0">
-                                            Phòng @room.RoomNumber
-                                        </h3>
+                            <div class="absolute bottom-3 left-3 text-white">
+                                <span class="text-[11px] uppercase font-bold text-[#fedeb2]">@(room.RoomType?.Name ?? "Phòng Nghỉ Dưỡng")</span>
+                                <h3 class="text-lg font-bold font-serif text-white leading-tight">Phòng @room.RoomNumber</h3>
+                            </div>
+                        </div>
+
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <p class="text-xs text-slate-500 line-clamp-2 mb-4 leading-relaxed">
+                                    @(string.IsNullOrWhiteSpace(room.Description) ? "Không gian lưu trú cao cấp, đầy đủ tiện nghi tiêu chuẩn 5 sao." : room.Description)
+                                </p>
+
+                                <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2.5 rounded-xl">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[16px] text-secondary">people</span>
+                                        <span>@room.MaxOccupancy khách</span>
                                     </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[16px] text-secondary">aspect_ratio</span>
+                                        <span>@room.RoomSize m²</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[16px] text-secondary">apartment</span>
+                                        <span>Tầng @room.Floor</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[16px] text-secondary">door_front</span>
+                                        <span>P.@room.RoomNumber</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-3 border-t border-slate-100">
+                                <div class="flex items-baseline justify-between mb-3">
+                                    <span class="text-xs text-slate-500">Giá phòng</span>
+                                    <div class="text-right">
+                                        <span class="text-lg font-bold text-secondary font-serif">@room.PriceDay.ToString("N0")</span>
+                                        <span class="text-xs text-slate-500">VNĐ/đêm</span>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id"
+                                       class="py-2.5 px-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold text-center transition-all">
+                                        Chi tiết
+                                    </a>
                                     @if (room.Status == RoomStatus.Available)
                                     {
-                                        <span class="badge bg-success">
-                                            Còn trống
-                                        </span>
-                                    }
-                                    else if (room.Status == RoomStatus.Occupied)
-                                    {
-                                        <span class="badge bg-danger">
-                                            Có khách
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">
-                                            Bảo trì
-                                        </span>
-                                    }
-                                </div>
-                                <p class="text-muted">
-                                    @(string.IsNullOrWhiteSpace(
-                                                            room.Description)
-                                                            ? "Phòng nghỉ tiện nghi, sạch sẽ và phù hợp cho kỳ nghỉ của bạn."
-                                                            : room.Description)
-                                </p>
-                                <div class="row g-2 small mb-4">
-                                    <div class="col-6">
-                                        <i class="bi bi-people text-warning me-1">
-                                        </i>
-                                        @room.MaxOccupancy người
-                                    </div>
-                                    <div class="col-6">
-                                        <i class="bi bi-arrows-angle-expand text-warning me-1">
-                                        </i>
-                                        @room.RoomSize m²
-                                    </div>
-                                    <div class="col-6">
-                                        <i class="bi bi-building text-warning me-1">
-                                        </i>
-                                        Tầng @room.Floor
-                                    </div>
-                                    <div class="col-6">
-                                        <i class="bi bi-door-open text-warning me-1">
-                                        </i>
-                                        Phòng @room.RoomNumber
-                                    </div>
-                                </div>
-                                <div class="mt-auto">
-                                    <div class="text-danger fw-bold fs-5 mb-3">
-                                        @room.PriceDay.ToString("N0") VNĐ/ngày
-                                    </div>
-                                    <div class="d-flex gap-2">
-                                        <a asp-controller="Rooms"
-                                           asp-action="Details"
-                                           asp-route-id="@room.Id"
-                                           class="btn
-                                                        btn-outline-secondary
-                                                        flex-fill">
-                                            Chi tiết
-                                        </a>
-                                        @if (room.Status == RoomStatus.Available)
+                                        if (isCustomer)
                                         {
-                                            if (isCustomer)
-                                            {
-                                                <a asp-controller="Bookings"
-                                                   asp-action="Create"
-                                                   asp-route-roomId="@room.Id"
-                                                   class="btn btn-success
-                                                                        flex-fill">
-                                                    Đặt phòng
-                                                </a>
-                                            }
-                                            else
-                                            {
-                                                <a asp-controller="Auth"
-                                                   asp-action="Login"
-                                                   class="btn btn-success
-                                                                        flex-fill">
-                                                    Đăng nhập để đặt
-                                                </a>
-                                            }
-                                        }
-                                        else if (room.Status == RoomStatus.Occupied)
-                                        {
-                                            <button type="button" class="btn btn-danger flex-fill" disabled>
-                                                Đang có khách
-                                            </button>
+                                            <a asp-controller="Bookings" asp-action="Create" asp-route-roomId="@room.Id"
+                                               class="py-2.5 px-3 rounded-xl bg-primary-container hover:bg-slate-800 text-white text-xs font-bold text-center shadow-sm transition-all flex items-center justify-center gap-1">
+                                                <span>Đặt phòng</span>
+                                                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                            </a>
                                         }
                                         else
                                         {
-                                            <button type="button" class="btn btn-secondary flex-fill" disabled>
-                                                Đang bảo trì
-                                            </button>
+                                            <a asp-controller="Auth" asp-action="Login"
+                                               class="py-2.5 px-3 rounded-xl bg-primary-container hover:bg-slate-800 text-white text-xs font-bold text-center shadow-sm transition-all flex items-center justify-center gap-1">
+                                                <span>Đăng nhập</span>
+                                                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                            </a>
                                         }
-                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" disabled
+                                                class="py-2.5 px-3 rounded-xl bg-slate-100 text-slate-400 text-xs font-bold text-center cursor-not-allowed">
+                                            Hết phòng
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -606,53 +403,5 @@ else
                 }
             </div>
         }
-        else
-        {
-            <div class="alert alert-info text-center py-5">
-                <i class="bi bi-door-closed
-                            d-block fs-1 mb-3">
-                </i>
-                Hiện chưa có phòng để hiển thị.
-            </div>
-        }
     </div>
-}
-@section Styles
-{
-    <style>
-        .room-filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 14px;
-            background: #fff;
-            border: 1px solid #e8e9ee;
-            border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(34,38,51,.06)
-        }
-        .room-filter-link {
-            display: inline-flex;
-            align-items: center;
-            padding: 9px 14px;
-            border: 1px solid #dfe2e8;
-            border-radius: 10px;
-            color: #555c69;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .2s ease
-        }
-            .room-filter-link:hover {
-                border-color: #b58a42;
-                background: #f8f2e8;
-                color: #8f692f;
-                transform: translateY(-1px)
-            }
-            .room-filter-link.active {
-                border-color: #b58a42;
-                background: #b58a42;
-                color: #fff
-            }
-    </style>
 }

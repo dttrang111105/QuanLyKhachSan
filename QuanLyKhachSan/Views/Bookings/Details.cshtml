@@ -8,164 +8,291 @@
             : User.IsInRole("Customer")
                 ? "~/Views/Shared/_CustomerLayout.cshtml"
                 : "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Chi tiết Booking";
+    ViewData["Title"] = "Chi tiết Booking - " + Model.BookingCode;
 }
-<div class="container mt-4">
-    <h2 class="mb-4">Chi tiết Booking</h2>
+
+<div class="space-y-6">
+    <!-- Breadcrumb & Top Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-sm">room_service</span>
+                <span>Chi tiết Đặt phòng</span>
+            </div>
+            <h1 class="font-serif text-2xl md:text-3xl font-bold text-[#0b1c30] mt-1 flex items-center gap-3">
+                <span>Mã đặt phòng: @Model.BookingCode</span>
+                @switch (Model.Status)
+                {
+                    case BookingStatus.Pending:
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 me-1.5"></span> Chờ xác nhận
+                        </span>
+                        break;
+                    case BookingStatus.Confirmed:
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 me-1.5"></span> Đã xác nhận
+                        </span>
+                        break;
+                    case BookingStatus.CheckedIn:
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 me-1.5"></span> Đang lưu trú
+                        </span>
+                        break;
+                    case BookingStatus.CheckedOut:
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-slate-500 me-1.5"></span> Đã trả phòng
+                        </span>
+                        break;
+                    case BookingStatus.Cancelled:
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-red-500 me-1.5"></span> Đã hủy
+                        </span>
+                        break;
+                }
+            </h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <a asp-controller="Bookings" asp-action="Index" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition shadow-sm">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                <span>Danh sách đặt phòng</span>
+            </a>
+            @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+            {
+                <a asp-controller="Bookings" asp-action="Edit" asp-route-id="@Model.Id" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0b1c30] text-white text-xs font-bold hover:bg-[#131b2e] transition shadow-sm">
+                    <span class="material-symbols-outlined text-sm">edit</span>
+                    <span>Chỉnh sửa</span>
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- Alert Messages -->
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success alert-dismissible fade show">
-            @TempData["Success"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-2 text-sm font-medium">
+                <span class="material-symbols-outlined text-emerald-600">check_circle</span>
+                <span>@TempData["Success"]</span>
+            </div>
+            <button type="button" class="text-emerald-600 hover:text-emerald-800" onclick="this.parentElement.remove()">
+                <span class="material-symbols-outlined text-sm">close</span>
+            </button>
         </div>
     }
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger alert-dismissible fade show">
-            @TempData["Error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-2 text-sm font-medium">
+                <span class="material-symbols-outlined text-red-600">error</span>
+                <span>@TempData["Error"]</span>
+            </div>
+            <button type="button" class="text-red-600 hover:text-red-800" onclick="this.parentElement.remove()">
+                <span class="material-symbols-outlined text-sm">close</span>
+            </button>
         </div>
     }
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">@Model.BookingCode</h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>ID booking:</strong> @Model.Id</p>
-                    <p><strong>Khách hàng:</strong> @Model.Customer?.FullName</p>
-                    <p><strong>Ngày đặt:</strong> @Model.BookingDate.ToString("dd/MM/yyyy HH:mm")</p>
-                    <p><strong>Nhận phòng:</strong> @Model.CheckInDate.ToString("dd/MM/yyyy")</p>
-                    <p><strong>Trả phòng:</strong> @Model.CheckOutDate.ToString("dd/MM/yyyy")</p>
+
+    <!-- Overview Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+            <span class="text-[11px] font-bold tracking-wider text-slate-400 uppercase block">Khách hàng</span>
+            <div class="mt-2 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#f8f9fa] border border-slate-100 flex items-center justify-center text-[#725b38] font-bold">
+                    @(Model.Customer?.FullName?.FirstOrDefault() ?? 'K')
                 </div>
-                <div class="col-md-6">
-                    <p><strong>Người lớn:</strong> @Model.Adult</p>
-                    <p><strong>Trẻ em:</strong> @Model.Children</p>
-                    <p><strong>Tiền cọc:</strong> @Model.Deposit.ToString("N0") VNĐ</p>
-                    <p><strong>Tổng tiền:</strong> @Model.TotalAmount.ToString("N0") VNĐ</p>
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm">@Model.Customer?.FullName</h4>
+                    <p class="text-xs text-slate-500">ID: #@Model.CustomerId</p>
                 </div>
             </div>
-            <hr />
-            <h5>Phòng đã đặt</h5>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Phòng</th>
-                            <th>Giá/đêm</th>
-                            <th>Số đêm</th>
-                            <th>Giảm giá</th>
-                            <th>Thành tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.BookingDetails != null && Model.BookingDetails.Any())
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+            <span class="text-[11px] font-bold tracking-wider text-slate-400 uppercase block">Thời gian lưu trú</span>
+            <div class="mt-2">
+                <div class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                    <span>@Model.CheckInDate.ToString("dd/MM/yyyy")</span>
+                    <span class="material-symbols-outlined text-xs text-slate-400">arrow_forward</span>
+                    <span>@Model.CheckOutDate.ToString("dd/MM/yyyy")</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">Đặt lúc: @Model.BookingDate.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+            <span class="text-[11px] font-bold tracking-wider text-slate-400 uppercase block">Số lượng khách</span>
+            <div class="mt-2 flex items-center gap-4 text-sm font-bold text-slate-800">
+                <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-slate-400 text-sm">person</span>
+                    <span>@Model.Adult Người lớn</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-slate-400 text-sm">child_care</span>
+                    <span>@Model.Children Trẻ em</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-[#725b38]/20 bg-gradient-to-br from-white to-[#725b38]/5 shadow-sm">
+            <span class="text-[11px] font-bold tracking-wider text-[#725b38] uppercase block">Tổng thanh toán</span>
+            <div class="mt-2">
+                <div class="text-xl font-bold font-serif text-[#0b1c30]">@Model.TotalAmount.ToString("N0") VNĐ</div>
+                <p class="text-xs text-[#725b38] mt-0.5">Đã đặt cọc: @Model.Deposit.ToString("N0") VNĐ</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rooms List Section -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#725b38]">hotel</span>
+                <h3 class="font-bold text-slate-800">Danh sách phòng đã đặt</h3>
+            </div>
+            <span class="text-xs text-slate-500 font-medium">@(Model.BookingDetails?.Count ?? 0) phòng</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                        <th class="px-6 py-3.5">Số phòng</th>
+                        <th class="px-6 py-3.5">Hạng phòng</th>
+                        <th class="px-6 py-3.5 text-right">Giá / đêm</th>
+                        <th class="px-6 py-3.5 text-center">Số đêm</th>
+                        <th class="px-6 py-3.5 text-center">Giảm giá</th>
+                        <th class="px-6 py-3.5 text-right">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                    @if (Model.BookingDetails != null && Model.BookingDetails.Any())
+                    {
+                        @foreach (var detail in Model.BookingDetails)
                         {
-                            @foreach (var detail in Model.BookingDetails)
-                            {
-                                <tr>
-                                    <td>@detail.Room?.RoomNumber</td>
-                                    <td>@detail.PricePerNight.ToString("N0") VNĐ</td>
-                                    <td>@detail.NumberOfNights</td>
-                                    <td>@detail.DiscountPercent %</td>
-                                    <td>@detail.TotalPrice.ToString("N0") VNĐ</td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="5" class="text-center text-muted">Không có thông tin phòng.</td>
+                            <tr class="hover:bg-slate-50/50 transition">
+                                <td class="px-6 py-4 font-bold text-slate-800">
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-mono text-xs font-bold">
+                                        <span class="material-symbols-outlined text-xs text-[#725b38]">meeting_room</span>
+                                        Phòng @detail.Room?.RoomNumber
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600 font-medium">
+                                    @(detail.Room?.RoomType?.Name ?? "Standard Suite")
+                                </td>
+                                <td class="px-6 py-4 text-right text-slate-600">
+                                    @detail.PricePerNight.ToString("N0") VNĐ
+                                </td>
+                                <td class="px-6 py-4 text-center text-slate-800 font-semibold">
+                                    @detail.NumberOfNights đêm
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if (detail.DiscountPercent > 0)
+                                    {
+                                        <span class="inline-flex px-2 py-0.5 rounded text-xs font-bold bg-rose-50 text-rose-600">
+                                            -@detail.DiscountPercent%
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-slate-400">0%</span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 text-right font-bold text-[#0b1c30]">
+                                    @detail.TotalPrice.ToString("N0") VNĐ
+                                </td>
                             </tr>
                         }
-                    </tbody>
-                </table>
-            </div>
-            <hr />
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">Dịch vụ đã sử dụng</h5>
-                @if ((User.IsInRole("Admin") || User.IsInRole("Receptionist")) &&
-                     Model.Status == BookingStatus.CheckedIn)
-                {
-                    <a asp-controller="Services"
-                       asp-action="StaffBookService"
-                       asp-route-bookingId="@Model.Id"
-                       class="btn btn-success btn-sm">
-                        <i class="bi bi-plus-circle"></i> Thêm dịch vụ
-                    </a>
-                }
-                else if (User.IsInRole("Customer") &&
-                         Model.Status == BookingStatus.CheckedIn)
-                {
-                    <a asp-controller="Services"
-                       asp-action="CustomerServices"
-                       class="btn btn-success btn-sm">
-                        <i class="bi bi-cart-plus"></i> Đặt thêm dịch vụ
-                    </a>
-                }
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead class="table-light">
+                    }
+                    else
+                    {
                         <tr>
-                            <th>Dịch vụ</th>
-                            <th>Số lượng</th>
-                            <th>Đơn giá</th>
-                            <th>Thành tiền</th>
+                            <td colspan="6" class="px-6 py-8 text-center text-slate-400 text-sm">
+                                Chưa có thông tin chi tiết phòng.
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.ServiceBookings != null && Model.ServiceBookings.Any())
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Services List Section -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[#725b38]">room_service</span>
+                <h3 class="font-bold text-slate-800">Dịch vụ bổ sung đã sử dụng</h3>
+            </div>
+            <div>
+                @if ((User.IsInRole("Admin") || User.IsInRole("Receptionist")) && Model.Status == BookingStatus.CheckedIn)
+                {
+                    <a asp-controller="Services" asp-action="StaffBookService" asp-route-bookingId="@Model.Id" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm">
+                        <span class="material-symbols-outlined text-xs">add_circle</span>
+                        Thêm dịch vụ
+                    </a>
+                }
+                else if (User.IsInRole("Customer") && Model.Status == BookingStatus.CheckedIn)
+                {
+                    <a asp-controller="Services" asp-action="CustomerServices" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm">
+                        <span class="material-symbols-outlined text-xs">add_shopping_cart</span>
+                        Đặt thêm dịch vụ
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                        <th class="px-6 py-3.5">Tên dịch vụ</th>
+                        <th class="px-6 py-3.5 text-center">Số lượng</th>
+                        <th class="px-6 py-3.5 text-right">Đơn giá</th>
+                        <th class="px-6 py-3.5 text-right">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                    @if (Model.ServiceBookings != null && Model.ServiceBookings.Any())
+                    {
+                        @foreach (var item in Model.ServiceBookings)
                         {
-                            @foreach (var item in Model.ServiceBookings)
-                            {
-                                <tr>
-                                    <td>@(item.Service?.ServiceName ?? "Không xác định")</td>
-                                    <td>@item.Quantity</td>
-                                    <td>@item.UnitPrice.ToString("N0") VNĐ</td>
-                                    <td>@item.TotalPrice.ToString("N0") VNĐ</td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="4" class="text-center text-muted">Chưa sử dụng dịch vụ nào.</td>
+                            <tr class="hover:bg-slate-50/50 transition">
+                                <td class="px-6 py-4 font-bold text-slate-800">
+                                    @(item.Service?.ServiceName ?? "Dịch vụ phòng")
+                                </td>
+                                <td class="px-6 py-4 text-center font-bold text-slate-700">
+                                    @item.Quantity
+                                </td>
+                                <td class="px-6 py-4 text-right text-slate-600">
+                                    @item.UnitPrice.ToString("N0") VNĐ
+                                </td>
+                                <td class="px-6 py-4 text-right font-bold text-[#0b1c30]">
+                                    @item.TotalPrice.ToString("N0") VNĐ
+                                </td>
                             </tr>
                         }
-                    </tbody>
-                </table>
-            </div>
-            <hr />
-            <p>
-                <strong>Trạng thái:</strong>
-                @switch (Model.Status)
-                {
-                    case BookingStatus.Pending:
-                        <span class="badge bg-warning text-dark">Chờ xác nhận</span>
-                        break;
-                    case BookingStatus.Confirmed:
-                        <span class="badge bg-info">Đã xác nhận</span>
-                        break;
-                    case BookingStatus.CheckedIn:
-                        <span class="badge bg-success">Đang ở</span>
-                        break;
-                    case BookingStatus.CheckedOut:
-                        <span class="badge bg-primary">Đã trả phòng</span>
-                        break;
-                    case BookingStatus.Cancelled:
-                        <span class="badge bg-danger">Đã hủy</span>
-                        break;
-                }
-            </p>
-            <p>
-                <strong>Ghi chú:</strong><br />
-                @(string.IsNullOrWhiteSpace(Model.Note) ? "Không có" : Model.Note)
-            </p>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-slate-400 text-sm">
+                                Chưa đăng ký dịch vụ phát sinh nào.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-        <div class="card-footer">
-            <a asp-controller="Bookings" asp-action="Index" class="btn btn-secondary">Quay lại</a>
-        </div>
+    </div>
+
+    <!-- Notes and Special Requests -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <h3 class="text-xs font-bold tracking-wider text-slate-400 uppercase flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">notes</span>
+            Ghi chú & Yêu cầu đặc biệt
+        </h3>
+        <p class="mt-2 text-sm text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-100">
+            @(string.IsNullOrWhiteSpace(Model.Note) ? "Không có ghi chú đặc biệt." : Model.Note)
+        </p>
     </div>
 </div>

@@ -3,321 +3,153 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Chỉnh sửa nhân viên";
 }
-<style>
-    .employee-edit-page {
-        max-width: 1080px;
-        margin: 0 auto;
-    }
-    .employee-edit-heading {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 18px;
-        margin-bottom: 24px;
-    }
-    .employee-edit-kicker {
-        display: block;
-        margin-bottom: 6px;
-        color: #b58a42;
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 1.7px;
-        text-transform: uppercase;
-    }
-    .employee-edit-heading h2 {
-        margin: 0;
-        color: #252a35;
-        font-size: 30px;
-        font-weight: 800;
-    }
-    .employee-edit-back {
-        min-height: 42px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 9px 16px;
-        border: 1px solid #dfe2e8;
-        border-radius: 11px;
-        background: #ffffff;
-        color: #555c69;
-        font-size: 13px;
-        font-weight: 700;
-    }
-    .employee-edit-card {
-        overflow: hidden;
-        border: 1px solid #e7e9ee;
-        border-radius: 20px;
-        background: #ffffff;
-        box-shadow: 0 22px 55px rgba(34,38,51,.08);
-    }
-    .employee-edit-card-header {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 26px 28px;
-        background: radial-gradient(circle at 90% 10%, rgba(200,169,106,.25), transparent 28%), linear-gradient(135deg,#111111,#332717);
-        color: #ffffff;
-    }
-    .employee-edit-icon {
-        width: 56px;
-        height: 56px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex: 0 0 56px;
-        border-radius: 16px;
-        background: linear-gradient(145deg,#e5c470,#ad7729);
-        color: #171008;
-        font-size: 25px;
-    }
-    .employee-edit-card-header h3 {
-        margin: 0 0 4px;
-        font-size: 24px;
-        font-weight: 800;
-    }
-    .employee-edit-card-header p {
-        margin: 0;
-        color: rgba(255,255,255,.65);
-    }
-    .employee-edit-body {
-        padding: 30px;
-    }
-    .employee-edit-field label {
-        margin-bottom: 7px;
-        color: #3c424d;
-        font-size: 13px;
-        font-weight: 700;
-    }
-    .employee-edit-field .form-control,
-    .employee-edit-field .form-select {
-        min-height: 50px;
-        border: 1px solid #dfe2e8;
-        border-radius: 11px;
-        background: #fcfcfd;
-        box-shadow: none;
-    }
-        .employee-edit-field .form-control:focus,
-        .employee-edit-field .form-select:focus {
-            border-color: #b58a42;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(181,138,66,.12);
-        }
-    .employee-edit-status {
-        min-height: 50px;
-        display: flex;
-        align-items: center;
-        padding: 0 16px;
-        border: 1px solid #dfe2e8;
-        border-radius: 11px;
-        background: #fcfcfd;
-    }
-    .employee-edit-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 28px;
-        padding-top: 22px;
-        border-top: 1px solid #eceef2;
-    }
-    .employee-edit-save,
-    .employee-edit-cancel {
-        min-height: 46px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 10px 21px;
-        border-radius: 11px;
-        font-size: 13px;
-        font-weight: 800;
-    }
-    .employee-edit-save {
-        border: 1px solid #b58a42;
-        background: linear-gradient(145deg,#d8b25e,#a8752d);
-        color: #ffffff;
-    }
-    .employee-edit-cancel {
-        border: 1px solid #dfe2e8;
-        background: #ffffff;
-        color: #555c69;
-    }
-    @@media (max-width: 767.98px) {
-        .employee-edit-heading {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-        .employee-edit-card-header,
-        .employee-edit-body {
-            padding: 22px;
-        }
-        .employee-edit-actions {
-            flex-direction: column;
-        }
-        .employee-edit-save,
-        .employee-edit-cancel {
-            width: 100%;
-        }
-    }
-</style>
-<div class="employee-edit-page">
-    <div class="employee-edit-heading">
-        <div>
-            <span class="employee-edit-kicker">Quản lý nhân viên</span>
-            <h2>Chỉnh sửa nhân viên</h2>
-        </div>
-        <a asp-controller="Employees"
-           asp-action="Index"
-           class="employee-edit-back">
-            <i class="bi bi-arrow-left"></i>
-            Quay lại danh sách
+
+<div class="max-w-5xl mx-auto space-y-6">
+    <!-- Top Action / Breadcrumb -->
+    <div class="flex items-center justify-between">
+        <a asp-controller="Employees" asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Quay lại danh sách nhân viên
+        </a>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold transition-colors">
+            <span class="material-symbols-outlined text-base">visibility</span>
+            Xem hồ sơ
         </a>
     </div>
-    <div class="employee-edit-card">
-        <div class="employee-edit-card-header">
-            <span class="employee-edit-icon">
-                <i class="bi bi-person-gear"></i>
-            </span>
-            <div>
-                <h3>@Model.FullName</h3>
-                <p>Cập nhật hồ sơ, chức vụ và trạng thái làm việc.</p>
+
+    <!-- Main Card -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-[#0b1c30] to-[#1e293b] p-8 text-white relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 opacity-10">
+                <span class="material-symbols-outlined text-[160px]">badge</span>
+            </div>
+            <div class="relative z-10">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-[#c5a880]/20 text-[#c5a880] border border-[#c5a880]/30 uppercase tracking-widest inline-block mb-3">
+                    Nhân sự #@Model.Id
+                </span>
+                <h1 class="font-serif text-2xl lg:text-3xl font-bold tracking-tight">Chỉnh Sửa Hồ Sơ Nhân Viên</h1>
+                <p class="text-slate-300 text-sm mt-1">@Model.FullName • @(string.IsNullOrWhiteSpace(Model.Position) ? "Chưa có chức vụ" : Model.Position)</p>
             </div>
         </div>
-        <div class="employee-edit-body">
-            <form asp-controller="Employees"
-                  asp-action="Edit"
-                  asp-route-id="@Model.Id"
-                  method="post">
+
+        <!-- Form Body -->
+        <div class="p-8 lg:p-10">
+            <form asp-controller="Employees" asp-action="Edit" asp-route-id="@Model.Id" method="post" class="space-y-6">
                 @Html.AntiForgeryToken()
                 <input asp-for="Id" type="hidden" />
-                <div asp-validation-summary="ModelOnly"
-                     class="alert alert-danger"></div>
-                <div class="row g-4">
-                    <div class="col-md-6 employee-edit-field">
-                        <label>Tài khoản đăng nhập</label>
-                        <input type="text"
-                               value="@ViewBag.AccountUsername"
-                               class="form-control"
-                               readonly />
+                <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm"></div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Linked Account -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tài khoản đăng nhập</label>
+                        <input type="text" value="@ViewBag.AccountUsername" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-sm text-slate-500 font-medium" readonly />
                     </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="FullName">Họ và tên</label>
-                        <input asp-for="FullName"
-                               class="form-control"
-                               placeholder="Nhập họ tên nhân viên" />
-                        <span asp-validation-for="FullName"
-                              class="text-danger small"></span>
+
+                    <!-- FullName -->
+                    <div>
+                        <label asp-for="FullName" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Họ và tên <span class="text-rose-500">*</span></label>
+                        <input asp-for="FullName" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="FullName" class="text-xs text-rose-500 mt-1 block"></span>
                     </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="Gender">Giới tính</label>
-                        <select asp-for="Gender"
-                                class="form-select">
-                            <option value="">-- Chọn giới tính --</option>
-                            <option value="Nam">Nam</option>
-                            <option value="Nữ">Nữ</option>
-                            <option value="Khác">Khác</option>
-                        </select>
-                        <span asp-validation-for="Gender"
-                              class="text-danger small"></span>
+
+                    <!-- Position -->
+                    <div>
+                        <label asp-for="Position" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Chức vụ</label>
+                        <input asp-for="Position" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Position" class="text-xs text-rose-500 mt-1 block"></span>
                     </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="DateOfBirth">Ngày sinh</label>
-                        <input asp-for="DateOfBirth"
-                               type="date"
-                               class="form-control" />
-                        <span asp-validation-for="DateOfBirth"
-                              class="text-danger small"></span>
+
+                    <!-- Salary -->
+                    <div>
+                        <label asp-for="Salary" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Mức lương (VNĐ)</label>
+                        <input asp-for="Salary" type="number" min="0" step="1000" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Salary" class="text-xs text-rose-500 mt-1 block"></span>
                     </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="Phone">Số điện thoại</label>
-                        <input asp-for="Phone"
-                               class="form-control" />
-                        <span asp-validation-for="Phone"
-                              class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="Email">Email</label>
-                        <input asp-for="Email"
-                               type="email"
-                               class="form-control" />
-                        <span asp-validation-for="Email"
-                              class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="Position">Chức vụ</label>
-                        <input asp-for="Position"
-                               class="form-control" />
-                        <span asp-validation-for="Position"
-                              class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="Salary">Lương</label>
-                        <div class="input-group">
-                            <input asp-for="Salary"
-                                   type="number"
-                                   min="0"
-                                   step="1000"
-                                   class="form-control" />
-                            <span class="input-group-text">VNĐ</span>
+
+                    <!-- Gender -->
+                    <div>
+                        <label asp-for="Gender" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Giới tính</label>
+                        <div class="relative">
+                            <select asp-for="Gender" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium appearance-none">
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
                         </div>
-                        <span asp-validation-for="Salary"
-                              class="text-danger small"></span>
+                        <span asp-validation-for="Gender" class="text-xs text-rose-500 mt-1 block"></span>
                     </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="HireDate">Ngày vào làm</label>
-                        <input asp-for="HireDate"
-                               type="date"
-                               class="form-control" />
-                        <span asp-validation-for="HireDate"
-                              class="text-danger small"></span>
+
+                    <!-- Date of Birth -->
+                    <div>
+                        <label asp-for="DateOfBirth" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ngày sinh</label>
+                        <input asp-for="DateOfBirth" type="date" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="DateOfBirth" class="text-xs text-rose-500 mt-1 block"></span>
                     </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="Status">Trạng thái</label>
-                        <div class="employee-edit-status">
-                            <div class="form-check form-switch mb-0">
-                                <input asp-for="Status"
-                                       class="form-check-input" />
-                                <label asp-for="Status"
-                                       class="form-check-label">
-                                    Đang làm việc
-                                </label>
-                            </div>
-                        </div>
+
+                    <!-- Phone -->
+                    <div>
+                        <label asp-for="Phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số điện thoại</label>
+                        <input asp-for="Phone" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Phone" class="text-xs text-rose-500 mt-1 block"></span>
                     </div>
-                    <div class="col-md-6 employee-edit-field">
-                        <label asp-for="Avatar">Đường dẫn ảnh đại diện</label>
-                        <input asp-for="Avatar"
-                               class="form-control"
-                               placeholder="/uploads/avatar/..." />
-                        <span asp-validation-for="Avatar"
-                              class="text-danger small"></span>
+
+                    <!-- Email -->
+                    <div>
+                        <label asp-for="Email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Email</label>
+                        <input asp-for="Email" type="email" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Email" class="text-xs text-rose-500 mt-1 block"></span>
                     </div>
-                    <div class="col-12 employee-edit-field">
-                        <label asp-for="Address">Địa chỉ</label>
-                        <input asp-for="Address"
-                               class="form-control" />
-                        <span asp-validation-for="Address"
-                              class="text-danger small"></span>
+
+                    <!-- Hire Date -->
+                    <div>
+                        <label asp-for="HireDate" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ngày vào làm</label>
+                        <input asp-for="HireDate" type="date" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="HireDate" class="text-xs text-rose-500 mt-1 block"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Trạng thái công tác</label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50/50 cursor-pointer">
+                            <input asp-for="Status" type="checkbox" class="w-4 h-4 rounded text-[#725b38] focus:ring-[#c5a880]" />
+                            <span class="text-sm font-semibold text-slate-800">Đang làm việc tại khách sạn</span>
+                        </label>
+                    </div>
+
+                    <!-- Avatar path -->
+                    <div class="sm:col-span-2">
+                        <label asp-for="Avatar" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Đường dẫn ảnh đại diện (URL)</label>
+                        <input asp-for="Avatar" placeholder="/uploads/avatar/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Avatar" class="text-xs text-rose-500 mt-1 block"></span>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="sm:col-span-2">
+                        <label asp-for="Address" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Địa chỉ</label>
+                        <input asp-for="Address" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Address" class="text-xs text-rose-500 mt-1 block"></span>
                     </div>
                 </div>
-                <div class="employee-edit-actions">
-                    <button type="submit"
-                            class="employee-edit-save">
-                        <i class="bi bi-check-circle"></i>
-                        Lưu thay đổi
-                    </button>
-                    <a asp-controller="Employees"
-                       asp-action="Details"
-                       asp-route-id="@Model.Id"
-                       class="employee-edit-cancel">
-                        <i class="bi bi-x-circle"></i>
+
+                <!-- Action buttons -->
+                <div class="pt-6 border-t border-slate-100 flex items-center justify-end gap-3">
+                    <a asp-action="Index" class="px-6 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
                         Hủy
                     </a>
+                    <button type="submit" class="px-7 py-3 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] hover:from-[#b9986b] hover:to-[#634e2f] text-white text-sm font-semibold shadow-lg shadow-[#c5a880]/20 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">save</span>
+                        Lưu thay đổi
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

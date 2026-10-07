@@ -4,51 +4,87 @@
     Layout = User.IsInRole("Admin")
         ? "~/Views/Shared/_AdminLayout.cshtml"
         : "~/Views/Shared/_ReceptionistLayout.cshtml";
-    ViewData["Title"] = "Thêm thanh toán";
+    ViewData["Title"] = "Thêm thanh toán hóa đơn";
 }
-<h2>Thanh toán hóa đơn</h2>
-<hr />
-<form asp-action="Create" method="post">
-    <input asp-for="InvoiceId" type="hidden" />
-    <div class="mb-3">
-        <label asp-for="Amount" class="form-label"></label>
-        <input asp-for="Amount"
-               class="form-control"
-               readonly />
+
+<div class="max-w-2xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-sm">payments</span>
+                <span>Quản lý Thanh toán</span>
+            </div>
+            <h1 class="font-serif text-2xl md:text-3xl font-bold text-[#0b1c30] mt-1">
+                Ghi nhận thanh toán
+            </h1>
+        </div>
+        <a asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition shadow-sm">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Chi tiết Hóa đơn</span>
+        </a>
     </div>
-    <div class="mb-3">
-        <label asp-for="PaymentMethod" class="form-label"></label>
-        <select asp-for="PaymentMethod"
-                class="form-select">
-            <option value="">-- Chọn phương thức --</option>
-            @foreach (PaymentMethod item in Enum.GetValues(typeof(PaymentMethod)))
-            {
-                <option value="@((int)item)">
-                    @item
-                </option>
-            }
-        </select>
-        <span asp-validation-for="PaymentMethod"
-              class="text-danger"></span>
+
+    <!-- Payment Card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="p-6 bg-[#0b1c30] text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#c5a880]/20 border border-[#c5a880]/40 flex items-center justify-center text-[#c5a880]">
+                    <span class="material-symbols-outlined">account_balance_wallet</span>
+                </div>
+                <div>
+                    <h3 class="font-serif font-bold text-lg text-white">Xác nhận thu tiền</h3>
+                    <p class="text-xs text-slate-300">Hóa đơn ID: #@Model.InvoiceId</p>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Create" method="post" class="p-6 md:p-8 space-y-6">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+            <input asp-for="InvoiceId" type="hidden" />
+
+            <div class="space-y-4">
+                <div>
+                    <label asp-for="Amount" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số tiền thanh toán</label>
+                    <div class="relative">
+                        <input asp-for="Amount" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-[#0b1c30] text-lg font-bold font-serif focus:outline-none" readonly />
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">VNĐ</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="PaymentMethod" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Phương thức thanh toán</label>
+                    <select asp-for="PaymentMethod" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]">
+                        <option value="">-- Chọn phương thức --</option>
+                        @foreach (PaymentMethod item in Enum.GetValues(typeof(PaymentMethod)))
+                        {
+                            <option value="@((int)item)">@item.ToString()</option>
+                        }
+                    </select>
+                    <span asp-validation-for="PaymentMethod" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Note" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ghi chú giao dịch</label>
+                    <textarea asp-for="Note" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" placeholder="Nhập ghi chú thu tiền..."></textarea>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+                <a asp-controller="Invoices" asp-action="Details" asp-route-id="@Model.InvoiceId" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition">
+                    Hủy bỏ
+                </a>
+                <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] text-white text-xs font-bold shadow-md hover:shadow-lg transition">
+                    <span class="material-symbols-outlined text-sm">check_circle</span>
+                    <span>Xác nhận thu tiền</span>
+                </button>
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-        <label asp-for="Note"></label>
-        <textarea asp-for="Note"
-                  class="form-control"
-                  rows="3"></textarea>
-    </div>
-    <button class="btn btn-success">
-        Xác nhận thanh toán
-    </button>
-    <a asp-controller="Invoices"
-       asp-action="Details"
-       asp-route-id="@Model.InvoiceId"
-       class="btn btn-secondary">
-        Quay lại
-    </a>
-</form>
+</div>
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }

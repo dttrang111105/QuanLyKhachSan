@@ -1,58 +1,107 @@
 @model IEnumerable<QuanLyKhachSan.Models.BookingDetail>
 @{
-    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Chi tiết đặt phòng (Booking Details)";
 }
-<h1>Index</h1>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Mã đặt phòng</th>
-            <th>Số phòng</th>
-            <th>
-                @Html.DisplayNameFor(model => model.PricePerNight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfNights)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiscountPercent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalPrice)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.Booking?.BookingCode
-            </td>
-            <td>
-                @item.Room?.RoomNumber
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PricePerNight)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.NumberOfNights)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DiscountPercent)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.TotalPrice)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="space-y-8">
+    <!-- Header Hero -->
+    <div class="bg-gradient-to-r from-[#0b1c30] via-[#131b2e] to-[#20293a] rounded-3xl p-8 lg:p-10 text-white relative overflow-hidden shadow-xl shadow-slate-200/50">
+        <div class="absolute -right-10 -bottom-10 opacity-10">
+            <span class="material-symbols-outlined text-[200px]">hotel</span>
+        </div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-[#c5a880]/20 text-[#c5a880] border border-[#c5a880]/30 uppercase tracking-widest">
+                        Quản lý lưu trú
+                    </span>
+                </div>
+                <h1 class="font-serif text-2xl lg:text-3xl font-bold tracking-tight">Chi Tiết Đặt Phòng</h1>
+                <p class="text-slate-300 text-sm mt-1 max-w-2xl">
+                    Danh mục phòng đã phân bổ cho các mã Booking trong hệ thống.
+                </p>
+            </div>
+            <div class="flex items-center gap-3">
+                <a asp-action="Create" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] hover:from-[#b9986b] hover:to-[#634e2f] text-white text-sm font-semibold shadow-lg shadow-[#c5a880]/20 transition-all">
+                    <span class="material-symbols-outlined text-lg">add</span>
+                    Thêm phòng vào Booking
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+        <div class="p-6 lg:p-8 border-b border-slate-100">
+            <h2 class="font-serif text-lg font-bold text-slate-900">Danh sách phòng theo Booking</h2>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        <th class="py-3.5 px-6">Mã Booking</th>
+                        <th class="py-3.5 px-6">Phòng</th>
+                        <th class="py-3.5 px-6 text-right">Đơn giá / đêm</th>
+                        <th class="py-3.5 px-6 text-center">Số đêm</th>
+                        <th class="py-3.5 px-6 text-center">Chiết khấu</th>
+                        <th class="py-3.5 px-6 text-right">Thành tiền</th>
+                        <th class="py-3.5 px-6 text-right">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="py-12 text-center text-slate-400 text-sm italic">
+                                Chưa có dữ liệu chi tiết đặt phòng.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="py-3.5 px-6 font-bold text-slate-900">
+                                    <a asp-controller="Bookings" asp-action="Details" asp-route-id="@item.BookingId" class="text-[#725b38] hover:underline">
+                                        @(item.Booking?.BookingCode ?? $"#{item.BookingId}")
+                                    </a>
+                                </td>
+                                <td class="py-3.5 px-6 font-semibold text-slate-800">
+                                    Phòng @item.Room?.RoomNumber
+                                </td>
+                                <td class="py-3.5 px-6 text-right text-slate-700">
+                                    @item.PricePerNight.ToString("N0") VNĐ
+                                </td>
+                                <td class="py-3.5 px-6 text-center font-semibold text-slate-700">
+                                    @item.NumberOfNights
+                                </td>
+                                <td class="py-3.5 px-6 text-center text-slate-600">
+                                    @(item.DiscountPercent > 0 ? $"{item.DiscountPercent}%" : "0%")
+                                </td>
+                                <td class="py-3.5 px-6 text-right font-bold text-slate-900">
+                                    @item.TotalPrice.ToString("N0") VNĐ
+                                </td>
+                                <td class="py-3.5 px-6 text-right">
+                                    <div class="inline-flex items-center gap-1">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="Chi tiết">
+                                            <span class="material-symbols-outlined text-base">visibility</span>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-colors" title="Chỉnh sửa">
+                                            <span class="material-symbols-outlined text-base">edit</span>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Xóa">
+                                            <span class="material-symbols-outlined text-base">delete</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -10,390 +10,121 @@
         .ToList()
         ?? new List<QuanLyKhachSan.Models.Room>();
 }
-<style>
-    .room-type-details-page {
-        max-width: 1120px;
-        margin: 0 auto;
-    }
-    .room-type-details-heading {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 18px;
-        margin-bottom: 24px;
-    }
-    .room-type-details-kicker {
-        display: block;
-        margin-bottom: 6px;
-        color: #b58a42;
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 1.7px;
-        text-transform: uppercase;
-    }
-    .room-type-details-heading h2 {
-        margin: 0;
-        color: #252a35;
-        font-size: 30px;
-        font-weight: 800;
-    }
-    .room-type-details-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 9px;
-    }
-    .room-type-details-button {
-        min-height: 42px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 9px 16px;
-        border-radius: 11px;
-        font-size: 13px;
-        font-weight: 700;
-        text-decoration: none;
-    }
-        .room-type-details-button.back {
-            border: 1px solid #dfe2e8;
-            background: #ffffff;
-            color: #555c69;
-        }
-            .room-type-details-button.back:hover {
-                border-color: #b58a42;
-                color: #8f692f;
-            }
-        .room-type-details-button.edit {
-            border: 1px solid #b58a42;
-            background: linear-gradient(145deg,#d8b25e,#a8752d);
-            color: #ffffff;
-        }
-            .room-type-details-button.edit:hover {
-                background: linear-gradient(145deg,#e5c87f,#b98235);
-                color: #ffffff;
-                transform: translateY(-2px);
-            }
-    .room-type-details-card {
-        overflow: hidden;
-        border: 1px solid #e7e9ee;
-        border-radius: 20px;
-        background: #ffffff;
-        box-shadow: 0 22px 55px rgba(34, 38, 51, 0.08);
-    }
-    .room-type-details-card-header {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 28px;
-        background: radial-gradient(circle at 90% 10%, rgba(200,169,106,.25), transparent 28%), linear-gradient(135deg,#111111,#332717);
-        color: #ffffff;
-    }
-    .room-type-details-icon {
-        width: 60px;
-        height: 60px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex: 0 0 60px;
-        border-radius: 17px;
-        background: linear-gradient(145deg,#e5c470,#ad7729);
-        color: #171008;
-        font-size: 27px;
-    }
-    .room-type-details-card-header h3 {
-        margin: 0 0 5px;
-        font-size: 26px;
-        font-weight: 800;
-    }
-    .room-type-details-card-header p {
-        margin: 0;
-        color: rgba(255,255,255,.65);
-        font-size: 13px;
-    }
-    .room-type-details-body {
-        padding: 30px;
-    }
-    .room-type-summary-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
-        margin-bottom: 28px;
-    }
-    .room-type-summary-item {
-        padding: 20px;
-        border: 1px solid #e8e9ee;
-        border-radius: 16px;
-        background: #fcfcfd;
-    }
-    .room-type-summary-icon {
-        width: 42px;
-        height: 42px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 13px;
-        border-radius: 12px;
-        background: #f4ead7;
-        color: #8f692f;
-        font-size: 19px;
-    }
-    .room-type-summary-item span {
-        display: block;
-        margin-bottom: 6px;
-        color: #8a909b;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: .7px;
-        text-transform: uppercase;
-    }
-    .room-type-summary-item strong {
-        display: block;
-        color: #282d38;
-        font-size: 20px;
-        font-weight: 800;
-    }
-    .room-type-section {
-        margin-top: 28px;
-    }
-    .room-type-section-title {
-        margin-bottom: 15px;
-        color: #8f692f;
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-    }
-    .room-type-description {
-        padding: 20px;
-        border: 1px solid #e8e9ee;
-        border-radius: 15px;
-        background: #fcfcfd;
-        color: #5f6570;
-        line-height: 1.8;
-    }
-    .room-type-room-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    .room-type-room-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 9px 13px;
-        border: 1px solid #e1e3e8;
-        border-radius: 10px;
-        background: #ffffff;
-        color: #525965;
-        font-size: 12px;
-        font-weight: 700;
-    }
-        .room-type-room-badge i {
-            color: #a97c30;
-        }
-    .room-type-empty {
-        padding: 24px;
-        border: 1px dashed #d8dbe1;
-        border-radius: 14px;
-        background: #fafafb;
-        color: #8a909b;
-        text-align: center;
-    }
-    .room-type-meta {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-    }
-    .room-type-meta-item {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-        padding: 16px 18px;
-        border: 1px solid #eceef2;
-        border-radius: 13px;
-        background: #ffffff;
-    }
-        .room-type-meta-item i {
-            color: #a97c30;
-            font-size: 18px;
-        }
-        .room-type-meta-item div {
-            min-width: 0;
-        }
-        .room-type-meta-item span {
-            display: block;
-            color: #8a909b;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .room-type-meta-item strong {
-            display: block;
-            color: #343944;
-            font-size: 13px;
-        }
-    @@media (max-width: 991.98px) {
-        .room-type-summary-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-    @@media (max-width: 767.98px) {
-        .room-type-details-heading {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-        .room-type-details-actions {
-            width: 100%;
-        }
-        .room-type-details-button {
-            flex: 1;
-        }
-        .room-type-details-card-header,
-        .room-type-details-body {
-            padding: 22px;
-        }
-        .room-type-meta {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-<div class="room-type-details-page">
-    <div class="room-type-details-heading">
+
+<div class="max-w-4xl mx-auto py-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
         <div>
-            <span class="room-type-details-kicker">
-                Quản lý loại phòng
-            </span>
-            <h2>Chi tiết @Model.Name</h2>
+            <div class="flex items-center gap-2 text-xs font-bold text-secondary uppercase tracking-wider mb-1">
+                <span>Quản Lý Hệ Thống</span>
+                <span class="text-slate-400">/</span>
+                <a asp-action="Index" class="text-slate-600 hover:text-secondary">Hạng Phòng</a>
+                <span class="text-slate-400">/</span>
+                <span class="text-on-surface">Chi tiết</span>
+            </div>
+            <h1 class="text-2xl font-bold font-serif text-on-surface">Hạng Phòng: @Model.Name</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Thông tin chi tiết thông số, biểu phí và các phòng trực thuộc</p>
         </div>
-        <div class="room-type-details-actions">
-            <a asp-controller="RoomTypes"
-               asp-action="Index"
-               class="room-type-details-button back">
-                <i class="bi bi-arrow-left"></i>
-                Quay lại
+        <div class="flex items-center gap-2">
+            <a asp-action="Index"
+               class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-all">
+                <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                <span>Quay lại</span>
             </a>
-            <a asp-controller="RoomTypes"
-               asp-action="Edit"
-               asp-route-id="@Model.Id"
-               class="room-type-details-button edit">
-                <i class="bi bi-pencil-square"></i>
-                Chỉnh sửa
-            </a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id"
+                   class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-secondary text-white hover:bg-secondary/90 text-xs font-bold shadow-sm transition-all">
+                    <span class="material-symbols-outlined text-[16px]">edit</span>
+                    <span>Chỉnh sửa</span>
+                </a>
+            }
         </div>
     </div>
-    <div class="room-type-details-card">
-        <div class="room-type-details-card-header">
-            <span class="room-type-details-icon">
-                <i class="bi bi-house-gear-fill"></i>
-            </span>
-            <div>
-                <h3>@Model.Name</h3>
-                <p>
-                    Thông tin chi tiết, giá và danh sách phòng thuộc loại này.
-                </p>
+
+    <!-- Main Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+        <!-- 3 Cột Thống Kê Chính -->
+        <div class="p-6 sm:p-8 bg-slate-50/50 border-b border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+                <div class="flex items-center gap-2 text-xs font-bold text-secondary uppercase mb-1">
+                    <span class="material-symbols-outlined text-[18px]">payments</span>
+                    <span>Giá Cơ Bản</span>
+                </div>
+                <div class="text-xl font-bold text-secondary">@Model.BasePrice.ToString("N0") <small class="text-xs text-slate-400">VNĐ/đêm</small></div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+                <div class="flex items-center gap-2 text-xs font-bold text-purple-700 uppercase mb-1">
+                    <span class="material-symbols-outlined text-[18px]">group</span>
+                    <span>Sức Chứa Tối Đa</span>
+                </div>
+                <div class="text-xl font-bold text-on-surface">@Model.MaxOccupancy người</div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+                <div class="flex items-center gap-2 text-xs font-bold text-emerald-700 uppercase mb-1">
+                    <span class="material-symbols-outlined text-[18px]">aspect_ratio</span>
+                    <span>Diện Tích Chuẩn</span>
+                </div>
+                <div class="text-xl font-bold text-on-surface">@Model.Area m²</div>
             </div>
         </div>
-        <div class="room-type-details-body">
-            <div class="room-type-summary-grid">
-                <div class="room-type-summary-item">
-                    <span class="room-type-summary-icon">
-                        <i class="bi bi-cash-stack"></i>
-                    </span>
-                    <span>Giá cơ bản</span>
-                    <strong>@Model.BasePrice.ToString("N0") VNĐ</strong>
-                </div>
-                <div class="room-type-summary-item">
-                    <span class="room-type-summary-icon">
-                        <i class="bi bi-people-fill"></i>
-                    </span>
-                    <span>Sức chứa tối đa</span>
-                    <strong>@Model.MaxOccupancy người</strong>
-                </div>
-                <div class="room-type-summary-item">
-                    <span class="room-type-summary-icon">
-                        <i class="bi bi-arrows-angle-expand"></i>
-                    </span>
-                    <span>Diện tích</span>
-                    <strong>@Model.Area m²</strong>
-                </div>
-            </div>
-            <div class="room-type-section">
-                <div class="room-type-section-title">
-                    Thông tin bổ sung
-                </div>
-                <div class="room-type-meta">
-                    <div class="room-type-meta-item">
-                        <i class="bi bi-moon-stars"></i>
-                        <div>
-                            <span>Loại giường</span>
-                            <strong>
-                                @(string.IsNullOrWhiteSpace(Model.BedType)
-                                                                ? "Chưa cập nhật"
-                                                                : Model.BedType)
-                            </strong>
-                        </div>
+
+        <div class="p-6 sm:p-8 space-y-6">
+            <!-- Thông số kỹ thuật -->
+            <div>
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Thông Số Kỹ Thuật</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Loại giường:</span>
+                        <span class="font-bold text-on-surface">@(string.IsNullOrWhiteSpace(Model.BedType) ? "Chưa cập nhật" : Model.BedType)</span>
                     </div>
-                    <div class="room-type-meta-item">
-                        <i class="bi bi-door-open"></i>
-                        <div>
-                            <span>Số phòng đang sử dụng</span>
-                            <strong>@activeRooms.Count phòng</strong>
-                        </div>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Tổng buồng phòng thuộc hạng:</span>
+                        <span class="font-bold text-blue-700">@activeRooms.Count phòng</span>
                     </div>
-                    <div class="room-type-meta-item">
-                        <i class="bi bi-calendar-plus"></i>
-                        <div>
-                            <span>Ngày tạo</span>
-                            <strong>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</strong>
-                        </div>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Ngày khởi tạo:</span>
+                        <span class="font-semibold text-slate-700">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
                     </div>
-                    <div class="room-type-meta-item">
-                        <i class="bi bi-clock-history"></i>
-                        <div>
-                            <span>Cập nhật gần nhất</span>
-                            <strong>
-                                @(Model.UpdatedAt.HasValue
-                                                                ? Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")
-                                                                : "Chưa cập nhật")
-                            </strong>
-                        </div>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Cập nhật lần cuối:</span>
+                        <span class="font-semibold text-slate-700">@(Model.UpdatedAt.HasValue ? Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm") : "—")</span>
                     </div>
                 </div>
             </div>
-            <div class="room-type-section">
-                <div class="room-type-section-title">
-                    Mô tả
-                </div>
-                <div class="room-type-description">
-                    @(string.IsNullOrWhiteSpace(Model.Description)
-                                        ? "Chưa có mô tả cho loại phòng này."
-                                        : Model.Description)
+
+            <!-- Mô tả -->
+            <div>
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Mô Tả Hạng Phòng</h2>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 leading-relaxed">
+                    @(string.IsNullOrWhiteSpace(Model.Description) ? "Chưa có mô tả chi tiết cho loại phòng này." : Model.Description)
                 </div>
             </div>
-            <div class="room-type-section">
-                <div class="room-type-section-title">
-                    Danh sách phòng
-                </div>
+
+            <!-- Danh sách phòng thuộc loại -->
+            <div>
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Danh Sách Buồng Phòng Trực Thuộc (@activeRooms.Count)</h2>
                 @if (activeRooms.Any())
                 {
-                    <div class="room-type-room-list">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
                         @foreach (var room in activeRooms)
                         {
-                            <a asp-controller="Rooms"
-                               asp-action="Details"
-                               asp-route-id="@room.Id"
-                               class="room-type-room-badge">
-                                <i class="bi bi-door-open"></i>
-                                Phòng @room.RoomNumber
+                            <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id"
+                               class="p-3 rounded-xl border border-slate-200 hover:border-secondary/40 hover:bg-slate-50 transition-all text-center group">
+                                <span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-secondary block mb-1">door_front</span>
+                                <div class="text-xs font-bold text-on-surface">P.@room.RoomNumber</div>
+                                <div class="text-[10px] text-slate-400">Tầng @room.Floor</div>
                             </a>
                         }
                     </div>
                 }
                 else
                 {
-                    <div class="room-type-empty">
-                        <i class="bi bi-door-closed me-2"></i>
-                        Chưa có phòng nào thuộc loại phòng này.
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/60 text-center text-slate-400 text-xs">
+                        <span class="material-symbols-outlined text-3xl mb-1 text-slate-300">meeting_room</span>
+                        <div>Chưa có phòng nào được gán cho loại phòng này</div>
                     </div>
                 }
             </div>

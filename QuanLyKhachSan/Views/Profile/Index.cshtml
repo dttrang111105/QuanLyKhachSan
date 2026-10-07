@@ -1,4 +1,4 @@
-﻿@model QuanLyKhachSan.ViewModels.Profile.ProfileViewModel
+@model QuanLyKhachSan.ViewModels.Profile.ProfileViewModel
 @{
     if (User.IsInRole("Admin"))
     {
@@ -18,165 +18,169 @@
     }
     ViewData["Title"] = "Hồ sơ cá nhân";
 }
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        @TempData["Success"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        @TempData["Error"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
-<div class="container py-4">
-    <div class="mb-4">
+
+<div class="space-y-6">
+    <!-- Top Action / Breadcrumb -->
+    <div class="flex items-center justify-between">
         @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
         {
-            <a asp-controller="Home"
-               asp-action="Dashboard"
-               class="btn btn-outline-dark rounded-pill px-4 py-2">
-                <i class="bi bi-arrow-left me-2"></i>
+            <a asp-controller="Home" asp-action="Dashboard" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+                <span class="material-symbols-outlined text-base">arrow_back</span>
                 Quay về bảng điều khiển
             </a>
         }
         else
         {
-            <a asp-controller="Home"
-               asp-action="Index"
-               class="btn btn-outline-dark rounded-pill px-4 py-2">
-                <i class="bi bi-arrow-left me-2"></i>
+            <a asp-controller="Home" asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+                <span class="material-symbols-outlined text-base">arrow_back</span>
                 Quay về trang chủ
             </a>
         }
+
+        <div class="flex items-center gap-3">
+            <a asp-controller="Profile" asp-action="Edit" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] hover:from-[#b9986b] hover:to-[#634e2f] text-white text-sm font-semibold shadow-md shadow-[#c5a880]/20 transition-all">
+                <span class="material-symbols-outlined text-lg">edit</span>
+                Chỉnh sửa hồ sơ
+            </a>
+            <a asp-controller="Profile" asp-action="ChangePassword" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 text-sm font-semibold transition-colors">
+                <span class="material-symbols-outlined text-lg">lock_reset</span>
+                Đổi mật khẩu
+            </a>
+        </div>
     </div>
-    <div class="card border-0 shadow-lg overflow-hidden">
-        <div class="card-header border-0 text-white p-4"
-             style="background:linear-gradient(135deg,#121212,#3b2d18);">
-            <div class="d-flex align-items-center gap-3">
-                <span class="d-inline-flex align-items-center justify-content-center rounded-3"
-                      style="width:52px;height:52px;background:#c8a96a;color:#111;">
-                    <i class="bi bi-person-vcard fs-4"></i>
-                </span>
-                <div>
-                    <h3 class="mb-1">Hồ sơ cá nhân</h3>
-                    <p class="mb-0 text-white-50">
-                        Xem và quản lý thông tin tài khoản của bạn
-                    </p>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-emerald-600">check_circle</span>
+            <span>@TempData["Success"]</span>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-rose-600">error</span>
+            <span>@TempData["Error"]</span>
+        </div>
+    }
+
+    <!-- Main Card -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <!-- Banner Header -->
+        <div class="bg-gradient-to-r from-[#0b1c30] via-[#131b2e] to-[#20293a] p-8 lg:p-10 text-white relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-10">
+                <span class="material-symbols-outlined text-[200px]">badge</span>
+            </div>
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-6">
+                    <div class="relative">
+                        @if (!string.IsNullOrWhiteSpace(Model.Avatar))
+                        {
+                            <img src="@Model.Avatar" class="w-24 h-24 rounded-2xl object-cover border-2 border-[#c5a880] shadow-lg shadow-black/20" alt="Avatar" />
+                        }
+                        else
+                        {
+                            <img src="https://ui-avatars.com/api/?name=@Uri.EscapeDataString(Model.FullName ?? Model.Username)&size=160&background=c5a880&color=0b1c30&bold=true" class="w-24 h-24 rounded-2xl object-cover border-2 border-[#c5a880] shadow-lg shadow-black/20" alt="Avatar" />
+                        }
+                        <span class="absolute -bottom-2 -right-2 w-6 h-6 rounded-full bg-emerald-500 border-2 border-[#0b1c30] flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white text-[12px] font-bold">check</span>
+                        </span>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <h1 class="font-serif text-2xl lg:text-3xl font-bold tracking-tight text-white">@Model.FullName</h1>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-[#c5a880]/20 text-[#c5a880] border border-[#c5a880]/30 uppercase tracking-wider">
+                                @Model.Role
+                            </span>
+                        </div>
+                        <p class="text-slate-400 text-sm mt-1">@@@Model.Username • Thành viên từ @Model.CreatedAt.ToString("MM/yyyy")</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="card-body p-4 p-lg-5">
-            <div class="row g-5 align-items-start">
-                <div class="col-lg-4 text-center">
-                    @if (!string.IsNullOrWhiteSpace(Model.Avatar))
-                    {
-                        <img src="@Model.Avatar"
-                             width="190"
-                             height="190"
-                             class="rounded-circle img-thumbnail shadow-sm"
-                             style="object-fit:cover;"
-                             alt="Ảnh đại diện" />
-                    }
-                    else
-                    {
-                        <img src="https://ui-avatars.com/api/?name=@Uri.EscapeDataString(Model.FullName ?? Model.Username)&size=190&background=c8a96a&color=111111"
-                             width="190"
-                             height="190"
-                             class="rounded-circle img-thumbnail shadow-sm"
-                             style="object-fit:cover;"
-                             alt="Ảnh đại diện" />
-                    }
-                    <h4 class="mt-3 mb-1">@Model.FullName</h4>
-                    <p class="text-muted mb-2">@@@Model.Username</p>
-                    <span class="badge rounded-pill px-3 py-2"
-                          style="background:#c8a96a;color:#111;">
-                        @Model.Role
-                    </span>
-                </div>
-                <div class="col-lg-8">
-                    <div class="table-responsive">
-                        <table class="table table-borderless align-middle mb-4">
-                            <tbody>
-                                <tr>
-                                    <th class="text-muted py-3" style="width:210px;">
-                                        <i class="bi bi-person me-2"></i>
-                                        Tên đăng nhập
-                                    </th>
-                                    <td class="fw-semibold">@Model.Username</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-muted py-3">
-                                        <i class="bi bi-person-badge me-2"></i>
-                                        Họ tên
-                                    </th>
-                                    <td class="fw-semibold">@Model.FullName</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-muted py-3">
-                                        <i class="bi bi-envelope me-2"></i>
-                                        Email
-                                    </th>
-                                    <td>@Model.Email</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-muted py-3">
-                                        <i class="bi bi-telephone me-2"></i>
-                                        Số điện thoại
-                                    </th>
-                                    <td>@Model.Phone</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-muted py-3">
-                                        <i class="bi bi-geo-alt me-2"></i>
-                                        Địa chỉ
-                                    </th>
-                                    <td>@Model.Address</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-muted py-3">
-                                        <i class="bi bi-calendar3 me-2"></i>
-                                        Ngày sinh
-                                    </th>
-                                    <td>@Model.DateOfBirth?.ToString("dd/MM/yyyy")</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-muted py-3">
-                                        <i class="bi bi-shield-check me-2"></i>
-                                        Vai trò
-                                    </th>
-                                    <td>
-                                        <span class="badge bg-success">@Model.Role</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="text-muted py-3">
-                                        <i class="bi bi-clock-history me-2"></i>
-                                        Ngày tạo tài khoản
-                                    </th>
-                                    <td>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+        <!-- Information Detail Grid -->
+        <div class="p-8 lg:p-10">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-base">person</span>
+                Thông tin tài khoản & cá nhân
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Username -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-slate-200/70 text-slate-700 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">account_circle</span>
                     </div>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a asp-controller="Profile"
-                           asp-action="Edit"
-                           class="btn btn-warning px-4">
-                            <i class="bi bi-pencil-square me-2"></i>
-                            Chỉnh sửa thông tin
-                        </a>
-                        <a asp-controller="Profile"
-                           asp-action="ChangePassword"
-                           class="btn btn-danger px-4">
-                            <i class="bi bi-key me-2"></i>
-                            Đổi mật khẩu
-                        </a>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Tên đăng nhập</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@Model.Username</span>
+                    </div>
+                </div>
+
+                <!-- FullName -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">badge</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Họ và tên</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@Model.FullName</span>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">mail</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Email liên hệ</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block truncate max-w-[200px]" title="@Model.Email">@Model.Email</span>
+                    </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">call</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Số điện thoại</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@(string.IsNullOrWhiteSpace(Model.Phone) ? "Chưa cập nhật" : Model.Phone)</span>
+                    </div>
+                </div>
+
+                <!-- Date of birth -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">cake</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ngày sinh</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@(Model.DateOfBirth?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</span>
+                    </div>
+                </div>
+
+                <!-- Created At -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-slate-200/70 text-slate-700 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">history</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ngày tham gia</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                </div>
+
+                <!-- Address (Full Width in row) -->
+                <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-100 flex items-start gap-4 md:col-span-2 lg:col-span-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">location_on</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Địa chỉ thường trú</span>
+                        <span class="text-sm font-bold text-slate-900 mt-0.5 block">@(string.IsNullOrWhiteSpace(Model.Address) ? "Chưa cập nhật địa chỉ" : Model.Address)</span>
                     </div>
                 </div>
             </div>

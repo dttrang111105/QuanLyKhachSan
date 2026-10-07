@@ -1,32 +1,45 @@
 @model QuanLyKhachSan.Models.BookingDetail
 @{
-    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Thêm phòng vào Booking";
 }
-<h1>Create</h1>
-<h4>BookingDetail</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="BookingId" class="control-label"></label>
-                <select asp-for="BookingId" class="form-control" asp-items="ViewBag.BookingId">
-                </select>
-                <span asp-validation-for="BookingId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RoomId" class="control-label"></label>
-                <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId">
-                </select>
-                <span asp-validation-for="RoomId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+<div class="max-w-2xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Quay lại danh sách
+        </a>
     </div>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
+
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-[#0b1c30] to-[#1e293b] p-8 text-white relative overflow-hidden">
+            <h1 class="font-serif text-2xl font-bold">Thêm phòng vào Booking</h1>
+            <p class="text-slate-300 text-sm mt-1">Chọn mã đặt phòng và số phòng tương ứng</p>
+        </div>
+
+        <div class="p-8">
+            <form asp-action="Create" method="post" class="space-y-6">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="All" class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm"></div>
+
+                <div>
+                    <label asp-for="BookingId" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Mã Booking</label>
+                    <select asp-for="BookingId" asp-items="ViewBag.BookingId" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 font-medium"></select>
+                    <span asp-validation-for="BookingId" class="text-xs text-rose-500 mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="RoomId" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Phòng</label>
+                    <select asp-for="RoomId" asp-items="ViewBag.RoomId" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 font-medium"></select>
+                    <span asp-validation-for="RoomId" class="text-xs text-rose-500 mt-1 block"></span>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+                    <a asp-action="Index" class="px-6 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">Hủy</a>
+                    <button type="submit" class="px-7 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] hover:from-[#b9986b] hover:to-[#634e2f] text-white text-sm font-semibold shadow-lg shadow-[#c5a880]/20 transition-all">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

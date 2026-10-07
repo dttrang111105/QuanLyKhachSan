@@ -4,23 +4,18 @@
 
 @{
     bool isReceptionist = User.IsInRole("Receptionist");
-
     Layout = isReceptionist
         ? "~/Views/Shared/_ReceptionistLayout.cshtml"
         : "~/Views/Shared/_AdminLayout.cshtml";
 
-    ViewData["Title"] = "Quản lý hóa đơn";
-
+    ViewData["Title"] = "Quản lý hóa đơn & Quyết toán";
     List<Invoice> invoices = Model?.ToList() ?? new List<Invoice>();
 
     decimal PaidAmount(Invoice invoice)
     {
         return invoice.Payments?
-            .Where(payment =>
-                !payment.IsDeleted &&
-                payment.PaymentStatus == PaymentStatus.Paid)
-            .Sum(payment => payment.Amount)
-            ?? 0;
+            .Where(payment => !payment.IsDeleted && payment.PaymentStatus == PaymentStatus.Paid)
+            .Sum(payment => payment.Amount) ?? 0;
     }
     decimal DepositAmount(Invoice invoice)
     {
@@ -28,28 +23,18 @@
     }
     decimal NeedToPay(Invoice invoice)
     {
-        return Math.Max(
-            0m,
-            invoice.TotalAmount - DepositAmount(invoice));
+        return Math.Max(0m, invoice.TotalAmount - DepositAmount(invoice));
     }
     decimal RemainingAmount(Invoice invoice)
     {
-        return Math.Max(
-            0m,
-            NeedToPay(invoice) - PaidAmount(invoice));
+        return Math.Max(0m, NeedToPay(invoice) - PaidAmount(invoice));
     }
     string InvoiceStatus(Invoice invoice)
     {
         decimal paid = PaidAmount(invoice);
         decimal remaining = RemainingAmount(invoice);
-        if (remaining <= 0)
-        {
-            return "paid";
-        }
-        if (paid > 0)
-        {
-            return "partial";
-        }
+        if (remaining <= 0) return "paid";
+        if (paid > 0) return "partial";
         return "unpaid";
     }
     string InvoiceStatusText(Invoice invoice)
@@ -61,819 +46,310 @@
             _ => "Chưa thanh toán"
         };
     }
-    string InvoiceStatusClass(Invoice invoice)
-    {
-        return InvoiceStatus(invoice) switch
-        {
-            "paid" => "invoice-status-paid",
-            "partial" => "invoice-status-partial",
-            _ => "invoice-status-unpaid"
-        };
-    }
-    decimal totalInvoiceAmount =
-        invoices.Sum(invoice => invoice.TotalAmount);
-    decimal totalNeedToPay =
-        invoices.Sum(invoice => NeedToPay(invoice));
-    decimal totalPaidAmount =
-        invoices.Sum(invoice => PaidAmount(invoice));
-    decimal totalRemaining =
-        invoices.Sum(invoice => RemainingAmount(invoice));
-    int paidInvoiceCount =
-        invoices.Count(invoice =>
-            RemainingAmount(invoice) <= 0);
-    int unpaidInvoiceCount =
-        invoices.Count(invoice =>
-            RemainingAmount(invoice) > 0);
+
+    decimal totalInvoiceAmount = invoices.Sum(invoice => invoice.TotalAmount);
+    decimal totalPaidAmount = invoices.Sum(invoice => PaidAmount(invoice));
+    decimal totalRemaining = invoices.Sum(invoice => RemainingAmount(invoice));
+    int paidInvoiceCount = invoices.Count(invoice => RemainingAmount(invoice) <= 0);
+    int unpaidInvoiceCount = invoices.Count(invoice => RemainingAmount(invoice) > 0);
 }
-<!-- TIÊU ĐỀ -->
-<section class="admin-dashboard-heading">
-    <div>
-        <span class="admin-dashboard-kicker">
-            Tài chính khách sạn
-        </span>
-        <h2>
-            Quản lý hóa đơn
-        </h2>
-        <p>
-            Theo dõi tiền phòng, dịch vụ, tiền cọc,
-            trạng thái thanh toán và các giao dịch liên quan.
-        </p>
-    </div>
-    <div class="admin-dashboard-actions">
-        <a asp-controller="Payments"
-           asp-action="Index"
-           class="admin-outline-action">
-            <i class="bi bi-credit-card"></i>
-            Lịch sử thanh toán
-        </a>
-        <a asp-controller="Invoices"
-           asp-action="Create"
-           class="admin-primary-action">
-            <i class="bi bi-plus-lg"></i>
-            Lập hóa đơn
-        </a>
-    </div>
-</section>
-<!-- THÔNG BÁO -->
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show"
-         role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        @TempData["Success"]
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Đóng">
-        </button>
-    </div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show"
-         role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        @TempData["Error"]
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Đóng">
-        </button>
-    </div>
-}
-<!-- THẺ THỐNG KÊ -->
-<div class="row g-4 mb-4">
-    <!-- Tổng hóa đơn -->
-    <div class="col-xl-3 col-md-6">
-        <div class="invoice-stat-card">
-            <div class="invoice-stat-top">
-                <span class="invoice-stat-icon invoice-icon-blue">
-                    <i class="bi bi-receipt-cutoff"></i>
-                </span>
-                <span class="invoice-stat-tag">
-                    Tất cả
-                </span>
-            </div>
-            <span class="invoice-stat-title">
-                Tổng số hóa đơn
-            </span>
-            <strong class="invoice-stat-value">
-                @invoices.Count
-            </strong>
-            <small>
-                Hóa đơn trong hệ thống
-            </small>
-        </div>
-    </div>
-    <!-- Tổng giá trị -->
-    <div class="col-xl-3 col-md-6">
-        <div class="invoice-stat-card">
-            <div class="invoice-stat-top">
-                <span class="invoice-stat-icon invoice-icon-gold">
-                    <i class="bi bi-cash-stack"></i>
-                </span>
-                <span class="invoice-stat-tag">
-                    Giá trị
-                </span>
-            </div>
-            <span class="invoice-stat-title">
-                Tổng tiền hóa đơn
-            </span>
-            <strong class="invoice-stat-value invoice-stat-money">
-                @totalInvoiceAmount.ToString("N0")
-                <small>VNĐ</small>
-            </strong>
-            <small>
-                Bao gồm tiền phòng và dịch vụ
-            </small>
-        </div>
-    </div>
-    <!-- Đã thu -->
-    <div class="col-xl-3 col-md-6">
-        <div class="invoice-stat-card">
-            <div class="invoice-stat-top">
-                <span class="invoice-stat-icon invoice-icon-green">
-                    <i class="bi bi-check-circle"></i>
-                </span>
-                <span class="invoice-stat-tag">
-                    @paidInvoiceCount hóa đơn
-                </span>
-            </div>
-            <span class="invoice-stat-title">
-                Số tiền đã thu
-            </span>
-            <strong class="invoice-stat-value invoice-stat-money">
-                @totalPaidAmount.ToString("N0")
-                <small>VNĐ</small>
-            </strong>
-            <small>
-                Không bao gồm tiền cọc đã trừ
-            </small>
-        </div>
-    </div>
-    <!-- Còn phải thu -->
-    <div class="col-xl-3 col-md-6">
-        <div class="invoice-stat-card">
-            <div class="invoice-stat-top">
-                <span class="invoice-stat-icon invoice-icon-red">
-                    <i class="bi bi-hourglass-split"></i>
-                </span>
-                <span class="invoice-stat-tag">
-                    @unpaidInvoiceCount chưa đủ
-                </span>
-            </div>
-            <span class="invoice-stat-title">
-                Còn phải thu
-            </span>
-            <strong class="invoice-stat-value invoice-stat-money">
-                @totalRemaining.ToString("N0")
-                <small>VNĐ</small>
-            </strong>
-            <small>
-                Sau khi trừ cọc và thanh toán
-            </small>
-        </div>
-    </div>
-</div>
-<!-- DANH SÁCH HÓA ĐƠN -->
-<div class="admin-panel">
-    <div class="invoice-panel-header">
+
+<div class="space-y-6">
+    <!-- Header: Title & Actions -->
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <span class="admin-dashboard-kicker">
-                Danh sách dữ liệu
-            </span>
-            <h3>
-                Hóa đơn khách sạn
-            </h3>
-            <p>
-                Có @invoices.Count hóa đơn được ghi nhận.
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-[16px]">receipt_long</span>
+                <span>Tài chính &amp; Kế toán</span>
+            </div>
+            <h1 class="font-serif text-2xl sm:text-3xl font-bold text-on-surface mt-1">Quản Lý Hóa Đơn &amp; Quyết Toán</h1>
+            <p class="text-xs text-on-surface-variant mt-1">
+                Theo dõi tiền phòng, dịch vụ, tiền cọc và luồng thanh toán thời gian thực của resort.
             </p>
         </div>
-        <div class="invoice-filter-area">
-            <div class="invoice-search-box">
-                <i class="bi bi-search"></i>
-                <input type="text"
-                       id="invoiceSearch"
-                       placeholder="Tìm mã hóa đơn, Booking, khách hàng..." />
+        <div class="flex items-center gap-2">
+            <a asp-controller="Payments" asp-action="Index"
+               class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low text-xs font-bold shadow-sm transition-all no-underline">
+                <span class="material-symbols-outlined text-[18px] text-secondary">payments</span>
+                <span>Lịch Sử Giao Dịch</span>
+            </a>
+            <a asp-controller="Invoices" asp-action="Create"
+               class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary text-white hover:bg-on-background text-xs font-bold shadow-sm transition-all no-underline">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                <span>+ Lập Hóa Đơn Mới</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- KPI Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Card 1: Tổng số hóa đơn -->
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-2xl border border-outline-variant/60 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Tổng hóa đơn</span>
+                <div class="text-2xl font-bold text-on-surface mt-1">@invoices.Count</div>
+                <span class="text-[11px] text-on-surface-variant font-medium">Toàn bộ hồ sơ phát hành</span>
             </div>
-            <select id="invoiceStatusFilter"
-                    class="form-select">
-                <option value="">
-                    Tất cả trạng thái
-                </option>
-                <option value="paid">
-                    Đã thanh toán
-                </option>
-                <option value="partial">
-                    Thanh toán một phần
-                </option>
-                <option value="unpaid">
-                    Chưa thanh toán
-                </option>
-            </select>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">receipt</span>
+            </div>
+        </div>
+
+        <!-- Card 2: Tổng giá trị -->
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-2xl border border-outline-variant/60 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Tổng giá trị</span>
+                <div class="text-xl font-bold text-secondary mt-1">@totalInvoiceAmount.ToString("N0") <small class="text-xs text-on-surface-variant font-normal">đ</small></div>
+                <span class="text-[11px] text-on-surface-variant font-medium">Gồm tiền phòng &amp; dịch vụ</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-secondary-container text-secondary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+            </div>
+        </div>
+
+        <!-- Card 3: Đã thu -->
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-2xl border border-outline-variant/60 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Đã quyết toán</span>
+                <div class="text-xl font-bold text-emerald-600 mt-1">@totalPaidAmount.ToString("N0") <small class="text-xs text-on-surface-variant font-normal">đ</small></div>
+                <span class="text-[11px] text-emerald-700 font-semibold">@paidInvoiceCount hóa đơn hoàn tất</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">check_circle</span>
+            </div>
+        </div>
+
+        <!-- Card 4: Còn lại -->
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-2xl border border-outline-variant/60 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Còn phải thu</span>
+                <div class="text-xl font-bold text-rose-600 mt-1">@totalRemaining.ToString("N0") <small class="text-xs text-on-surface-variant font-normal">đ</small></div>
+                <span class="text-[11px] text-rose-700 font-semibold">@unpaidInvoiceCount hóa đơn chưa thu</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">pending</span>
+            </div>
         </div>
     </div>
-    @if (invoices.Any())
-    {
-        <div class="table-responsive">
-            <table class="table invoice-table align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th class="ps-4"> Hóa đơn </th>
-                        <th> Booking / Khách hàng </th>
-                        <th> Ngày lập </th>
-                        <th> Tiền phòng </th>
-                        <th> Dịch vụ </th>
-                        <th> Cọc </th>
-                        <th> Tổng tiền </th>
-                        <th> Đã thu </th>
-                        <th> Còn lại </th>
-                        <th> Trạng thái </th>
-                        <th class="text-end pe-4"> Thao tác </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (Invoice invoice in invoices)
-                    {
-                        decimal paidAmount = PaidAmount(invoice);
-                        decimal deposit = DepositAmount(invoice);
-                        decimal remaining = RemainingAmount(invoice);
-                        string customerName = invoice.Booking?.Customer?.FullName ?? "Chưa xác định";
-                        string bookingCode = invoice.Booking?.BookingCode ?? "Chưa xác định";
-                        string searchData = $"{invoice.InvoiceCode} {bookingCode} {customerName}".ToLower();
-                        <tr class="invoice-row"
-                            data-status="@InvoiceStatus(invoice)"
-                            data-search="@searchData">
-                            <!-- Mã hóa đơn -->
-                            <td class="ps-4">
-                                <div class="invoice-code-cell">
-                                    <span class="invoice-code-icon">
-                                        <i class="bi bi-receipt"></i>
-                                    </span>
-                                    <div>
-                                        <strong>  @invoice.InvoiceCode </strong>
-                                        <small> #@invoice.Id </small>
+
+    <!-- Data Table Container -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-sm overflow-hidden">
+        <!-- Table Toolbar -->
+        <div class="p-4 sm:p-5 border-b border-outline-variant/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <span class="text-xs font-bold text-secondary uppercase tracking-wider">Dữ liệu chứng từ</span>
+                <h2 class="text-base font-bold text-on-surface">Danh Sách Hóa Đơn (@invoices.Count)</h2>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="relative">
+                    <input type="text" id="invoiceSearch" placeholder="Tìm mã hóa đơn, booking, khách..."
+                           class="h-9 pl-8 pr-3 bg-surface-container-low border border-outline-variant text-xs rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:border-secondary w-56 sm:w-64 transition-all" />
+                    <span class="material-symbols-outlined text-[16px] text-outline absolute left-2.5 top-1/2 -translate-y-1/2">search</span>
+                </div>
+                <select id="invoiceStatusFilter"
+                        class="h-9 px-3 bg-surface-container-low border border-outline-variant text-xs rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:border-secondary transition-all">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="paid">Đã thanh toán</option>
+                    <option value="partial">Thanh toán một phần</option>
+                    <option value="unpaid">Chưa thanh toán</option>
+                </select>
+            </div>
+        </div>
+
+        @if (invoices.Any())
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-surface-container-low text-on-surface-variant font-semibold uppercase text-[10px] tracking-wider border-b border-outline-variant/40">
+                        <tr>
+                            <th class="py-3 px-4">Mã Hóa Đơn</th>
+                            <th class="py-3 px-4">Booking / Khách</th>
+                            <th class="py-3 px-4">Ngày Lập</th>
+                            <th class="py-3 px-4 text-right">Tiền Phòng</th>
+                            <th class="py-3 px-4 text-right">Dịch Vụ</th>
+                            <th class="py-3 px-4 text-right">Cọc</th>
+                            <th class="py-3 px-4 text-right">Tổng Tiền</th>
+                            <th class="py-3 px-4 text-right">Đã Thu</th>
+                            <th class="py-3 px-4 text-right">Còn Lại</th>
+                            <th class="py-3 px-4 text-center">Trạng Thái</th>
+                            <th class="py-3 px-4 text-right">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant/30 text-on-surface font-medium">
+                        @foreach (Invoice invoice in invoices)
+                        {
+                            decimal paidAmount = PaidAmount(invoice);
+                            decimal deposit = DepositAmount(invoice);
+                            decimal remaining = RemainingAmount(invoice);
+                            string customerName = invoice.Booking?.Customer?.FullName ?? "Chưa xác định";
+                            string bookingCode = invoice.Booking?.BookingCode ?? "Chưa xác định";
+                            string status = InvoiceStatus(invoice);
+                            string searchData = $"{invoice.InvoiceCode} {bookingCode} {customerName}".ToLower();
+
+                            <tr class="hover:bg-surface-container-low/60 transition-colors invoice-row"
+                                data-status="@status" data-search="@searchData">
+                                <!-- Mã hóa đơn -->
+                                <td class="py-3 px-4 font-bold text-on-surface">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-7 h-7 rounded-lg bg-surface-container text-secondary flex items-center justify-center font-bold">
+                                            <span class="material-symbols-outlined text-[16px]">receipt</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-on-surface">@invoice.InvoiceCode</div>
+                                            <div class="text-[10px] text-outline font-normal">#@invoice.Id</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <!-- Booking và khách -->
-                            <td>
-                                <div class="invoice-booking-cell">
-                                    <strong> @bookingCode </strong>
-                                    <small>
-                                        <i class="bi bi-person me-1"></i>
-                                        @customerName
-                                    </small>
-                                </div>
-                            </td>
-                            <!-- Ngày lập -->
-                            <td>
-                                <div class="invoice-date-cell">
-                                    <strong>
-                                        @invoice.InvoiceDate.ToString("dd/MM/yyyy")
-                                    </strong>
-                                    <small>
-                                        @invoice.InvoiceDate.ToString("HH:mm")
-                                    </small>
-                                </div>
-                            </td>
-                            <!-- Tiền phòng -->
-                            <td>
-                                <span class="invoice-money">
-                                    @invoice.RoomAmount.ToString("N0")
-                                    <small>VNĐ</small>
-                                </span>
-                            </td>
-                            <!-- Tiền dịch vụ -->
-                            <td>
-                                <span class="invoice-money">
-                                    @invoice.ServiceAmount.ToString("N0")
-                                    <small>VNĐ</small>
-                                </span>
-                            </td>
-                            <!-- Tiền cọc -->
-                            <td>
-                                <span class="invoice-money invoice-deposit">
-                                    @deposit.ToString("N0")
-                                    <small>VNĐ</small>
-                                </span>
-                            </td>
-                            <!-- Tổng tiền -->
-                            <td>
-                                <strong class="invoice-total">
-                                    @invoice.TotalAmount.ToString("N0")
-                                    <small>VNĐ</small>
-                                </strong>
-                                <small class="invoice-tax-info">
-                                    Giảm @invoice.DiscountPercent%
-                                    · VAT @invoice.TaxPercent%
-                                </small>
-                            </td>
-                            <!-- Đã thu -->
-                            <td>
-                                <span class="invoice-money invoice-paid">
-                                    @paidAmount.ToString("N0")
-                                    <small>VNĐ</small>
-                                </span>
-                            </td>
-                            <!-- Còn lại -->
-                            <td>
-                                <span class="invoice-money
-                                    @(remaining > 0 ? "invoice-remaining" : "invoice-complete")">
-                                    @remaining.ToString("N0")
-                                    <small>VNĐ</small>
-                                </span>
-                            </td>
-                            <!-- Trạng thái -->
-                            <td>
-                                <span class="invoice-status
-                                    @InvoiceStatusClass(invoice)">
-                                    @if (InvoiceStatus(invoice) == "paid")
+                                </td>
+
+                                <!-- Booking & Khách -->
+                                <td class="py-3 px-4">
+                                    <div class="font-semibold text-on-surface">@bookingCode</div>
+                                    <div class="text-[10px] text-on-surface-variant flex items-center gap-1 font-normal">
+                                        <span class="material-symbols-outlined text-[12px]">person</span>
+                                        <span>@customerName</span>
+                                    </div>
+                                </td>
+
+                                <!-- Ngày lập -->
+                                <td class="py-3 px-4">
+                                    <div>@invoice.InvoiceDate.ToString("dd/MM/yyyy")</div>
+                                    <div class="text-[10px] text-outline font-normal">@invoice.InvoiceDate.ToString("HH:mm")</div>
+                                </td>
+
+                                <!-- Tiền phòng -->
+                                <td class="py-3 px-4 text-right">
+                                    <span>@invoice.RoomAmount.ToString("N0")</span>
+                                    <span class="text-[10px] text-outline">đ</span>
+                                </td>
+
+                                <!-- Dịch vụ -->
+                                <td class="py-3 px-4 text-right">
+                                    <span>@invoice.ServiceAmount.ToString("N0")</span>
+                                    <span class="text-[10px] text-outline">đ</span>
+                                </td>
+
+                                <!-- Cọc -->
+                                <td class="py-3 px-4 text-right text-amber-700">
+                                    <span>@deposit.ToString("N0")</span>
+                                    <span class="text-[10px] text-outline">đ</span>
+                                </td>
+
+                                <!-- Tổng tiền -->
+                                <td class="py-3 px-4 text-right font-bold text-on-surface">
+                                    <div>@invoice.TotalAmount.ToString("N0") <span class="text-[10px] text-outline font-normal">đ</span></div>
+                                    <div class="text-[9px] text-outline font-normal">VAT @invoice.TaxPercent% • Giảm @invoice.DiscountPercent%</div>
+                                </td>
+
+                                <!-- Đã thu -->
+                                <td class="py-3 px-4 text-right font-semibold text-emerald-700">
+                                    <span>@paidAmount.ToString("N0")</span>
+                                    <span class="text-[10px] text-outline">đ</span>
+                                </td>
+
+                                <!-- Còn lại -->
+                                <td class="py-3 px-4 text-right font-bold @(remaining > 0 ? "text-rose-600" : "text-emerald-600")">
+                                    <span>@remaining.ToString("N0")</span>
+                                    <span class="text-[10px] text-outline">đ</span>
+                                </td>
+
+                                <!-- Trạng thái -->
+                                <td class="py-3 px-4 text-center">
+                                    @if (status == "paid")
                                     {
-                                        <i class="bi bi-check-circle-fill"></i>
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Đã thanh toán
+                                        </span>
                                     }
-                                    else if (InvoiceStatus(invoice) == "partial")
+                                    else if (status == "partial")
                                     {
-                                        <i class="bi bi-pie-chart-fill"></i>
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Thu một phần
+                                        </span>
                                     }
                                     else
                                     {
-                                        <i class="bi bi-clock-fill"></i>
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Chưa thanh toán
+                                        </span>
                                     }
-                                    @InvoiceStatusText(invoice)
-                                </span>
-                            </td>
-                            <!-- Thao tác -->
-                            <td class="text-end text-nowrap pe-4">
-                                <a asp-controller="Invoices"
-                                   asp-action="Details"
-                                   asp-route-id="@invoice.Id"
-                                   class="invoice-action-button
-                                    invoice-action-view"
-                                   title="Xem chi tiết">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a asp-controller="Invoices"
-                                   asp-action="ExportPdf"
-                                   asp-route-id="@invoice.Id"
-                                   class="invoice-action-button
-                                    invoice-action-pdf"
-                                   title="Tải PDF">
-                                    <i class="bi bi-file-earmark-pdf"></i>
-                                </a>
-                                <a asp-controller="Invoices"
-                                   asp-action="Edit"
-                                   asp-route-id="@invoice.Id"
-                                   class="invoice-action-button
-                                    invoice-action-edit"
-                                   title="Chỉnh sửa">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                @if (remaining > 0)
-                                {
-                                    <a asp-controller="Payments"
-                                       asp-action="Create"
-                                       asp-route-invoiceId="@invoice.Id"
-                                       class="invoice-action-button
-                                        invoice-action-pay"
-                                       title="Thanh toán">
-                                        <i class="bi bi-credit-card"></i>
-                                    </a>
-                                }
-                                @if (isReceptionist)
-                                {
-                                    <a asp-controller="Invoices"
-                                       asp-action="Delete"
-                                       asp-route-id="@invoice.Id"
-                                       class="invoice-action-button invoice-action-delete"
-                                       title="Xóa hóa đơn">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div id="invoiceFilterEmpty" class="invoice-empty-state d-none">
-            <i class="bi bi-search"></i>
-            <h4> Không tìm thấy hóa đơn </h4>
-            <p> Hãy thử từ khóa hoặc trạng thái khác. </p>
-        </div>
-    }
-    else
-    {
-        <div class="invoice-empty-state">
-            <i class="bi bi-receipt"></i>
-            <h4> Chưa có hóa đơn </h4>
-            <p>
-                Hóa đơn sẽ được tạo sau khi khách hàng
-                hoàn tất quá trình trả phòng.
-            </p>
-            <a asp-controller="Invoices" asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-1"></i>
-                Lập hóa đơn đầu tiên
-            </a>
-        </div>
-    }
-</div>
-@section Styles
-{
-    <style>
-        .invoice-stat-card {
-            height: 100%;
-            padding: 22px;
-            border: 1px solid #e8e9ee;
-            border-radius: 18px;
-            background: #ffffff;
-            box-shadow: 0 18px 45px rgba(34, 38, 51, 0.07);
-        }
-        .invoice-stat-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 18px;
-        }
-        .invoice-stat-icon {
-            width: 48px;
-            height: 48px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 14px;
-            font-size: 21px;
-        }
-        .invoice-icon-blue {
-            background: #eaf0ff;
-            color: #4f6fd8;
-        }
-        .invoice-icon-gold {
-            background: #f4ead7;
-            color: #8f692f;
-        }
-        .invoice-icon-green {
-            background: #e4f7ef;
-            color: #27875e;
-        }
-        .invoice-icon-red {
-            background: #fde9eb;
-            color: #cf535d;
-        }
-        .invoice-stat-tag {
-            padding: 5px 9px;
-            border-radius: 20px;
-            background: #f3f4f7;
-            color: #838897;
-            font-size: 10px;
-            font-weight: 700;
-        }
-        .invoice-stat-title {
-            display: block;
-            color: #838897;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .invoice-stat-value {
-            display: block;
-            margin: 5px 0 13px;
-            color: #242834;
-            font-size: 34px;
-            line-height: 1.15;
-        }
-        .invoice-stat-money {
-            font-size: 24px;
-        }
-        .invoice-stat-value small {
-            color: #838897;
-            font-size: 10px;
-        }
-        .invoice-stat-card > small {
-            color: #8b909e;
-            font-size: 11px;
-        }
-        .invoice-panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 22px;
-            border-bottom: 1px solid #e8e9ee;
-        }
-            .invoice-panel-header h3 {
-                margin: 3px 0;
-                font-family: "Playfair Display", serif;
-                font-size: 21px;
-            }
-            .invoice-panel-header p {
-                margin: 0;
-                color: #838897;
-                font-size: 12px;
-            }
-        .invoice-filter-area {
-            display: flex;
-            gap: 9px;
-        }
-            .invoice-filter-area .form-select {
-                width: 190px;
-                min-height: 42px;
-                border-color: #e1e3e9;
-                border-radius: 11px;
-                font-size: 12px;
-            }
-        .invoice-search-box {
-            position: relative;
-        }
-            .invoice-search-box i {
-                position: absolute;
-                top: 50%;
-                left: 13px;
-                color: #999eaa;
-                transform: translateY(-50%);
-            }
-            .invoice-search-box input {
-                width: 280px;
-                min-height: 42px;
-                padding: 9px 13px 9px 38px;
-                border: 1px solid #e1e3e9;
-                border-radius: 11px;
-                outline: none;
-                font-size: 12px;
-            }
-                .invoice-search-box input:focus,
-                .invoice-filter-area .form-select:focus {
-                    border-color: #b58a42;
-                    box-shadow: 0 0 0 3px rgba(181, 138, 66, 0.12);
-                }
-        .invoice-table thead th {
-            padding: 14px 12px;
-            border-bottom: 1px solid #e8e9ee;
-            background: #fafafb;
-            color: #818795;
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-        .invoice-table tbody td {
-            padding: 15px 12px;
-            border-bottom: 1px solid #eff0f3;
-            color: #555b68;
-            font-size: 11px;
-        }
-        .invoice-table tbody tr:hover {
-            background: #fcfbf9;
-        }
-        .invoice-code-cell {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-        .invoice-code-icon {
-            width: 38px;
-            height: 38px;
-            flex: 0 0 38px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 11px;
-            background: #f4ead7;
-            color: #8f692f;
-        }
-        .invoice-code-cell div,
-        .invoice-booking-cell,
-        .invoice-date-cell {
-            display: flex;
-            flex-direction: column;
-        }
-            .invoice-code-cell strong,
-            .invoice-booking-cell strong,
-            .invoice-date-cell strong {
-                color: #343944;
-                font-size: 11px;
-            }
-            .invoice-code-cell small,
-            .invoice-booking-cell small,
-            .invoice-date-cell small {
-                color: #9297a3;
-                font-size: 9px;
-            }
-        .invoice-money,
-        .invoice-total {
-            display: block;
-            color: #3d4350;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-            .invoice-money small,
-            .invoice-total small {
-                color: #9499a5;
-                font-size: 8px;
-            }
-        .invoice-total {
-            color: #222733;
-        }
-        .invoice-tax-info {
-            display: block;
-            margin-top: 2px;
-            color: #999eaa;
-            font-size: 8px;
-            white-space: nowrap;
-        }
-        .invoice-deposit {
-            color: #936d2e;
-        }
-        .invoice-paid,
-        .invoice-complete {
-            color: #27875e;
-        }
-        .invoice-remaining {
-            color: #cf535d;
-        }
-        .invoice-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 6px 9px;
-            border-radius: 20px;
-            font-size: 9px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .invoice-status-paid {
-            background: #e3f6ec;
-            color: #258459;
-        }
-        .invoice-status-partial {
-            background: #eaf0ff;
-            color: #4f6fd8;
-        }
-        .invoice-status-unpaid {
-            background: #fff1d9;
-            color: #b87610;
-        }
-        .invoice-action-button {
-            width: 33px;
-            height: 33px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 2px;
-            border: 1px solid #e1e3e8;
-            border-radius: 9px;
-            transition: 0.2s ease;
-        }
-        .invoice-action-view {
-            color: #4f6fd8;
-        }
-        .invoice-action-pdf {
-            color: #cf535d;
-        }
-        .invoice-action-edit {
-            color: #b58025;
-        }
-        .invoice-action-pay {
-            color: #27875e;
-        }
-        .invoice-action-delete {
-            color: #cf535d;
-        }
-        .invoice-action-button:hover {
-            background: #f4f5f8;
-            transform: translateY(-2px);
-        }
-        .invoice-action-view:hover {
-            border-color: #4f6fd8;
-            background: #eaf0ff;
-        }
-        .invoice-action-pdf:hover,
-        .invoice-action-delete:hover {
-            border-color: #cf535d;
-            background: #fde9eb;
-        }
-        .invoice-action-edit:hover {
-            border-color: #d49a36;
-            background: #fff3df;
-        }
-        .invoice-action-pay:hover {
-            border-color: #27875e;
-            background: #e4f7ef;
-        }
-        .invoice-empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 70px 20px;
-            color: #858b98;
-            text-align: center;
-        }
-            .invoice-empty-state i {
-                margin-bottom: 12px;
-                color: #c1c5ce;
-                font-size: 48px;
-            }
-            .invoice-empty-state h4 {
-                color: #454b57;
-            }
-        @@media (max-width: 1199.98px) {
-            .invoice-panel-header {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-            .invoice-filter-area {
-                width: 100%;
-            }
-            .invoice-search-box {
-                flex: 1;
-            }
-                .invoice-search-box input {
-                    width: 100%;
-                }
-        }
-        @@media (max-width: 767.98px) {
-            .invoice-filter-area {
-                align-items: stretch;
-                flex-direction: column;
-            }
-                .invoice-filter-area .form-select {
-                    width: 100%;
-                }
-        }
-    </style>
-}
-@section Scripts
-{
-    <script>
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
-                const searchInput =
-                    document.getElementById(
-                        "invoiceSearch"
-                    );
-                const statusFilter =
-                    document.getElementById(
-                        "invoiceStatusFilter"
-                    );
-                const rows =
-                    document.querySelectorAll(
-                        ".invoice-row"
-                    );
-                const emptyState =
-                    document.getElementById(
-                        "invoiceFilterEmpty"
-                    );
-                function filterInvoices() {
-                    const keyword =
-                        searchInput?.value
-                            .trim()
-                            .toLowerCase()
-                        ?? "";
-                    const status =
-                        statusFilter?.value
-                        ?? "";
-                    let visibleCount = 0;
-                    rows.forEach(function (row) {
-                        const rowSearch =
-                            row.dataset.search
-                            ?? "";
-                        const rowStatus =
-                            row.dataset.status
-                            ?? "";
-                        const searchMatched =
-                            !keyword ||
-                            rowSearch.includes(keyword);
-                        const statusMatched =
-                            !status ||
-                            rowStatus === status;
-                        const visible =
-                            searchMatched &&
-                            statusMatched;
-                        row.classList.toggle(
-                            "d-none",
-                            !visible
-                        );
-                        if (visible) {
-                            visibleCount++;
+                                </td>
+
+                                <!-- Thao tác -->
+                                <td class="py-3 px-4 text-right">
+                                    <div class="inline-flex items-center gap-1">
+                                        <a asp-action="Details" asp-route-id="@invoice.Id"
+                                           class="p-1.5 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container transition-colors"
+                                           title="Xem chi tiết">
+                                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                        </a>
+                                        <a asp-action="ExportPdf" asp-route-id="@invoice.Id"
+                                           class="p-1.5 rounded-lg text-on-surface-variant hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                                           title="In / Tải PDF">
+                                            <span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@invoice.Id"
+                                           class="p-1.5 rounded-lg text-on-surface-variant hover:text-amber-600 hover:bg-amber-50 transition-colors"
+                                           title="Chỉnh sửa">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </a>
+                                        @if (remaining > 0)
+                                        {
+                                            <a asp-controller="Payments" asp-action="Create" asp-route-invoiceId="@invoice.Id"
+                                               class="p-1.5 rounded-lg text-emerald-600 hover:bg-emerald-50 transition-colors"
+                                               title="Thu tiền">
+                                                <span class="material-symbols-outlined text-[18px]">credit_card</span>
+                                            </a>
+                                        }
+                                        @if (isReceptionist)
+                                        {
+                                            <a asp-action="Delete" asp-route-id="@invoice.Id"
+                                               class="p-1.5 rounded-lg text-on-surface-variant hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                                               title="Xóa hóa đơn">
+                                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
                         }
-                    });
-                    if (emptyState) {
-                        emptyState.classList.toggle(
-                            "d-none",
-                            visibleCount > 0
-                        );
-                    }
-                }
-                searchInput?.addEventListener(
-                    "input",
-                    filterInvoices
-                );
-                statusFilter?.addEventListener(
-                    "change",
-                    filterInvoices
-                );
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-12 text-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-4xl text-outline mb-2">receipt_long</span>
+                <p class="text-sm font-semibold">Chưa có hóa đơn nào được tạo trong hệ thống</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('invoiceSearch');
+            const statusFilter = document.getElementById('invoiceStatusFilter');
+            const rows = document.querySelectorAll('.invoice-row');
+
+            function filterTable() {
+                const query = (searchInput?.value || '').toLowerCase().trim();
+                const selectedStatus = (statusFilter?.value || '').toLowerCase().trim();
+
+                rows.forEach(row => {
+                    const rowSearch = (row.getAttribute('data-search') || '').toLowerCase();
+                    const rowStatus = (row.getAttribute('data-status') || '').toLowerCase();
+
+                    const matchesQuery = !query || rowSearch.includes(query);
+                    const matchesStatus = !selectedStatus || rowStatus === selectedStatus;
+
+                    row.style.display = (matchesQuery && matchesStatus) ? '' : 'none';
+                });
             }
-        );
+
+            if (searchInput) searchInput.addEventListener('input', filterTable);
+            if (statusFilter) statusFilter.addEventListener('change', filterTable);
+        });
     </script>
 }

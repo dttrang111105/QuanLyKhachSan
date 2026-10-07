@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-primary":"#ffffff","on-surface":"#0b1c30","tertiary":"#000000","tertiary-container":"#001a42","secondary-fixed":"#fedeb2","surface-container-low":"#eff4ff","outline-variant":"#c6c6cd","on-tertiary-container":"#3980f4","surface":"#f8f9ff","secondary":"#725b38","primary-container":"#131b2e","surface-variant":"#d3e4fe","secondary-fixed-dim":"#e0c298","tertiary-fixed":"#d8e2ff","on-primary-fixed-variant":"#3f465c","on-primary-container":"#7c839b","on-primary-fixed":"#131b2e","surface-container-highest":"#d3e4fe","on-tertiary":"#ffffff","surface-container-high":"#dce9ff","on-secondary-container":"#78603e","surface-dim":"#cbdbf5","on-error":"#ffffff","tertiary-fixed-dim":"#adc6ff","on-tertiary-fixed":"#001a42","on-secondary":"#ffffff","secondary-container":"#fedeb2","error":"#ba1a1a","on-secondary-fixed":"#281800","surface-container-lowest":"#ffffff","surface-tint":"#565e74","on-surface-variant":"#45464d","error-container":"#ffdad6","on-secondary-fixed-variant":"#584323","background":"#f8f9ff","primary-fixed":"#dae2fd","surface-bright":"#f8f9ff","primary":"#000000","inverse-primary":"#bec6e0","on-tertiary-fixed-variant":"#004395","outline":"#76777d","on-background":"#0b1c30","inverse-surface":"#213145","inverse-on-surface":"#eaf1ff","surface-container":"#e5eeff","primary-fixed-dim":"#bec6e0","on-error-container":"#93000a"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-mobile":"0.75rem","space-xs":"0.25rem","space-sm":"0.5rem","space-md":"1rem","margin-mobile":"1rem","space-lg":"1.5rem","space-xl":"2rem","margin":"2rem","gutter":"1.5rem"},"fontFamily":{"label-md":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"title-sm":["Plus Jakarta Sans"],"caption":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"display-lg":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"display-lg-mobile":["Plus Jakarta Sans"]},"fontSize":{"label-md":["13px",{"lineHeight":"18px","fontWeight":"500"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"title-sm":["16px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"600"}],"caption":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"headline-md":["18px",{"lineHeight":"26px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg-mobile":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"display-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"label-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"display-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.015em","fontWeight":"700"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-72 bg-primary-container text-on-primary shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center justify-between bg-primary-container"><div class="flex items-center gap-space-sm"><img alt="Aura Hotel PMS Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XbXl40bqNRlyQ4Jt_YHpkUHZJd_cURt-1ELbUGwUSeZPPMYNa25PeB4PHAszjQYDTokHPvk0QtqaaRPlZMcCR4NXTBJ1-GJrmX68RdfK8DNq40xLf-_43J18fs1n-2Sr9uER0dRBwSCoFhRrelKICux7lXM-k5OYqh4qqA-ccB_I8qTTz69I5qJLi2f3-Wh8nvf3kRipqrFEMHRtHAdCFIbOTTMdYysyuUYp_iktE"/><div class="flex flex-col"><span class="font-title-sm text-title-sm text-on-primary tracking-tight leading-none">AURA PMS</span><span class="font-caption text-caption text-secondary-fixed tracking-wider uppercase mt-space-xs">Luxury Hospitality</span></div></div></div><div class="px-space-md py-space-sm"><div class="bg-surface-container-highest/10 rounded-lg p-space-sm flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></span><span class="font-caption text-caption text-secondary-fixed uppercase font-semibold">Boutique Resort</span></div><span class="font-caption text-caption text-on-primary-container px-space-xs py-0.5 rounded bg-surface-container-highest/20">5-Star</span></div></div><nav class="px-space-sm space-y-space-md py-space-sm" data-active-classes="bg-secondary text-on-secondary font-semibold shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Tổng Quan</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="dashboard" href="#"><span class="font-body-sm text-body-sm">Dashboard</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Quản Lý</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="rooms" href="#"><span class="font-body-sm text-body-sm">Phòng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="room-types" href="#"><span class="font-body-sm text-body-sm">Loại phòng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="bookings" href="#"><span class="font-body-sm text-body-sm">Đặt phòng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="customers" href="#"><span class="font-body-sm text-body-sm">Khách hàng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="employees" href="#"><span class="font-body-sm text-body-sm">Nhân viên</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="services" href="#"><span class="font-body-sm text-body-sm">Dịch vụ</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="invoices" href="#"><span class="font-body-sm text-body-sm">Hóa đơn</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="reviews" href="#"><span class="font-body-sm text-body-sm">Đánh giá</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Nghiệp Vụ Lễ Tân</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="check-in-check-out" href="#"><span class="font-body-sm text-body-sm">Check-in / Check-out</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="room-logs" href="#"><span class="font-body-sm text-body-sm">Nhật ký phòng</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Báo Cáo</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="revenue" href="#"><span class="font-body-sm text-body-sm">Doanh thu</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="occupancy" href="#"><span class="font-body-sm text-body-sm">Công suất phòng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="booking-statistics" href="#"><span class="font-body-sm text-body-sm">Thống kê đặt phòng</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Hệ Thống</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="settings" href="#"><span class="font-body-sm text-body-sm">Cài đặt</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="login" href="#"><span class="font-body-sm text-body-sm">Đăng xuất</span></a></div></nav></div><div class="p-space-md m-space-sm rounded-lg bg-surface-container-highest/10"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-secondary-fixed text-[20px]">shield_person</span><div class="flex flex-col"><span class="font-caption text-caption text-on-primary-container uppercase">Phiên làm việc</span><span class="font-label-sm text-label-sm text-on-primary font-medium truncate">Quản trị viên cấp cao</span></div></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">menu_open</span></button><div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant"><span class="hover:text-on-surface transition-colors cursor-pointer">Trang chủ</span><span class="text-outline-variant font-caption">/</span><span class="text-on-surface font-medium">Nghiệp vụ Lễ tân</span></div><div class="relative ml-space-md"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><span class="material-symbols-outlined text-outline text-[18px]">search</span></div><input class="w-80 h-10 pl-9 pr-14 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all" placeholder="Tìm phòng, mã đặt phòng, khách hàng..." type="text"/><div class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none"><kbd class="px-1.5 py-0.5 rounded bg-surface-container-lowest font-caption text-caption text-outline shadow-sm">Ctrl K</kbd></div></div></div><div class="flex items-center gap-space-md"><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1.5 rounded-full bg-surface-container-low"><span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span><span class="w-2 h-2 rounded-full bg-secondary -ml-2"></span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Khách sạn: Aura Grand Resort &amp; Spa</span></div><button class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-error text-on-error font-caption text-[10px] flex items-center justify-center font-bold">3</span></button><button class="inline-flex items-center gap-space-xs px-space-md h-10 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md font-medium hover:bg-secondary/90 shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-all" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>+ Tạo đặt phòng</span></button><div class="flex items-center gap-space-sm pl-space-sm cursor-pointer select-none group"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-surface-container-high" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo4jhUqnXHB4TFnzfDLd47kitbrvEhg03gF7_eVZ7EFI-yu3fYCpMI4ARfr0NrxYcoHIEKGQlGbybTgMEm2c6C1lPYiXPqB976tVvov4xp7vP_bB9fUEGzPnC9w6Wbdwln04XVfD_50x_kJ0GsjifQ01l2cbp2qsroo42jDzsdLxq7UWeC-B24MapUAswNuTG_N3yIFumm3FfH-Bw8aReToAUDW-XYeuyVz8mG5w"/><div class="flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface font-semibold group-hover:text-secondary transition-colors">Trần Nam Phong</span><span class="font-caption text-caption text-on-surface-variant font-medium">Administrator</span></div><span class="material-symbols-outlined text-outline group-hover:text-on-surface transition-colors text-[18px]">expand_more</span></div></div></header><main class="relative pt-16 w-full min-h-screen px-space-xl py-space-xl bg-background"><div class="flex flex-col w-full space-y-space-lg">
+<!-- ==================== TOP ACTION BAR & NAVIGATION ==================== -->
+<section class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-md">
+<div class="space-y-1">
+<nav class="flex items-center gap-space-xs font-caption text-caption text-on-surface-variant uppercase tracking-wider">
+<span>Trang chủ</span>
+<span class="text-outline-variant font-caption">/</span>
+<span>Quản lý</span>
+<span class="text-outline-variant font-caption">/</span>
+<span>Hóa đơn &amp; Thanh toán</span>
+<span class="text-outline-variant font-caption">/</span>
+<span class="text-secondary font-semibold">Folio #INV-2025-089</span>
+</nav>
+<div class="flex flex-wrap items-center gap-space-sm pt-0.5">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+          Hóa đơn GTGT &amp; Quyết toán dịch vụ
+        </h1>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed font-caption text-caption uppercase tracking-wider shadow-sm">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+          Đã thanh toán toàn bộ (Paid in full)
+        </span>
+</div>
+<div class="flex flex-wrap items-center gap-x-space-md gap-y-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-outline text-[16px]">bookmark</span>
+          Mã đặt phòng: <strong class="text-on-surface font-semibold">#BK-9082</strong>
+</span>
+<span class="text-outline-variant">•</span>
+<span class="inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-outline text-[16px]">schedule</span>
+          Lập: 21/10/2025 - 11:45
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-outline text-[16px]">badge</span>
+          Lễ tân: <span class="text-on-surface font-medium">Trần Nam Phong (Ca sáng)</span>
+</span>
+</div>
+</div>
+<!-- Quick Action Toolbar -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="inline-flex items-center gap-1.5 px-3.5 h-10 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container-low transition-colors font-label-md text-label-md font-medium" onclick="window.print()" type="button">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span>In hóa đơn</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3.5 h-10 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container-low transition-colors font-label-md text-label-md font-medium" id="btn-export-pdf" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Xuất PDF</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3.5 h-10 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container-low transition-colors font-label-md text-label-md font-medium" id="btn-send-email" type="button">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+<span>Gửi e-Invoice</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-4 h-10 rounded-lg bg-secondary text-on-secondary shadow-sm hover:bg-secondary/90 transition-all font-label-md text-label-md font-semibold" type="button">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+<span>Phát hành e-VAT VNPT</span>
+</button>
+<div class="relative">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-low shadow-sm transition-colors" id="btn-more-options" type="button">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+<div class="hidden absolute right-0 mt-2 w-52 bg-surface-container-lowest rounded-xl shadow-xl py-1.5 z-30" id="dropdown-more">
+<button class="w-full text-left px-4 py-2 font-body-sm text-body-sm text-on-surface hover:bg-surface-container-low flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">find_replace</span> In phiếu tạm tính (Proforma)
+          </button>
+<button class="w-full text-left px-4 py-2 font-body-sm text-body-sm text-on-surface hover:bg-surface-container-low flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">edit_note</span> Thêm ghi chú nội bộ
+          </button>
+<div class="my-1 border-t border-surface-container-high/50"></div>
+<button class="w-full text-left px-4 py-2 font-body-sm text-body-sm text-error hover:bg-error-container/20 flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">currency_exchange</span> Hoàn tiền / Hủy hóa đơn
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== MAIN DUAL-COLUMN WORKSPACE ==================== -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-xl items-start">
+<!-- ==================== LEFT COLUMN: LUXURY A4 INVOICE SHEET (FOLIO) ==================== -->
+<main class="xl:col-span-8 flex flex-col items-center">
+<!-- A4 Sheet Mockup Container -->
+<article class="w-full max-w-4xl bg-surface-container-lowest rounded-xl shadow-xl p-8 sm:p-12 relative overflow-hidden transition-all">
+<!-- Subtle Luxury Watermark Emblem (SVG Inline) -->
+<div class="absolute -right-16 -top-16 opacity-[0.03] pointer-events-none select-none text-primary">
+<svg fill="currentColor" height="400" viewbox="0 0 100 100" width="400">
+<polygon points="50,5 61,35 95,35 68,57 79,91 50,70 21,91 32,57 5,35 39,35"></polygon>
+</svg>
+</div>
+<!-- 1. Enterprise Branding Header -->
+<header class="flex flex-col sm:flex-row items-start justify-between gap-space-lg pb-8 border-b border-surface-container-high/60">
+<div class="space-y-2 max-w-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-secondary-fixed shadow-sm">
+<span class="material-symbols-outlined text-[24px]">hotel_class</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight uppercase font-bold">Aura Grand Resort &amp; Spa</span>
+<span class="font-caption text-caption text-secondary tracking-widest uppercase">The Luxury Collection Đà Nẵng</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed pt-1">
+<strong>Công ty TNHH Nghỉ dưỡng Aura Grand</strong><br/>
+              Lô 12 Bán đảo Sơn Trà, Thọ Quang, TP. Đà Nẵng, Việt Nam<br/>
+              Mã số thuế: <span class="font-semibold text-on-surface">0401899889</span> • Hotline: +84 (0) 236 3888 999<br/>
+              Email: billing@auragrandresort.com • www.auragrandresort.com
+            </p>
+</div>
+<div class="flex flex-col sm:items-end text-left sm:text-right space-y-1">
+<span class="px-3 py-1 rounded bg-surface-container text-on-surface font-caption text-caption tracking-widest uppercase font-semibold">
+              Bản sao điện tử (Original Copy)
+            </span>
+<div class="pt-2">
+<div class="font-caption text-caption text-outline uppercase">Số hóa đơn / Invoice No.</div>
+<div class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">INV-2025-089</div>
+</div>
+<div class="font-caption text-caption text-on-surface-variant">
+              Ký hiệu (Serial): <strong class="text-on-surface">AA/25E</strong> | Mẫu: <strong>1/001</strong>
+</div>
+<div class="font-caption text-caption text-on-surface-variant">
+              Mã tra cứu HĐĐT: <span class="text-secondary font-mono font-semibold">8849-2019-4820</span>
+</div>
+</div>
+</header>
+<!-- 2. Sheet Document Title -->
+<div class="py-6 text-center space-y-1">
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight uppercase font-bold">
+            Phiếu Thanh Toán Lưu Trú &amp; Dịch Vụ
+          </h2>
+<p class="font-label-md text-label-md text-secondary tracking-wider uppercase font-medium">
+            Guest Folio &amp; Official Tax Billing Statement
+          </p>
+</div>
+<!-- 3. Guest Profile & Stay Details Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-space-md p-space-md rounded-xl bg-surface-container-low mb-8">
+<!-- Customer info -->
+<div class="md:col-span-7 space-y-2">
+<div class="flex items-center gap-2 text-secondary">
+<span class="material-symbols-outlined text-[18px]">person</span>
+<span class="font-caption text-caption uppercase tracking-wider font-semibold">Thông tin khách hàng &amp; Công ty</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-baseline gap-2">
+<span class="font-title-sm text-title-sm text-on-surface font-bold">Ông Đoàn Minh Trí</span>
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-caption text-caption uppercase font-semibold">
+                  VIP Titanium Club #AURA-8821
+                </span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant space-y-0.5">
+<div>CCCD / Hộ chiếu: <strong class="text-on-surface">001198004521</strong> (Cục QL XNC cấp)</div>
+<div>Điện thoại: +84 912 458 991 • Email: tri.doan@luxurypacific.vn</div>
+<div class="pt-1 text-on-surface font-medium">
+                  Đơn vị nhận VAT: <strong>CÔNG TY CỔ PHẦN ĐẦU TƯ LUXURY PACIFIC</strong>
+</div>
+<div>MST Công ty: <span class="font-mono font-semibold text-on-surface">0314567890</span></div>
+<div class="text-outline text-caption">Tầng 18, Toà nhà Bitexco Financial Tower, Q.1, TP. Hồ Chí Minh</div>
+</div>
+</div>
+</div>
+<!-- Stay info -->
+<div class="md:col-span-5 space-y-2 md:pl-space-md md:border-l md:border-surface-container-high">
+<div class="flex items-center gap-2 text-secondary">
+<span class="material-symbols-outlined text-[18px]">bed</span>
+<span class="font-caption text-caption uppercase tracking-wider font-semibold">Chi tiết kỳ lưu trú</span>
+</div>
+<div class="space-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<div>Phòng lưu trú: <strong class="text-on-surface font-headline-md text-headline-md ml-1">P.402</strong> <span class="font-label-sm text-label-sm text-secondary font-medium">(Premier Ocean Suite)</span></div>
+<div class="flex justify-between pt-1">
+<span>Nhận phòng (Check-in):</span>
+<strong class="text-on-surface">18/10/2025 • 14:00</strong>
+</div>
+<div class="flex justify-between">
+<span>Trả phòng (Check-out):</span>
+<strong class="text-on-surface">21/10/2025 • 11:30</strong>
+</div>
+<div class="flex justify-between">
+<span>Thời gian:</span>
+<span class="text-on-surface font-semibold">3 Đêm (Nights)</span>
+</div>
+<div class="flex justify-between">
+<span>Số lượng khách:</span>
+<span class="text-on-surface">2 Người lớn (Adults)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Itemized Charges Table -->
+<section class="mb-8 overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-caption text-caption uppercase tracking-wider">
+<th class="py-3 px-3 rounded-l-lg text-center w-10">STT</th>
+<th class="py-3 px-3">Hạng mục &amp; Diễn giải dịch vụ</th>
+<th class="py-3 px-3 text-center">Ngày SD</th>
+<th class="py-3 px-3 text-center">SL / ĐVT</th>
+<th class="py-3 px-3 text-right">Đơn giá (VND)</th>
+<th class="py-3 px-3 text-right">Giảm trừ</th>
+<th class="py-3 px-3 rounded-r-lg text-right">Thành tiền (VND)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container font-body-sm text-body-sm text-on-surface">
+<!-- Item 1 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-3.5 px-3 text-center font-label-sm text-outline">01</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">Premier Ocean Suite (Phòng 402)</div>
+<div class="font-caption text-caption text-on-surface-variant">Lưu trú 3 đêm: 18, 19, 20/10 • Giá đặc quyền Agoda Luxury VIP</div>
+</td>
+<td class="py-3.5 px-3 text-center text-outline">18-20/10</td>
+<td class="py-3.5 px-3 text-center">3 Đêm</td>
+<td class="py-3.5 px-3 text-right font-mono">3,900,000</td>
+<td class="py-3.5 px-3 text-right text-outline">-</td>
+<td class="py-3.5 px-3 text-right font-mono font-semibold">11,700,000</td>
+</tr>
+<!-- Item 2 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-3.5 px-3 text-center font-label-sm text-outline">02</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">Aura Signature Spa Treatment</div>
+<div class="font-caption text-caption text-on-surface-variant">Liệu trình Trẻ hóa chuyên sâu 90 phút (2 khách) • Thẻ Titanium ưu đãi -15%</div>
+</td>
+<td class="py-3.5 px-3 text-center text-outline">19/10/2025</td>
+<td class="py-3.5 px-3 text-center">2 Khách</td>
+<td class="py-3.5 px-3 text-right font-mono">1,400,000</td>
+<td class="py-3.5 px-3 text-right font-mono text-secondary">-420,000</td>
+<td class="py-3.5 px-3 text-right font-mono font-semibold">2,380,000</td>
+</tr>
+<!-- Item 3 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-3.5 px-3 text-center font-label-sm text-outline">03</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">Ẩm thực Nhà hàng Ocean Prime</div>
+<div class="font-caption text-caption text-on-surface-variant">Hóa đơn F&amp;B #FB-402-09: Tôm hùm bỏ lò, Rượu vang đỏ Chateau Margaux</div>
+</td>
+<td class="py-3.5 px-3 text-center text-outline">20/10/2025</td>
+<td class="py-3.5 px-3 text-center">1 Bill</td>
+<td class="py-3.5 px-3 text-right font-mono">3,650,000</td>
+<td class="py-3.5 px-3 text-right text-outline">-</td>
+<td class="py-3.5 px-3 text-right font-mono font-semibold">3,650,000</td>
+</tr>
+<!-- Item 4 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-3.5 px-3 text-center font-label-sm text-outline">04</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">Dịch vụ Giặt là cao cấp Express Laundry</div>
+<div class="font-caption text-caption text-on-surface-variant">Áo sơ mi lụa tơ tằm, Váy dạ hội (Ủi hơi nước chuyên dụng)</div>
+</td>
+<td class="py-3.5 px-3 text-center text-outline">20/10/2025</td>
+<td class="py-3.5 px-3 text-center">4 Món</td>
+<td class="py-3.5 px-3 text-right font-mono">320,000</td>
+<td class="py-3.5 px-3 text-right text-outline">-</td>
+<td class="py-3.5 px-3 text-right font-mono font-semibold">320,000</td>
+</tr>
+<!-- Item 5 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-3.5 px-3 text-center font-label-sm text-outline">05</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">Minibar buồng phòng (In-room Bar)</div>
+<div class="font-caption text-caption text-on-surface-variant">Vang trắng Mini, Hạt Macca Úc, Khoáng sủi San Pellegrino</div>
+</td>
+<td class="py-3.5 px-3 text-center text-outline">21/10/2025</td>
+<td class="py-3.5 px-3 text-center">1 Set</td>
+<td class="py-3.5 px-3 text-right font-mono">450,000</td>
+<td class="py-3.5 px-3 text-right text-outline">-</td>
+<td class="py-3.5 px-3 text-right font-mono font-semibold">450,000</td>
+</tr>
+<!-- Item 6 (VIP Complimentary) -->
+<tr class="hover:bg-surface-container-low/50 transition-colors bg-secondary-fixed/10">
+<td class="py-3.5 px-3 text-center font-label-sm text-secondary">06</td>
+<td class="py-3.5 px-3">
+<div class="font-semibold text-on-surface">Đưa đón sân bay VIP Maybach hai chiều</div>
+<div class="font-caption text-caption text-secondary font-medium">Đặc quyền hội viên Titanium Club (Sân bay Quốc tế Đà Nẵng)</div>
+</td>
+<td class="py-3.5 px-3 text-center text-outline">18 &amp; 21/10</td>
+<td class="py-3.5 px-3 text-center">2 Chiều</td>
+<td class="py-3.5 px-3 text-right font-mono line-through text-outline">1,800,000</td>
+<td class="py-3.5 px-3 text-right font-mono text-secondary">-1,800,000</td>
+<td class="py-3.5 px-3 text-right font-mono font-semibold text-secondary">0 (Miễn phí)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<!-- 5. Financial Calculation & Tax Summary -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-space-lg pt-4 pb-8 border-t border-surface-container-high/60">
+<div class="md:col-span-6 space-y-3">
+<div class="p-3.5 rounded-lg bg-surface-container-low space-y-1">
+<span class="font-caption text-caption uppercase text-secondary font-semibold tracking-wider">Số tiền bằng chữ (In words)</span>
+<p class="font-body-md text-body-md text-on-surface italic font-medium">
+                "Hai mươi triệu năm trăm lẻ hai nghìn bảy trăm hai mươi đồng chẵn."
+              </p>
+</div>
+<!-- Visual Badge for Payment Mode -->
+<div class="flex items-center gap-2 text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] text-secondary">lock</span>
+<span>Hóa đơn đã được ký số an toàn và chứng thực bởi Tổng cục Thuế Việt Nam.</span>
+</div>
+</div>
+<div class="md:col-span-6 space-y-2">
+<div class="flex justify-between font-body-sm text-body-sm text-on-surface-variant">
+<span>Tổng tiền dịch vụ thuần (Subtotal):</span>
+<span class="font-mono text-on-surface">18,500,000 đ</span>
+</div>
+<div class="flex justify-between font-body-sm text-body-sm text-secondary">
+<span>Chiết khấu Titanium Member (-15% Spa):</span>
+<span class="font-mono">-420,000 đ</span>
+</div>
+<div class="flex justify-between font-body-sm text-body-sm text-on-surface-variant">
+<span>Phí dịch vụ khách sạn 5% (Service Charge):</span>
+<span class="font-mono text-on-surface">904,000 đ</span>
+</div>
+<div class="flex justify-between font-body-sm text-body-sm text-on-surface-variant">
+<span>Thuế GTGT 8% (VAT):</span>
+<span class="font-mono text-on-surface">1,518,720 đ</span>
+</div>
+<div class="h-px bg-surface-container-high my-2"></div>
+<div class="flex justify-between items-baseline">
+<span class="font-title-sm text-title-sm text-on-surface font-bold uppercase">Tổng cộng phải thanh toán:</span>
+<span class="font-headline-md text-headline-md text-on-surface font-mono font-bold">20,502,720 đ</span>
+</div>
+</div>
+</section>
+<!-- 6. Payment Breakdown & Settlement History -->
+<section class="mb-8 p-space-md rounded-xl bg-surface-container-low/70 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">account_balance_wallet</span>
+<span class="font-caption text-caption uppercase tracking-wider font-semibold text-on-surface">Lịch sử giao dịch &amp; Quyết toán (Settlement)</span>
+</div>
+<span class="font-caption text-caption text-secondary font-semibold uppercase">Hoàn tất 100%</span>
+</div>
+<div class="space-y-2 font-body-sm text-body-sm">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-surface-container-high/40">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span><strong>Tiền cọc giữ chỗ trực tuyến:</strong> OTA Online Deposit (Visa ****4821)</span>
+<span class="text-caption text-outline">17/10/2025</span>
+</div>
+<div class="font-mono text-on-surface font-medium sm:text-right">6,425,000 đ <span class="text-caption text-secondary ml-1">[Đối soát OK]</span></div>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-surface-container-high/40">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+<span><strong>Tiền cọc bảo đảm phòng:</strong> Tạm giữ thẻ tín dụng Check-in (Pre-auth)</span>
+<span class="text-caption text-outline">18/10/2025</span>
+</div>
+<div class="font-mono text-outline sm:text-right">2,000,000 đ <span class="text-caption text-secondary ml-1">[Đã giải tỏa thẻ]</span></div>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-surface-container-high/40">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span><strong>Quyết toán quầy Check-out:</strong> Thẻ Techcombank Visa Sig. ****9928 (Mã GD: 928410)</span>
+<span class="text-caption text-outline">21/10 11:42</span>
+</div>
+<div class="font-mono text-on-surface font-semibold sm:text-right">14,077,720 đ <span class="text-caption text-secondary ml-1">[Đã thu tiền]</span></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="font-caption text-caption uppercase tracking-wider text-outline">Số dư còn lại cần quyết toán (Balance Due):</span>
+<span class="font-title-sm text-title-sm font-mono font-bold text-secondary">0 VND</span>
+</div>
+</div>
+</section>
+<!-- 7. Legal Signatures & Electronic Stamp -->
+<footer class="pt-6 grid grid-cols-1 sm:grid-cols-3 gap-6 items-end text-center">
+<!-- Guest signature -->
+<div class="space-y-12">
+<div>
+<div class="font-caption text-caption text-on-surface-variant uppercase tracking-wider font-semibold">Đại diện khách hàng</div>
+<div class="font-caption text-caption text-outline italic">Guest's Signature</div>
+</div>
+<div class="font-body-md text-body-md font-semibold text-on-surface pt-6 border-t border-surface-container-high mx-4">
+              Đoàn Minh Trí
+            </div>
+</div>
+<!-- Official Red Stamp and Verification Badge -->
+<div class="flex flex-col items-center justify-center space-y-2">
+<!-- Paid Seal Mockup -->
+<div class="w-32 h-32 rounded-full border-4 border-error/80 flex flex-col items-center justify-center p-2 text-error rotate-[-8deg] shadow-sm select-none">
+<div class="font-caption text-caption uppercase tracking-widest font-black leading-none text-center">AURA GRAND RESORT</div>
+<div class="font-headline-md text-headline-md uppercase font-black tracking-tight my-0.5">ĐÃ THU TIỀN</div>
+<div class="font-caption text-[9px] uppercase font-bold tracking-widest">PAID IN FULL</div>
+<div class="font-caption text-[10px] font-mono mt-0.5 font-bold">21/10/2025 • CASHIER #02</div>
+</div>
+<div class="font-caption text-caption text-outline">Ký số bởi CA: CTY TNHH NGHỈ DƯỠNG AURA GRAND</div>
+</div>
+<!-- Cashier / Reception Signature -->
+<div class="space-y-12">
+<div>
+<div class="font-caption text-caption text-on-surface-variant uppercase tracking-wider font-semibold">Thu ngân / Người lập phiếu</div>
+<div class="font-caption text-caption text-outline italic">Cashier / Receptionist</div>
+</div>
+<div class="font-body-md text-body-md font-semibold text-on-surface pt-6 border-t border-surface-container-high mx-4">
+              Trần Nam Phong
+            </div>
+</div>
+</footer>
+<!-- Bottom Security Note & TCT QR -->
+<div class="mt-8 pt-4 border-t border-surface-container flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<!-- Inline QR Code SVG Representation -->
+<div class="w-14 h-14 bg-surface-container p-1 rounded flex items-center justify-center shrink-0">
+<svg class="w-full h-full text-on-surface" fill="currentColor" viewbox="0 0 24 24">
+<path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3zm-5-5h3v3h-3v-3zm2 2h3v3h-3v-3z"></path>
+</svg>
+</div>
+<div class="font-caption text-caption text-outline leading-tight">
+              Quét mã QR để tra cứu hóa đơn trực tiếp từ Cổng thông tin Hóa đơn điện tử - Tổng cục Thuế Việt Nam.<br/>
+              Mã bảo mật SHA-256: <span class="font-mono text-on-surface">e9f8a3c...b891</span>
+</div>
+</div>
+<div class="font-caption text-caption text-secondary font-medium shrink-0">
+            Cảm ơn Quý khách đã lựa chọn Aura Grand Resort &amp; Spa!
+          </div>
+</div>
+</article>
+</main>
+<!-- ==================== RIGHT COLUMN: FRONT DESK & ACCOUNTING CONTROLS ==================== -->
+<aside class="xl:col-span-4 space-y-space-md">
+<!-- 1. Tax Authority & e-VAT Status Card -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between pb-2 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">verified</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-semibold">Tình trạng Hóa đơn VAT</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed font-caption text-caption font-semibold">
+            Đã cấp mã CQT
+          </span>
+</div>
+<div class="space-y-2 font-body-sm text-body-sm">
+<div class="flex justify-between py-1">
+<span class="text-on-surface-variant">Nhà cung cấp:</span>
+<span class="font-semibold text-on-surface">VNPT e-Invoice 78/2020</span>
+</div>
+<div class="flex justify-between py-1">
+<span class="text-on-surface-variant">Mẫu số / Ký hiệu:</span>
+<span class="font-mono font-medium text-on-surface">1/001 - C25TAP</span>
+</div>
+<div class="flex justify-between py-1">
+<span class="text-on-surface-variant">Số hóa đơn VAT:</span>
+<span class="font-mono font-bold text-on-surface">00291048</span>
+</div>
+<div class="flex justify-between py-1">
+<span class="text-on-surface-variant">Mã cơ quan thuế:</span>
+<span class="font-mono text-caption text-secondary font-semibold break-all">TCT-0401899889-C25TAP-00291048</span>
+</div>
+<div class="flex justify-between py-1">
+<span class="text-on-surface-variant">Thời gian cấp mã:</span>
+<span class="text-on-surface">21/10/2025 11:45:12</span>
+</div>
+</div>
+<div class="pt-2">
+<a class="w-full inline-flex items-center justify-center gap-2 h-10 rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md font-medium" href="https://hoadondientu.gdt.gov.vn" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+<span>Tra cứu trên web Tổng cục Thuế</span>
+</a>
+</div>
+</section>
+<!-- 2. Fast Payment & Folio Settlement Actions -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between pb-2 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">credit_card</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-semibold">Nghiệp vụ Thu ngân</h3>
+</div>
+<span class="font-caption text-caption text-outline font-mono">Ca: AM-01</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors space-y-1" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">receipt</span>
+<span class="font-caption text-caption font-semibold">In Phiếu thu (Receipt)</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors space-y-1" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">flip_camera_ios</span>
+<span class="font-caption text-caption font-semibold">Tách Folio / Ghép bill</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors space-y-1" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">sync_alt</span>
+<span class="font-caption text-caption font-semibold">Chuyển sang phòng khác</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors space-y-1" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">loyalty</span>
+<span class="font-caption text-caption font-semibold">Tích điểm VIP (+2,050 pts)</span>
+</button>
+</div>
+<!-- POS Terminal Information -->
+<div class="p-3 rounded-lg bg-surface-container space-y-1">
+<div class="flex items-center justify-between text-caption font-caption text-outline">
+<span>Thiết bị POS liên kết:</span>
+<span class="text-secondary font-semibold">Online (Sẵn sàng)</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface font-medium flex items-center justify-between">
+<span>Ingenico Desk 5000 (POS #02)</span>
+<span class="font-mono text-caption text-outline">IP: 192.168.1.142</span>
+</div>
+</div>
+</section>
+<!-- 3. Enterprise Corporate Tax Profile -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between pb-2 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">domain</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-semibold">Thông tin xuất HĐGTGT</h3>
+</div>
+<span class="inline-flex items-center gap-1 font-caption text-caption text-secondary font-semibold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Doanh nghiệp
+          </span>
+</div>
+<div class="space-y-2.5 font-body-sm text-body-sm">
+<div>
+<span class="font-caption text-caption text-outline uppercase block">Tên doanh nghiệp:</span>
+<span class="font-medium text-on-surface">CÔNG TY CỔ PHẦN ĐẦU TƯ LUXURY PACIFIC</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<span class="font-caption text-caption text-outline uppercase block">Mã số thuế:</span>
+<span class="font-mono font-bold text-on-surface">0314567890</span>
+</div>
+<div>
+<span class="font-caption text-caption text-outline uppercase block">Người đại diện:</span>
+<span class="text-on-surface">Đoàn Minh Trí</span>
+</div>
+</div>
+<div>
+<span class="font-caption text-caption text-outline uppercase block">Địa chỉ đăng ký kinh doanh:</span>
+<span class="text-on-surface-variant">Tầng 18, Toà nhà Bitexco Financial Tower, Số 2 Hải Triều, P. Bến Nghé, Quận 1, TP. HCM</span>
+</div>
+<div>
+<span class="font-caption text-caption text-outline uppercase block">Email nhận hóa đơn (e-Invoice):</span>
+<div class="flex items-center justify-between mt-0.5">
+<span class="font-mono text-on-surface">accounting@luxurypacific.vn</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-caption text-secondary font-semibold">Đã gửi</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Folio Audit Trail (Activity Log) -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between pb-2 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">manage_history</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-semibold">Nhật ký kiểm toán (Audit Trail)</h3>
+</div>
+<span class="font-caption text-caption text-outline">4 sự kiện</span>
+</div>
+<ol class="relative border-l border-surface-container-high ml-2.5 space-y-4 py-1">
+<li class="ml-4">
+<div class="absolute -left-1.5 mt-1.5 w-3 h-3 rounded-full bg-secondary"></div>
+<time class="font-caption text-caption text-outline block">21/10/2025 • 11:45</time>
+<p class="font-body-sm text-body-sm font-semibold text-on-surface">Xuất HĐĐT #00291048 &amp; gửi email</p>
+<span class="font-caption text-caption text-on-surface-variant">Thực hiện bởi Lễ tân: Nam Phong</span>
+</li>
+<li class="ml-4">
+<div class="absolute -left-1.5 mt-1.5 w-3 h-3 rounded-full bg-secondary"></div>
+<time class="font-caption text-caption text-outline block">21/10/2025 • 11:42</time>
+<p class="font-body-sm text-body-sm font-semibold text-on-surface">Quyết toán 14,077,720 đ qua POS Techcombank</p>
+<span class="font-caption text-caption text-on-surface-variant">Mã chuẩn chi GD: #928410 • Thẻ Visa Signature</span>
+</li>
+<li class="ml-4">
+<div class="absolute -left-1.5 mt-1.5 w-3 h-3 rounded-full bg-outline"></div>
+<time class="font-caption text-caption text-outline block">21/10/2025 • 10:15</time>
+<p class="font-body-sm text-body-sm text-on-surface">Kiểm toán buồng phòng bổ sung phí minibar 450,000 đ</p>
+<span class="font-caption text-caption text-on-surface-variant">Housekeeping App • Nhân viên: Lê Thị Mai</span>
+</li>
+<li class="ml-4">
+<div class="absolute -left-1.5 mt-1.5 w-3 h-3 rounded-full bg-outline"></div>
+<time class="font-caption text-caption text-outline block">17/10/2025 • 14:20</time>
+<p class="font-body-sm text-body-sm text-on-surface">Ghi nhận tiền cọc 6,425,000 đ qua kênh Agoda</p>
+<span class="font-caption text-caption text-on-surface-variant">Channel Manager System Synced</span>
+</li>
+</ol>
+</section>
+</aside>
+</div>
+<!-- Toast Notification Modal (Micro-interaction placeholder) -->
+<div class="fixed bottom-6 right-6 hidden bg-primary-container text-on-primary px-4 py-3 rounded-xl shadow-xl z-50 flex items-center gap-3 transition-transform duration-300" id="toast-notification">
+<span class="material-symbols-outlined text-secondary-fixed text-[20px]">check_circle</span>
+<span class="font-body-sm text-body-sm" id="toast-message">Đã gửi liên kết hóa đơn điện tử tới khách hàng!</span>
+</div>
+</div>
+<!-- Interactive Client-side Script for PMS Actions -->
+<script>
+  (function () {
+    const btnMore = document.getElementById('btn-more-options');
+    const dropdownMore = document.getElementById('dropdown-more');
+    const btnSendEmail = document.getElementById('btn-send-email');
+    const btnExportPdf = document.getElementById('btn-export-pdf');
+    const toast = document.getElementById('toast-notification');
+    const toastMsg = document.getElementById('toast-message');
+
+    // Toggle secondary menu
+    if (btnMore && dropdownMore) {
+      btnMore.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownMore.classList.toggle('hidden');
+      });
+      document.addEventListener('click', () => {
+        dropdownMore.classList.add('hidden');
+      });
+    }
+
+    // Toast helper
+    function showToast(message) {
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = message;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    if (btnSendEmail) {
+      btnSendEmail.addEventListener('click', () => {
+        showToast('Đã gửi e-Invoice kèm mã tra cứu CQT tới tri.doan@luxurypacific.vn');
+      });
+    }
+
+    if (btnExportPdf) {
+      btnExportPdf.addEventListener('click', () => {
+        showToast('Đang tạo tệp Folio_INV-2025-089.pdf chất lượng in 300DPI...');
+      });
+    }
+  })();
+</script></main></div></body></html>

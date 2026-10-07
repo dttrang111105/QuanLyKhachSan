@@ -3,55 +3,88 @@
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
     ViewData["Title"] = "Chi tiết đánh giá";
 }
-<div class="row justify-content-center">
-    <div class="col-lg-7">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
-                    <div>
-                        <h2 class="mb-1">Phòng @Model.Room?.RoomNumber</h2>
-                        <p class="text-muted mb-0">
-                            @(Model.Room?.RoomType?.Name ?? "Chưa xác định loại phòng")
-                        </p>
-                    </div>
-                    <div class="text-nowrap">
+
+<div class="max-w-3xl mx-auto">
+    <!-- Top Action / Breadcrumb -->
+    <div class="mb-6 flex items-center justify-between">
+        <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Quay lại danh sách đánh giá
+        </a>
+        <div class="flex items-center gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 font-semibold text-sm transition-colors">
+                <span class="material-symbols-outlined text-base">edit</span>
+                Sửa đánh giá
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-sm transition-colors">
+                <span class="material-symbols-outlined text-base">delete</span>
+                Xóa
+            </a>
+        </div>
+    </div>
+
+    <!-- Review Card -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <!-- Card Header -->
+        <div class="p-8 lg:p-10 border-b border-slate-100 bg-gradient-to-r from-slate-50 via-white to-amber-50/20">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-[#c5a880]/15 text-[#725b38] border border-[#c5a880]/30 uppercase tracking-widest inline-block mb-2">
+                        Đánh giá phòng
+                    </span>
+                    <h1 class="font-serif text-2xl lg:text-3xl font-bold text-slate-900">Phòng @Model.Room?.RoomNumber</h1>
+                    <p class="text-sm text-slate-500 mt-1">@(Model.Room?.RoomType?.Name ?? "Chưa xác định loại phòng")</p>
+                </div>
+                <div class="flex flex-col items-start sm:items-end">
+                    <div class="flex items-center gap-1">
                         @for (int star = 1; star <= 5; star++)
                         {
-                            <span class="@(star <= Model.Rating ? "text-warning" : "text-secondary") fs-4">★</span>
+                            <span class="material-symbols-outlined text-2xl @(star <= Model.Rating ? "text-amber-400 fill-current" : "text-slate-200")" style="font-variation-settings: 'FILL' @(star <= Model.Rating ? 1 : 0);">star</span>
                         }
                     </div>
+                    <span class="text-xs font-bold text-amber-600 mt-1 uppercase tracking-wider">@Model.Rating / 5 sao</span>
                 </div>
-                <div class="mb-4">
-                    <h6 class="fw-bold">Nhận xét</h6>
-                    @if (!string.IsNullOrWhiteSpace(Model.Comment))
-                    {
-                        <p style="white-space: pre-line;">@Model.Comment</p>
-                    }
-                    else
-                    {
-                        <p class="text-muted fst-italic">Không có nội dung nhận xét.</p>
-                    }
+            </div>
+        </div>
+
+        <!-- Content Body -->
+        <div class="p-8 lg:p-10 space-y-8">
+            <div>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Nội dung nhận xét</h3>
+                @if (!string.IsNullOrWhiteSpace(Model.Comment))
+                {
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 text-slate-800 leading-relaxed text-base italic relative">
+                        <span class="material-symbols-outlined text-4xl text-slate-200 absolute top-4 right-4 pointer-events-none">format_quote</span>
+                        <p class="relative z-10" style="white-space: pre-line;">@Model.Comment</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 text-slate-400 italic text-sm">
+                        Không có nội dung nhận xét bằng chữ.
+                    </div>
+                }
+            </div>
+
+            <!-- Metadata Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-slate-100">
+                <div class="p-4 rounded-xl bg-slate-50/70 border border-slate-100">
+                    <span class="text-xs font-semibold text-slate-400 block mb-1">Ngày gửi đánh giá</span>
+                    <span class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-slate-400 text-base">schedule</span>
+                        @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                    </span>
                 </div>
-                <dl class="row mb-4">
-                    <dt class="col-sm-4">Ngày gửi</dt>
-                    <dd class="col-sm-8">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
-                    @if (Model.UpdatedAt.HasValue)
-                    {
-                        <dt class="col-sm-4">Cập nhật lần cuối</dt>
-                        <dd class="col-sm-8">@Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</dd>
-                    }
-                </dl>
-                <div class="d-flex flex-wrap gap-2">
-                    <a asp-action="Edit"
-                       asp-route-id="@Model.Id"
-                       class="btn btn-warning">
-                        Sửa đánh giá
-                    </a>
-                    <a asp-action="Index"
-                       class="btn btn-outline-secondary">
-                        Quay lại danh sách
-                    </a>
-                </div>
+                @if (Model.UpdatedAt.HasValue)
+                {
+                    <div class="p-4 rounded-xl bg-slate-50/70 border border-slate-100">
+                        <span class="text-xs font-semibold text-slate-400 block mb-1">Cập nhật lần cuối</span>
+                        <span class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-slate-400 text-base">update</span>
+                            @Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")
+                        </span>
+                    </div>
+                }
             </div>
         </div>
     </div>

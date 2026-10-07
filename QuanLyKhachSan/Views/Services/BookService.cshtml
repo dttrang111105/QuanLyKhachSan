@@ -1,537 +1,190 @@
-﻿@model QuanLyKhachSan.ViewModels.CustomerBookServiceViewModel
+@model QuanLyKhachSan.ViewModels.CustomerBookServiceViewModel
 @{
-    ViewData["Title"] = "Đặt dịch vụ";
+    ViewData["Title"] = "Đặt dịch vụ - " + Model.ServiceName;
     Layout = "_CustomerLayout";
 }
-<style>
-    .book-service-page {
-        min-height: 75vh;
-        padding: 45px 0 80px;
-        background: radial-gradient( circle at top right, rgba(200, 169, 106, 0.14), transparent 30% ), #f7f4ee;
-    }
-    .book-service-heading {
-        margin-bottom: 30px;
-        text-align: center;
-    }
-        .book-service-heading span {
-            display: inline-block;
-            margin-bottom: 8px;
-            color: #a77c37;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-        .book-service-heading h1 {
-            margin-bottom: 10px;
-            color: #252525;
-            font-family: "Cinzel", serif;
-            font-size: 38px;
-            font-weight: 700;
-        }
-        .book-service-heading p {
-            margin: 0;
-            color: #777777;
-        }
-    .book-service-summary {
-        height: 100%;
-        min-height: 500px;
-        padding: 35px;
-        border: 1px solid rgba(200, 169, 106, 0.45);
-        border-radius: 22px;
-        background: radial-gradient( circle at 90% 10%, rgba(200, 169, 106, 0.24), transparent 30% ), linear-gradient(145deg, #0b0b0b, #211b12);
-        color: #ffffff;
-        box-shadow: 0 25px 55px rgba(0, 0, 0, 0.2);
-    }
-    .book-service-summary-icon {
-        width: 75px;
-        height: 75px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 25px;
-        border-radius: 18px;
-        background: linear-gradient(145deg, #edca70, #bd8529);
-        color: #111111;
-        font-size: 32px;
-    }
-    .book-service-summary small {
-        display: block;
-        margin-bottom: 8px;
-        color: #d3ad5f;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-    }
-    .book-service-summary h2 {
-        margin-bottom: 17px;
-        color: #f0d17a;
-        font-family: "Cinzel", serif;
-        font-size: 30px;
-    }
-    .book-service-description {
-        min-height: 100px;
-        color: rgba(255, 255, 255, 0.72);
-        line-height: 1.8;
-    }
-    .book-service-price {
-        margin-top: 25px;
-        padding: 20px;
-        border: 1px solid rgba(200, 169, 106, 0.3);
-        border-radius: 14px;
-        background: rgba(200, 169, 106, 0.1);
-    }
-        .book-service-price span {
-            display: block;
-            margin-bottom: 6px;
-            color: rgba(255, 255, 255, 0.58);
-            font-size: 12px;
-        }
-        .book-service-price strong {
-            color: #f0c85f;
-            font-size: 28px;
-        }
-    .book-service-benefits {
-        display: grid;
-        gap: 14px;
-        margin: 28px 0 0;
-        padding: 0;
-        list-style: none;
-    }
-        .book-service-benefits li {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            color: rgba(255, 255, 255, 0.82);
-        }
-        .book-service-benefits i {
-            color: #d4aa4d;
-        }
-    .book-service-form {
-        height: 100%;
-        padding: 35px;
-        border: 1px solid #e5dfd4;
-        border-radius: 22px;
-        background: #ffffff;
-        box-shadow: 0 20px 55px rgba(0, 0, 0, 0.09);
-    }
-    .book-service-form-title {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        margin-bottom: 27px;
-        padding-bottom: 22px;
-        border-bottom: 1px solid #eee8de;
-    }
-        .book-service-form-title span {
-            width: 50px;
-            height: 50px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            border-radius: 13px;
-            background: rgba(200, 169, 106, 0.16);
-            color: #a77c37;
-            font-size: 22px;
-        }
-        .book-service-form-title h3 {
-            margin: 0 0 4px;
-            color: #292929;
-            font-size: 21px;
-            font-weight: 700;
-        }
-        .book-service-form-title p {
-            margin: 0;
-            color: #888888;
-            font-size: 13px;
-        }
-    .book-service-form .form-label {
-        margin-bottom: 8px;
-        color: #383838;
-        font-size: 13px;
-        font-weight: 700;
-    }
-    .book-service-form .form-select,
-    .book-service-form .form-control {
-        min-height: 53px;
-        border: 1px solid #ded8cf;
-        border-radius: 11px;
-        background: #fcfcfc;
-        box-shadow: none;
-    }
-        .book-service-form .form-select:focus,
-        .book-service-form .form-control:focus {
-            border-color: #c8a96a;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(200, 169, 106, 0.14);
-        }
-    .book-service-quantity {
-        display: flex;
-        overflow: hidden;
-        border: 1px solid #ded8cf;
-        border-radius: 11px;
-    }
-        .book-service-quantity .form-control {
-            min-width: 0;
-            border: 0;
-            border-radius: 0;
-            text-align: center;
-        }
-    .quantity-button {
-        width: 50px;
-        flex-shrink: 0;
-        border: 0;
-        background: #f3eee5;
-        color: #9c712e;
-        font-size: 20px;
-        transition: 0.2s;
-    }
-        .quantity-button:hover {
-            background: #c8a96a;
-            color: #ffffff;
-        }
-    .book-service-total {
-        margin-top: 25px;
-        padding: 23px;
-        border: 1px solid rgba(200, 169, 106, 0.38);
-        border-radius: 15px;
-        background: linear-gradient(135deg, #fffaf0, #f5e8cc);
-    }
-    .book-service-total-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-    }
-        .book-service-total-row + .book-service-total-row {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(200, 169, 106, 0.25);
-        }
-        .book-service-total-row span {
-            color: #5d5d5d;
-        }
-        .book-service-total-row strong {
-            color: #333333;
-            white-space: nowrap;
-        }
-        .book-service-total-row:last-child strong {
-            color: #af781f;
-            font-size: 23px;
-        }
-    .book-service-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        margin-top: 27px;
-    }
-    .book-service-cancel,
-    .book-service-submit {
-        min-height: 50px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 11px 21px;
-        border-radius: 10px;
-        font-weight: 700;
-        text-decoration: none;
-    }
-    .book-service-cancel {
-        border: 1px solid #d5d0c8;
-        background: #ffffff;
-        color: #555555;
-    }
-        .book-service-cancel:hover {
-            border-color: #222222;
-            color: #222222;
-        }
-    .book-service-submit {
-        border: 1px solid #c8a96a;
-        background: linear-gradient(145deg, #e5c367, #bd852a);
-        color: #17110a;
-        transition: 0.25s;
-    }
-        .book-service-submit:hover {
-            background: linear-gradient(145deg, #efd582, #cb963a);
-            transform: translateY(-2px);
-        }
-    .book-service-warning {
-        padding: 24px;
-        border: 1px solid #ecd89c;
-        border-radius: 14px;
-        background: #fff9e8;
-        color: #6d571d;
-    }
-    @@media (max-width: 991.98px) {
-        .book-service-summary {
-            min-height: auto;
-        }
-    }
-    @@media (max-width: 767.98px) {
-        .book-service-page {
-            padding: 35px 0 65px;
-        }
-        .book-service-heading h1 {
-            font-size: 30px;
-        }
-        .book-service-summary,
-        .book-service-form {
-            padding: 25px 21px;
-            border-radius: 18px;
-        }
-        .book-service-actions {
-            flex-direction: column-reverse;
-        }
-        .book-service-cancel,
-        .book-service-submit {
-            width: 100%;
-        }
-    }
-</style>
-<section class="book-service-page">
-    <div class="container">
-        <div class="book-service-heading">
-            <span>Dịch vụ khách sạn</span>
-            <h1>Đặt dịch vụ</h1>
-            <p>
-                Chọn phòng đang lưu trú và số lượng dịch vụ bạn muốn sử dụng.
-            </p>
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+    <!-- Breadcrumb & Title -->
+    <div>
+        <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+            <a asp-action="CustomerServices" class="hover:underline text-secondary no-underline">Dịch vụ</a>
+            <span class="text-outline">/</span>
+            <span class="text-on-surface">Đặt dịch vụ</span>
         </div>
-        <div class="row g-4 align-items-stretch">
-            <div class="col-lg-4">
-                <aside class="book-service-summary">
-                    <div class="book-service-summary-icon">
-                        <i class="bi bi-bag-heart-fill"></i>
-                    </div>
-                    <small>Dịch vụ đã chọn</small>
-                    <h2>@Model.ServiceName</h2>
-                    <p class="book-service-description">
-                        @(string.IsNullOrWhiteSpace(Model.Description)
-                                                ? "Dịch vụ tiện ích được cung cấp trực tiếp trong thời gian khách hàng lưu trú tại khách sạn."
-                                                : Model.Description)
-                    </p>
-                    <div class="book-service-price">
-                        <span>Đơn giá dịch vụ</span>
-                        <strong>
-                            @Model.Price.ToString("N0") VNĐ
-                        </strong>
-                    </div>
-                    <ul class="book-service-benefits">
-                        <li>
-                            <i class="bi bi-check-circle-fill"></i>
-                            Xác nhận nhanh chóng
-                        </li>
-                        <li>
-                            <i class="bi bi-check-circle-fill"></i>
-                            Phục vụ trực tiếp tại khách sạn
-                        </li>
-                        <li>
-                            <i class="bi bi-check-circle-fill"></i>
-                            Chi phí được cộng vào Booking
-                        </li>
-                    </ul>
-                </aside>
+        <h1 class="font-serif text-2xl sm:text-3xl font-bold text-on-surface mt-1">Đăng Ký Sử Dụng Dịch Vụ</h1>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
+            <span class="material-symbols-outlined text-rose-600">error</span>
+            <span>@TempData["Error"]</span>
+        </div>
+    }
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+        <!-- Service Preview Card -->
+        <div class="md:col-span-5 bg-gradient-to-br from-primary-container to-[#282015] text-white p-6 rounded-2xl shadow-xl space-y-6">
+            <div class="flex items-center justify-between">
+                <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/10 text-secondary-fixed border border-white/10">
+                    Aura Resort Service
+                </span>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-secondary-container to-secondary text-primary-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[20px]">room_service</span>
+                </div>
             </div>
-            <div class="col-lg-8">
-                <div class="book-service-form">
-                    @if (TempData["Error"] != null)
-                    {
-                        <div class="alert alert-danger">
-                            @TempData["Error"]
-                        </div>
-                    }
-                    <div class="book-service-form-title">
-                        <span>
-                            <i class="bi bi-calendar2-check-fill"></i>
-                        </span>
-                        <div>
-                            <h3>Thông tin đặt dịch vụ</h3>
-                            <p>
-                                Dịch vụ chỉ áp dụng cho Booking đang nhận phòng.
-                            </p>
-                        </div>
-                    </div>
-                    @if (Model.ActiveBookings == null ||
-                                        !Model.ActiveBookings.Any())
-                    {
-                        <div class="book-service-warning">
-                            <h5 class="fw-bold">
-                                <i class="bi bi-exclamation-triangle-fill me-1"></i>
-                                Chưa có phòng đang nhận
-                            </h5>
-                            <p class="mb-0">
-                                Bạn chỉ có thể đặt dịch vụ khi Booking có trạng thái
-                                <strong>CheckedIn</strong>.
-                            </p>
-                        </div>
-                        <div class="book-service-actions">
-                            <a asp-controller="Home"
-                               asp-action="Index"
-                               asp-fragment="services"
-                               class="book-service-cancel">
-                                <i class="bi bi-arrow-left"></i>
-                                Quay lại dịch vụ
-                            </a>
-                            <a asp-controller="Bookings"
-                               asp-action="MyBookings"
-                               class="book-service-submit">
-                                <i class="bi bi-calendar-check"></i>
-                                Xem Booking của tôi
-                            </a>
-                        </div>
-                    }
-                    else
-                    {
-                        <form asp-controller="Services"
-                              asp-action="BookService"
-                              method="post">
-                            @Html.AntiForgeryToken()
-                            <div asp-validation-summary="ModelOnly"
-                                 class="alert alert-danger">
-                            </div>
-                            <input asp-for="ServiceId"
-                                   type="hidden" />
-                            <div class="mb-4">
-                                <label asp-for="BookingId"
-                                       class="form-label">
-                                    Phòng sử dụng dịch vụ
-                                </label>
-                                <select asp-for="BookingId"
-                                        asp-items="Model.ActiveBookings"
-                                        class="form-select">
-                                    <option value="">
-                                        -- Chọn Booking/phòng đang ở --
-                                    </option>
-                                </select>
-                                <span asp-validation-for="BookingId"
-                                      class="text-danger">
-                                </span>
-                            </div>
-                            <div class="mb-3">
-                                <label asp-for="Quantity"
-                                       class="form-label">
-                                    Số lượng dịch vụ
-                                </label>
-                                <div class="book-service-quantity">
-                                    <button type="button"
-                                            id="decreaseQuantity"
-                                            class="quantity-button">
-                                        <i class="bi bi-dash"></i>
-                                    </button>
-                                    <input asp-for="Quantity"
-                                           type="number"
-                                           min="1"
-                                           max="100"
-                                           class="form-control"
-                                           id="serviceQuantity" />
-                                    <button type="button"
-                                            id="increaseQuantity"
-                                            class="quantity-button">
-                                        <i class="bi bi-plus"></i>
-                                    </button>
-                                </div>
-                                <span asp-validation-for="Quantity"
-                                      class="text-danger">
-                                </span>
-                            </div>
-                            <div class="book-service-total">
-                                <div class="book-service-total-row">
-                                    <span>Đơn giá</span>
-                                    <strong>
-                                        @Model.Price.ToString("N0") VNĐ
-                                    </strong>
-                                </div>
-                                <div class="book-service-total-row">
-                                    <span>Thành tiền dự kiến</span>
-                                    <strong id="estimatedTotal">
-                                        @Model.Price.ToString("N0") VNĐ
-                                    </strong>
-                                </div>
-                            </div>
-                            <div class="book-service-actions">
-                                <a asp-controller="Home"
-                                   asp-action="Index"
-                                   asp-fragment="services"
-                                   class="book-service-cancel">
-                                    <i class="bi bi-x-lg"></i>
-                                    Hủy
-                                </a>
-                                <button type="submit"
-                                        class="book-service-submit">
-                                    <i class="bi bi-check-circle-fill"></i>
-                                    Xác nhận đặt dịch vụ
-                                </button>
-                            </div>
-                        </form>
-                    }
+
+            <div>
+                <h2 class="font-serif text-2xl font-bold text-secondary-fixed">@Model.ServiceName</h2>
+                <p class="text-xs text-white/70 mt-2 leading-relaxed">
+                    @(string.IsNullOrWhiteSpace(Model.Description) ? "Dịch vụ tiện ích thượng lưu phục vụ theo yêu cầu của quý khách." : Model.Description)
+                </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                <span class="text-[10px] text-white/60 uppercase block">Đơn giá niêm yết</span>
+                <div class="text-2xl font-bold font-serif text-secondary-fixed">@Model.Price.ToString("N0") <small class="text-xs text-white/80 font-normal">VNĐ</small></div>
+            </div>
+
+            <div class="space-y-2 text-xs text-white/80">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary-fixed text-[16px]">verified</span>
+                    <span>Phục vụ tận phòng / khuôn viên</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary-fixed text-[16px]">receipt</span>
+                    <span>Cộng dồn vào hóa đơn quyết toán</span>
                 </div>
             </div>
         </div>
+
+        <!-- Booking Form -->
+        <div class="md:col-span-7 bg-surface-container-lowest p-6 sm:p-8 rounded-2xl border border-outline-variant/60 shadow-sm space-y-6">
+            @if (Model.ActiveBookings == null || !Model.ActiveBookings.Any())
+            {
+                <div class="p-6 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 space-y-3 text-center">
+                    <span class="material-symbols-outlined text-4xl text-amber-600">hotel</span>
+                    <h3 class="font-bold text-sm">Chưa Có Phòng Đang Nhận</h3>
+                    <p class="text-xs text-amber-700 max-w-sm mx-auto">
+                        Quý khách chỉ có thể đặt dịch vụ khi đang lưu trú (Booking có trạng thái <strong>Đang lưu trú - CheckedIn</strong>).
+                    </p>
+                    <div class="pt-2 flex justify-center gap-2">
+                        <a asp-action="CustomerServices" class="px-4 py-2 rounded-xl border border-outline-variant text-xs font-semibold hover:bg-white transition no-underline">
+                            Quay lại dịch vụ
+                        </a>
+                        <a asp-controller="Bookings" asp-action="MyBookings" class="px-4 py-2 rounded-xl bg-secondary text-white text-xs font-bold shadow-sm transition no-underline">
+                            Xem Booking của tôi
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <form asp-controller="Services" asp-action="BookService" method="post" class="space-y-5">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs"></div>
+                    <input asp-for="ServiceId" type="hidden" />
+
+                    <div>
+                        <label asp-for="BookingId" class="block text-xs font-bold text-on-surface uppercase tracking-wider mb-2">
+                            Phòng đang lưu trú <span class="text-rose-600">*</span>
+                        </label>
+                        <select asp-for="BookingId" asp-items="Model.ActiveBookings"
+                                class="w-full h-11 px-3.5 bg-surface-container-low border border-outline-variant rounded-xl text-xs font-medium text-on-surface focus:outline-none focus:border-secondary focus:bg-surface-container-lowest transition-all">
+                            <option value="">-- Chọn phòng / Booking đang ở --</option>
+                        </select>
+                        <span asp-validation-for="BookingId" class="text-rose-600 text-[11px] mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Quantity" class="block text-xs font-bold text-on-surface uppercase tracking-wider mb-2">
+                            Số lượng dịch vụ <span class="text-rose-600">*</span>
+                        </label>
+                        <div class="flex items-center w-44 border border-outline-variant rounded-xl overflow-hidden bg-surface-container-low">
+                            <button type="button" id="decreaseQuantity" class="w-11 h-11 flex items-center justify-center text-on-surface hover:bg-surface-container transition">
+                                <span class="material-symbols-outlined text-[18px]">remove</span>
+                            </button>
+                            <input asp-for="Quantity" type="number" min="1" max="100" id="serviceQuantity"
+                                   class="w-full h-11 text-center bg-transparent border-none text-xs font-bold text-on-surface focus:outline-none" />
+                            <button type="button" id="increaseQuantity" class="w-11 h-11 flex items-center justify-center text-on-surface hover:bg-surface-container transition">
+                                <span class="material-symbols-outlined text-[18px]">add</span>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Quantity" class="text-rose-600 text-[11px] mt-1 block"></span>
+                    </div>
+
+                    <!-- Total Estimator -->
+                    <div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 space-y-2 text-xs">
+                        <div class="flex justify-between text-on-surface-variant">
+                            <span>Đơn giá:</span>
+                            <span class="font-semibold text-on-surface">@Model.Price.ToString("N0") đ</span>
+                        </div>
+                        <div class="flex justify-between text-on-surface-variant">
+                            <span>Số lượng:</span>
+                            <span class="font-semibold text-on-surface" id="qtyPreview">1</span>
+                        </div>
+                        <div class="pt-2 border-t border-outline-variant/40 flex justify-between font-bold text-sm text-on-surface">
+                            <span>Thành tiền dự kiến:</span>
+                            <span class="text-secondary font-serif text-base" id="estimatedTotal">@Model.Price.ToString("N0") VNĐ</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-3 pt-2">
+                        <a asp-action="CustomerServices" class="px-5 py-2.5 rounded-xl border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container-low transition no-underline">
+                            Hủy bỏ
+                        </a>
+                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-on-background shadow-md transition">
+                            Xác Nhận Đặt Dịch Vụ
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
     </div>
-</section>
+</div>
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const quantityInput =
-                document.getElementById("serviceQuantity");
-            const totalElement =
-                document.getElementById("estimatedTotal");
-            const decreaseButton =
-                document.getElementById("decreaseQuantity");
-            const increaseButton =
-                document.getElementById("increaseQuantity");
-            if (!quantityInput || !totalElement) {
-                return;
+        document.addEventListener('DOMContentLoaded', function () {
+            const price = @Model.Price;
+            const qtyInput = document.getElementById('serviceQuantity');
+            const qtyPreview = document.getElementById('qtyPreview');
+            const totalPreview = document.getElementById('estimatedTotal');
+            const btnDec = document.getElementById('decreaseQuantity');
+            const btnInc = document.getElementById('increaseQuantity');
+
+            function updateTotal() {
+                let q = parseInt(qtyInput.value) || 1;
+                if (q < 1) q = 1;
+                qtyInput.value = q;
+                if (qtyPreview) qtyPreview.textContent = q;
+                if (totalPreview) {
+                    totalPreview.textContent = (q * price).toLocaleString('vi-VN') + ' VNĐ';
+                }
             }
-            const servicePrice =
-                @Model.Price.ToString(
-                    System.Globalization.CultureInfo.InvariantCulture
-                        );
-        function updateEstimatedTotal() {
-            let quantity =
-                parseInt(quantityInput.value);
-            if (isNaN(quantity) || quantity < 1) {
-                quantity = 1;
+
+            if (btnDec) {
+                btnDec.addEventListener('click', function () {
+                    let q = parseInt(qtyInput.value) || 1;
+                    if (q > 1) {
+                        qtyInput.value = q - 1;
+                        updateTotal();
+                    }
+                });
             }
-            if (quantity > 100) {
-                quantity = 100;
+
+            if (btnInc) {
+                btnInc.addEventListener('click', function () {
+                    let q = parseInt(qtyInput.value) || 1;
+                    qtyInput.value = q + 1;
+                    updateTotal();
+                });
             }
-            quantityInput.value = quantity;
-            const total = servicePrice * quantity;
-            totalElement.textContent =
-                new Intl.NumberFormat("vi-VN")
-                    .format(total) + " VNĐ";
-        }
-        decreaseButton?.addEventListener(
-            "click",
-            function () {
-                let quantity =
-                    parseInt(quantityInput.value) || 1;
-                quantityInput.value =
-                    Math.max(1, quantity - 1);
-                updateEstimatedTotal();
+
+            if (qtyInput) {
+                qtyInput.addEventListener('input', updateTotal);
             }
-        );
-        increaseButton?.addEventListener(
-            "click",
-            function () {
-                let quantity =
-                    parseInt(quantityInput.value) || 1;
-                quantityInput.value =
-                    Math.min(100, quantity + 1);
-                updateEstimatedTotal();
-            }
-        );
-        quantityInput.addEventListener(
-            "input",
-            updateEstimatedTotal
-        );
-        updateEstimatedTotal();
-    });
-</script>
+        });
+    </script>
 }

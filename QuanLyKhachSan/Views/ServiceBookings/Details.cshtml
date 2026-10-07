@@ -3,85 +3,73 @@
     Layout = User.IsInRole("Admin")
         ? "~/Views/Shared/_AdminLayout.cshtml"
         : "~/Views/Shared/_ReceptionistLayout.cshtml";
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết dịch vụ đã sử dụng";
 }
-<h1>Details</h1>
-<div>
-    <h4>ServiceBooking</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BookingId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookingId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Booking)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Booking)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ServiceId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ServiceId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Service)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Service)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UnitPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UnitPrice)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalPrice)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="max-w-2xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-sm">room_service</span>
+                <span>Quản lý Dịch vụ sử dụng</span>
+            </div>
+            <h1 class="font-serif text-2xl md:text-3xl font-bold text-[#0b1c30] mt-1">
+                Chi tiết dịch vụ đã sử dụng
+            </h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <a asp-action="Index" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition shadow-sm">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                <span>Danh sách</span>
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0b1c30] text-white text-xs font-bold hover:bg-[#131b2e] transition shadow-sm">
+                <span class="material-symbols-outlined text-sm">edit</span>
+                <span>Chỉnh sửa</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="p-6 bg-[#0b1c30] text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#c5a880]/20 border border-[#c5a880]/40 flex items-center justify-center text-[#c5a880]">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                </div>
+                <div>
+                    <h3 class="font-serif font-bold text-lg text-white">@(Model.Service?.ServiceName ?? "Dịch vụ phòng")</h3>
+                    <p class="text-xs text-slate-300">Booking: @(Model.Booking?.BookingCode ?? $"#{Model.BookingId}")</p>
+                </div>
+            </div>
+            <span class="text-xs font-mono px-3 py-1 rounded-full bg-white/10 text-slate-200 border border-white/10">ID: #@Model.Id</span>
+        </div>
+
+        <div class="p-6 space-y-4 text-sm">
+            <div class="grid grid-cols-2 gap-4 py-2 border-b border-slate-100">
+                <span class="text-xs font-bold text-slate-400 uppercase">Mã Booking</span>
+                <span class="text-right font-bold text-slate-800">@(Model.Booking?.BookingCode ?? $"#{Model.BookingId}")</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 py-2 border-b border-slate-100">
+                <span class="text-xs font-bold text-slate-400 uppercase">Tên dịch vụ</span>
+                <span class="text-right font-bold text-slate-800">@(Model.Service?.ServiceName ?? "N/A")</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 py-2 border-b border-slate-100">
+                <span class="text-xs font-bold text-slate-400 uppercase">Số lượng</span>
+                <span class="text-right font-bold text-slate-800">@Model.Quantity</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 py-2 border-b border-slate-100">
+                <span class="text-xs font-bold text-slate-400 uppercase">Đơn giá</span>
+                <span class="text-right text-slate-700">@Model.UnitPrice.ToString("N0") VNĐ</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 py-2 border-b border-slate-100">
+                <span class="text-xs font-bold text-slate-400 uppercase">Tổng thành tiền</span>
+                <span class="text-right font-bold font-serif text-lg text-[#0b1c30]">@Model.TotalPrice.ToString("N0") VNĐ</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 py-2">
+                <span class="text-xs font-bold text-slate-400 uppercase">Ngày tạo</span>
+                <span class="text-right text-slate-500">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,199 +1,169 @@
 @model QuanLyKhachSan.ViewModels.BookingCreateViewModel
 @{
     Layout = User.IsInRole("Admin")
-        ? "~/Views/Shared/_AdminLayout.cshtml" : User.IsInRole("Receptionist")
-            ? "~/Views/Shared/_ReceptionistLayout.cshtml" : User.IsInRole("Customer")
-                ? "~/Views/Shared/_CustomerLayout.cshtml" : "~/Views/Shared/_Layout.cshtml";
+        ? "~/Views/Shared/_AdminLayout.cshtml"
+        : User.IsInRole("Receptionist")
+            ? "~/Views/Shared/_ReceptionistLayout.cshtml"
+            : User.IsInRole("Customer")
+                ? "~/Views/Shared/_CustomerLayout.cshtml"
+                : "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Đặt phòng";
-    int numberOfNights = Model.CheckOutDate > Model.CheckInDate
-        ? (Model.CheckOutDate - Model.CheckInDate).Days : 0;
+    int numberOfNights = Model.CheckOutDate > Model.CheckInDate ? (Model.CheckOutDate - Model.CheckInDate).Days : 0;
     decimal estimatedTotal = Model.PricePerNight * numberOfNights;
 }
-<div class="mb-4">
-    <h2 class="mb-1">
-        Đặt phòng
-    </h2>
-    <p class="text-muted mb-0">
-        Kiểm tra thông tin và xác nhận đặt phòng.
-    </p>
-</div>
-<div class="row g-4">
-    <!-- Form đặt phòng -->
-    <div class="col-lg-7">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4">
-                <form asp-controller="Bookings" asp-action="Create"  method="post">
-                    @Html.AntiForgeryToken()
-                    <div asp-validation-summary="ModelOnly"
-                         class="alert alert-danger">
-                    </div>
-                    <input asp-for="RoomId" type="hidden" />
-                    <div class="row g-3">
-                        <!-- Số phòng -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">
-                                Phòng
-                            </label>
-                            <input class="form-control" value="@Model.RoomNumber" readonly />
-                        </div>
-                        <!-- Giá phòng -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">
-                                Giá mỗi đêm
-                            </label>
-                            <input class="form-control" value="@Model.PricePerNight.ToString("N0") VNĐ" readonly />
-                        </div>
-                        <!-- Ngày nhận -->
-                        <div class="col-md-6">
-                            <label asp-for="CheckInDate" class="form-label fw-semibold">
-                                Ngày nhận phòng
-                            </label>
-                            <input asp-for="CheckInDate" type="date"
-                                   min="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" />
-                            <span asp-validation-for="CheckInDate" class="text-danger">
-                            </span>
-                        </div>
-                        <!-- Ngày trả -->
-                        <div class="col-md-6">
-                            <label asp-for="CheckOutDate" class="form-label fw-semibold">
-                                Ngày trả phòng
-                            </label>
-                            <input asp-for="CheckOutDate" type="date"
-                                   min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"  class="form-control" />
-                            <span asp-validation-for="CheckOutDate" class="text-danger">
-                            </span>
-                        </div>
-                        <!-- Người lớn -->
-                        <div class="col-md-6">
-                            <label asp-for="Adult" class="form-label fw-semibold">
-                                Số người lớn
-                            </label>
-                            <input asp-for="Adult" type="number"
-                                   min="1" max="20" class="form-control" />
-                            <span asp-validation-for="Adult" class="text-danger">
-                            </span>
-                        </div>
-                        <!-- Trẻ em -->
-                        <div class="col-md-6">
-                            <label asp-for="Children" class="form-label fw-semibold">
-                                Số trẻ em
-                            </label>
-                            <input asp-for="Children" type="number"
-                                   min="0" max="20" class="form-control" />
-                            <span asp-validation-for="Children" class="text-danger">
-                            </span>
-                        </div>
-                        <!-- Tiền cọc -->
-                        <div class="col-12">
-                            <label asp-for="Deposit" class="form-label fw-semibold">
-                                Tiền cọc
-                            </label>
-                            <div class="input-group">
-                                <input asp-for="Deposit" type="number"
-                                       min="0" step="10000" class="form-control" />
-                                <span class="input-group-text">
-                                    VNĐ
-                                </span>
-                            </div>
-                            <span asp-validation-for="Deposit" class="text-danger">
-                            </span>
-                        </div>
-                        <!-- Ghi chú -->
-                        <div class="col-12">
-                            <label asp-for="Note" class="form-label fw-semibold">
-                                Ghi chú
-                            </label>
-                            <textarea asp-for="Note" rows="4"
-                                      class="form-control" placeholder="Nhập yêu cầu đặc biệt nếu có...">
-                            </textarea>
-                            <span asp-validation-for="Note" class="text-danger">
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-check-circle me-1"></i>
-                            Xác nhận đặt phòng
-                        </button>
-                        <a asp-controller="Rooms" asp-action="Search"
-                           class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left me-1"></i>
-                            Quay lại tìm phòng
-                        </a>
-                    </div>
-                </form>
+
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold text-secondary uppercase tracking-wider mb-1">
+                <span>Trải Nghiệm Nghỉ Dưỡng</span>
+                <span class="text-slate-300">/</span>
+                <span class="text-slate-600">Xác Nhận Đặt Phòng</span>
             </div>
+            <h1 class="text-2xl sm:text-3xl font-bold font-serif text-on-surface">Đặt Phòng Nghỉ Dưỡng</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Kiểm tra thông tin chi tiết và gửi phiếu đăng ký lưu trú</p>
         </div>
+        <a asp-controller="Rooms" asp-action="Search"
+           class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-all">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>Tìm phòng khác</span>
+        </a>
     </div>
-    <!-- Thông tin tóm tắt -->
-    <div class="col-lg-5">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0">
-                    Thông tin đặt phòng
-                </h5>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Form Đặt Phòng -->
+        <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8">
+            <div class="flex items-center gap-3 pb-4 mb-6 border-b border-slate-100">
+                <div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+                </div>
+                <div>
+                    <h2 class="text-base font-bold text-on-surface">Thông Tin Lưu Trú</h2>
+                    <p class="text-xs text-slate-500">Vui lòng kiểm tra ngày nhận, trả phòng và số khách</p>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted">
-                        Phòng
-                    </span>
-                    <strong>
-                        @Model.RoomNumber
-                    </strong>
+
+            <form asp-controller="Bookings" asp-action="Create" method="post" class="space-y-5">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-rose-600 text-xs font-semibold"></div>
+                <input asp-for="RoomId" type="hidden" />
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">Phòng đã chọn</label>
+                        <input class="w-full h-11 px-4 bg-slate-100 border border-slate-200 text-on-surface text-sm rounded-xl font-bold" value="Phòng @Model.RoomNumber" readonly />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">Giá mỗi đêm</label>
+                        <input class="w-full h-11 px-4 bg-slate-100 border border-slate-200 text-secondary text-sm rounded-xl font-bold" value="@Model.PricePerNight.ToString("N0") VNĐ" readonly />
+                    </div>
+
+                    <div>
+                        <label asp-for="CheckInDate" class="block text-xs font-bold text-slate-700 mb-1.5">Ngày nhận phòng</label>
+                        <input asp-for="CheckInDate" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                               class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-semibold" />
+                        <span asp-validation-for="CheckInDate" class="text-rose-600 text-[11px] mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="CheckOutDate" class="block text-xs font-bold text-slate-700 mb-1.5">Ngày trả phòng</label>
+                        <input asp-for="CheckOutDate" type="date" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"
+                               class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-semibold" />
+                        <span asp-validation-for="CheckOutDate" class="text-rose-600 text-[11px] mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Adult" class="block text-xs font-bold text-slate-700 mb-1.5">Người lớn</label>
+                        <input asp-for="Adult" type="number" min="1" max="20"
+                               class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                        <span asp-validation-for="Adult" class="text-rose-600 text-[11px] mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Children" class="block text-xs font-bold text-slate-700 mb-1.5">Trẻ em</label>
+                        <input asp-for="Children" type="number" min="0" max="20"
+                               class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                        <span asp-validation-for="Children" class="text-rose-600 text-[11px] mt-1 block"></span>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label asp-for="Deposit" class="block text-xs font-bold text-slate-700 mb-1.5">Tiền đặt cọc trước (VNĐ)</label>
+                        <input asp-for="Deposit" type="number" min="0" step="10000"
+                               class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                        <span asp-validation-for="Deposit" class="text-rose-600 text-[11px] mt-1 block"></span>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label asp-for="Note" class="block text-xs font-bold text-slate-700 mb-1.5">Ghi chú & Yêu cầu đặc biệt</label>
+                        <textarea asp-for="Note" rows="3" placeholder="Nhập giờ dự kiến đến, yêu cầu kê thêm giường phụ nếu có..."
+                                  class="w-full p-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all"></textarea>
+                        <span asp-validation-for="Note" class="text-rose-600 text-[11px] mt-1 block"></span>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted">
-                        Ngày nhận
-                    </span>
-                    <strong>
-                        @Model.CheckInDate.ToString("dd/MM/yyyy")
-                    </strong>
+
+                <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                    <button type="submit"
+                            class="flex-1 h-12 bg-primary-container hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px] text-secondary-fixed">check_circle</span>
+                        <span>Xác Nhận Đặt Phòng</span>
+                    </button>
+                    <a asp-controller="Rooms" asp-action="Search"
+                       class="h-12 px-6 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center justify-center transition-all">
+                        Hủy
+                    </a>
                 </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted">
-                        Ngày trả
-                    </span>
-                    <strong>
-                        @Model.CheckOutDate.ToString("dd/MM/yyyy")
-                    </strong>
+            </form>
+        </div>
+
+        <!-- Tóm Tắt Chi Phí -->
+        <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8">
+            <div class="flex items-center gap-2 text-xs font-bold text-secondary uppercase tracking-wider mb-4">
+                <span class="material-symbols-outlined text-[18px]">receipt_long</span>
+                <span>Tóm Tắt Chi Phí Lưu Trú</span>
+            </div>
+
+            <div class="space-y-3 text-xs text-slate-600 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <div class="flex justify-between py-1 border-b border-slate-200/60">
+                    <span class="text-slate-500 font-medium">Buồng phòng:</span>
+                    <span class="font-bold text-on-surface">Phòng @Model.RoomNumber</span>
                 </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted">
-                        Số đêm
-                    </span>
-                    <strong>
-                        @numberOfNights
-                    </strong>
+                <div class="flex justify-between py-1 border-b border-slate-200/60">
+                    <span class="text-slate-500 font-medium">Ngày nhận:</span>
+                    <span class="font-semibold text-slate-800">@Model.CheckInDate.ToString("dd/MM/yyyy")</span>
                 </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted">
-                        Giá mỗi đêm
-                    </span>
-                    <strong>
-                        @Model.PricePerNight.ToString("N0") VNĐ
-                    </strong>
+                <div class="flex justify-between py-1 border-b border-slate-200/60">
+                    <span class="text-slate-500 font-medium">Ngày trả:</span>
+                    <span class="font-semibold text-slate-800">@Model.CheckOutDate.ToString("dd/MM/yyyy")</span>
                 </div>
-                <hr />
-                <div class="d-flex justify-content-between">
-                    <span class="fw-semibold">
-                        Tổng tiền dự kiến
-                    </span>
-                    <strong class="text-danger fs-5">
-                        @estimatedTotal.ToString("N0") VNĐ
-                    </strong>
+                <div class="flex justify-between py-1 border-b border-slate-200/60">
+                    <span class="text-slate-500 font-medium">Tổng số đêm:</span>
+                    <span class="font-bold text-on-surface">@numberOfNights đêm</span>
                 </div>
-                <div class="alert alert-info small mt-4 mb-0">
-                    Tổng tiền thực tế có thể thay đổi khi sử dụng
-                    thêm dịch vụ tại khách sạn.
+                <div class="flex justify-between py-1">
+                    <span class="text-slate-500 font-medium">Đơn giá đêm:</span>
+                    <span class="font-bold text-secondary">@Model.PricePerNight.ToString("N0") VNĐ</span>
                 </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex items-baseline justify-between mb-4">
+                <div>
+                    <div class="text-xs font-bold text-slate-700">TỔNG TIỀN DỰ KIẾN</div>
+                    <div class="text-[10px] text-slate-400">Đã bao gồm thuế và phí dịch vụ</div>
+                </div>
+                <div class="text-right">
+                    <span class="text-2xl font-bold font-serif text-secondary">@estimatedTotal.ToString("N0")</span>
+                    <span class="text-xs font-semibold text-slate-500">VNĐ</span>
+                </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 text-[11px] text-amber-800 leading-relaxed">
+                <span class="font-bold">Lưu ý:</span> Tổng tiền thực tế có thể thay đổi tùy thuộc vào các dịch vụ phát sinh hoặc số lượng sử dụng minibar trong quá trình lưu trú.
             </div>
         </div>
     </div>
 </div>
-@section Scripts
-{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

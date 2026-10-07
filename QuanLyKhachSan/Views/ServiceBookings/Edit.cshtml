@@ -3,75 +3,82 @@
     Layout = User.IsInRole("Admin")
         ? "~/Views/Shared/_AdminLayout.cshtml"
         : "~/Views/Shared/_ReceptionistLayout.cshtml";
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh sửa dịch vụ sử dụng";
 }
-<h1>Edit</h1>
-<h4>ServiceBooking</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="max-w-2xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-sm">room_service</span>
+                <span>Quản lý Dịch vụ sử dụng</span>
+            </div>
+            <h1 class="font-serif text-2xl md:text-3xl font-bold text-[#0b1c30] mt-1">
+                Chỉnh sửa dịch vụ đã sử dụng
+            </h1>
+        </div>
+        <a asp-action="Index" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition shadow-sm">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Danh sách</span>
+        </a>
+    </div>
+
+    <!-- Edit Card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="p-6 bg-[#0b1c30] text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#c5a880]/20 border border-[#c5a880]/40 flex items-center justify-center text-[#c5a880]">
+                    <span class="material-symbols-outlined">edit_note</span>
+                </div>
+                <div>
+                    <h3 class="font-serif font-bold text-lg text-white">Cập nhật số lượng &amp; Đơn giá</h3>
+                    <p class="text-xs text-slate-300">Bản ghi ID: #@Model.Id</p>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Edit" method="post" class="p-6 md:p-8 space-y-6">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="BookingId" class="control-label"></label>
-                <input asp-for="BookingId" class="form-control" />
-                <span asp-validation-for="BookingId" class="text-danger"></span>
+            <input type="hidden" asp-for="BookingId" />
+            <input type="hidden" asp-for="ServiceId" />
+
+            <div class="space-y-4">
+                <div>
+                    <label asp-for="Quantity" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số lượng</label>
+                    <input asp-for="Quantity" type="number" min="1" max="100" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" />
+                    <span asp-validation-for="Quantity" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="UnitPrice" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Đơn giá (VNĐ)</label>
+                    <input asp-for="UnitPrice" type="number" min="0" step="1000" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" />
+                    <span asp-validation-for="UnitPrice" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="TotalPrice" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Thành tiền (VNĐ)</label>
+                    <input asp-for="TotalPrice" type="number" min="0" step="1000" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm font-bold font-serif focus:outline-none" />
+                    <span asp-validation-for="TotalPrice" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Booking" class="control-label"></label>
-                <input asp-for="Booking" class="form-control" />
-                <span asp-validation-for="Booking" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ServiceId" class="control-label"></label>
-                <input asp-for="ServiceId" class="form-control" />
-                <span asp-validation-for="ServiceId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Service" class="control-label"></label>
-                <input asp-for="Service" class="form-control" />
-                <span asp-validation-for="Service" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UnitPrice" class="control-label"></label>
-                <input asp-for="UnitPrice" class="form-control" />
-                <span asp-validation-for="UnitPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalPrice" class="control-label"></label>
-                <input asp-for="TotalPrice" class="form-control" />
-                <span asp-validation-for="TotalPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsDeleted" class="control-label"></label>
-                <input asp-for="IsDeleted" class="form-check-input" />
-                <span asp-validation-for="IsDeleted" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+                <a asp-action="Index" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition">
+                    Hủy bỏ
+                </a>
+                <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] text-white text-xs font-bold shadow-md hover:shadow-lg transition">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    <span>Lưu thay đổi</span>
+                </button>
             </div>
         </form>
     </div>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }

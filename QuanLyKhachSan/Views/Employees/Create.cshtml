@@ -3,136 +3,128 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Thêm nhân viên";
 }
-<h2 class="mb-4">Thêm nhân viên</h2>
-<div class="card shadow-sm">
-    <div class="card-body">
-        <form asp-controller="Employees"
-              asp-action="Create"
-              method="post">
-            @Html.AntiForgeryToken()
-            <div asp-validation-summary="ModelOnly"
-                 class="alert alert-danger">
+
+<div class="max-w-4xl mx-auto space-y-6">
+    <!-- Top Action / Breadcrumb -->
+    <div class="flex items-center justify-between">
+        <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Quay lại danh sách nhân viên
+        </a>
+    </div>
+
+    <!-- Main Card -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-[#0b1c30] to-[#1e293b] p-8 text-white relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 opacity-10">
+                <span class="material-symbols-outlined text-[160px]">badge</span>
             </div>
-            <div class="mb-3">
-                <label asp-for="AccountId" class="form-label">
-                    Tài khoản đăng nhập
-                </label>
-                <select asp-for="AccountId"
-                        asp-items="ViewBag.AccountId"
-                        class="form-select">
-                    <option value="">
-                        -- Chọn tài khoản nhân viên --
-                    </option>
-                </select>
-                <span asp-validation-for="AccountId"
-                      class="text-danger">
+            <div class="relative z-10">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-[#c5a880]/20 text-[#c5a880] border border-[#c5a880]/30 uppercase tracking-widest inline-block mb-3">
+                    Hồ sơ nhân sự
                 </span>
+                <h1 class="font-serif text-2xl lg:text-3xl font-bold tracking-tight">Thêm Nhân Viên Mới</h1>
+                <p class="text-slate-300 text-sm mt-1">Khởi tạo hồ sơ nhân viên, vị trí công tác và mức lương</p>
             </div>
-            <div class="mb-3">
-                <label asp-for="FullName" class="form-label">
-                    Họ và tên
-                </label>
-                <input asp-for="FullName"
-                       class="form-control" />
-                <span asp-validation-for="FullName"
-                      class="text-danger">
-                </span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Gender" class="form-label">
-                    Giới tính
-                </label>
-                <select asp-for="Gender" class="form-select">
-                    <option value="">-- Chọn giới tính --</option>
-                    <option value="Nam">Nam</option>
-                    <option value="Nữ">Nữ</option>
-                    <option value="Khác">Khác</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label asp-for="DateOfBirth" class="form-label">
-                    Ngày sinh
-                </label>
-                <input asp-for="DateOfBirth"
-                       type="date"
-                       class="form-control" />
-            </div>
-            <div class="mb-3">
-                <label asp-for="Phone" class="form-label">
-                    Số điện thoại
-                </label>
-                <input asp-for="Phone"
-                       class="form-control" />
-                <span asp-validation-for="Phone"
-                      class="text-danger">
-                </span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label">
-                    Email
-                </label>
-                <input asp-for="Email"
-                       type="email"
-                       class="form-control" />
-                <span asp-validation-for="Email"
-                      class="text-danger">
-                </span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Address" class="form-label">
-                    Địa chỉ
-                </label>
-                <input asp-for="Address"
-                       class="form-control" />
-            </div>
-            <div class="mb-3">
-                <label asp-for="Position" class="form-label">
-                    Chức vụ
-                </label>
-                <input asp-for="Position"
-                       class="form-control"
-                       placeholder="Ví dụ: Lễ tân" />
-            </div>
-            <div class="mb-3">
-                <label asp-for="Salary" class="form-label">
-                    Lương
-                </label>
-                <input asp-for="Salary"
-                       type="number"
-                       min="0"
-                       class="form-control" />
-                <span asp-validation-for="Salary"
-                      class="text-danger">
-                </span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="HireDate" class="form-label">
-                    Ngày vào làm
-                </label>
-                <input asp-for="HireDate"
-                       type="date"
-                       class="form-control" />
-            </div>
-            <div class="form-check mb-4">
-                <input asp-for="Status"
-                       class="form-check-input" />
-                <label asp-for="Status"
-                       class="form-check-label">
-                    Đang làm việc
-                </label>
-            </div>
-            <button type="submit" class="btn btn-primary">
-                Lưu nhân viên
-            </button>
-            <a asp-action="Index"
-               class="btn btn-secondary">
-                Quay lại
-            </a>
-        </form>
+        </div>
+
+        <!-- Form Body -->
+        <div class="p-8 lg:p-10">
+            <form asp-controller="Employees" asp-action="Create" method="post" class="space-y-6">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm"></div>
+
+                <!-- Account Link -->
+                <div>
+                    <label asp-for="AccountId" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tài khoản đăng nhập</label>
+                    <div class="relative">
+                        <select asp-for="AccountId" asp-items="ViewBag.AccountId" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium appearance-none">
+                            <option value="">-- Chọn tài khoản nhân viên --</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                    </div>
+                    <span asp-validation-for="AccountId" class="text-xs text-rose-500 mt-1 block"></span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- FullName -->
+                    <div class="sm:col-span-2">
+                        <label asp-for="FullName" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Họ và tên <span class="text-rose-500">*</span></label>
+                        <input asp-for="FullName" placeholder="Ví dụ: Trần Văn Nam" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="FullName" class="text-xs text-rose-500 mt-1 block"></span>
+                    </div>
+
+                    <!-- Position -->
+                    <div>
+                        <label asp-for="Position" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Chức vụ / Vị trí</label>
+                        <input asp-for="Position" placeholder="Ví dụ: Lễ tân, Thu ngân, Quản lý ca" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Position" class="text-xs text-rose-500 mt-1 block"></span>
+                    </div>
+
+                    <!-- Salary -->
+                    <div>
+                        <label asp-for="Salary" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Mức lương (VNĐ)</label>
+                        <input asp-for="Salary" type="number" step="100000" placeholder="Ví dụ: 8000000" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Salary" class="text-xs text-rose-500 mt-1 block"></span>
+                    </div>
+
+                    <!-- Gender -->
+                    <div>
+                        <label asp-for="Gender" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Giới tính</label>
+                        <div class="relative">
+                            <select asp-for="Gender" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium appearance-none">
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                        </div>
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div>
+                        <label asp-for="DateOfBirth" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ngày sinh</label>
+                        <input asp-for="DateOfBirth" type="date" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                    </div>
+
+                    <!-- Phone -->
+                    <div>
+                        <label asp-for="Phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số điện thoại</label>
+                        <input asp-for="Phone" type="tel" placeholder="Ví dụ: 0912345678" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Phone" class="text-xs text-rose-500 mt-1 block"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label asp-for="Email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Email</label>
+                        <input asp-for="Email" type="email" placeholder="Ví dụ: nhanvien@grandstay.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                        <span asp-validation-for="Email" class="text-xs text-rose-500 mt-1 block"></span>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="sm:col-span-2">
+                        <label asp-for="Address" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Địa chỉ</label>
+                        <input asp-for="Address" placeholder="Địa chỉ nơi ở của nhân viên" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="pt-6 border-t border-slate-100 flex items-center justify-end gap-3">
+                    <a asp-action="Index" class="px-6 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+                        Hủy
+                    </a>
+                    <button type="submit" class="px-7 py-3 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] hover:from-[#b9986b] hover:to-[#634e2f] text-white text-sm font-semibold shadow-lg shadow-[#c5a880]/20 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">person_add</span>
+                        Thêm nhân viên
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

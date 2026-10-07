@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-tertiary-fixed-variant":"#004395","primary":"#000000","on-primary":"#ffffff","inverse-primary":"#bec6e0","tertiary-fixed-dim":"#adc6ff","on-surface":"#0b1c30","surface-container-highest":"#d3e4fe","surface":"#f8f9ff","inverse-on-surface":"#eaf1ff","on-secondary-fixed":"#281800","surface-dim":"#cbdbf5","primary-fixed-dim":"#bec6e0","error-container":"#ffdad6","on-error":"#ffffff","tertiary-fixed":"#d8e2ff","tertiary-container":"#001a42","on-secondary-container":"#78603e","surface-bright":"#f8f9ff","on-tertiary-container":"#3980f4","on-background":"#0b1c30","inverse-surface":"#213145","primary-fixed":"#dae2fd","on-tertiary":"#ffffff","outline":"#76777d","secondary-fixed-dim":"#e0c298","on-error-container":"#93000a","on-surface-variant":"#45464d","on-secondary":"#ffffff","surface-variant":"#d3e4fe","on-secondary-fixed-variant":"#584323","secondary-fixed":"#fedeb2","surface-container-high":"#dce9ff","on-primary-fixed":"#131b2e","surface-container-lowest":"#ffffff","on-tertiary-fixed":"#001a42","secondary":"#725b38","secondary-container":"#fedeb2","surface-container":"#e5eeff","surface-container-low":"#eff4ff","background":"#f8f9ff","on-primary-fixed-variant":"#3f465c","on-primary-container":"#7c839b","tertiary":"#000000","primary-container":"#131b2e","outline-variant":"#c6c6cd","error":"#ba1a1a","surface-tint":"#565e74"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-sm":"0.5rem","space-lg":"1.5rem","space-xl":"2rem","space-xs":"0.25rem","space-md":"1rem","margin":"2rem","gutter":"1.5rem","gutter-mobile":"0.75rem","margin-mobile":"1rem"},"fontFamily":{"title-sm":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"caption":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"display-lg":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"display-lg-mobile":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"]},"fontSize":{"title-sm":["16px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"600"}],"label-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"caption":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"headline-lg-mobile":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"display-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"display-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.015em","fontWeight":"700"}],"label-md":["13px",{"lineHeight":"18px","fontWeight":"500"}],"headline-md":["18px",{"lineHeight":"26px","letterSpacing":"-0.01em","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-72 bg-primary-container text-on-primary shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center justify-between bg-primary-container"><div class="flex items-center gap-space-sm"><img alt="Aura Hotel PMS Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XbXl40bqNRlyQ4Jt_YHpkUHZJd_cURt-1ELbUGwUSeZPPMYNa25PeB4PHAszjQYDTokHPvk0QtqaaRPlZMcCR4NXTBJ1-GJrmX68RdfK8DNq40xLf-_43J18fs1n-2Sr9uER0dRBwSCoFhRrelKICux7lXM-k5OYqh4qqA-ccB_I8qTTz69I5qJLi2f3-Wh8nvf3kRipqrFEMHRtHAdCFIbOTTMdYysyuUYp_iktE"/><div class="flex flex-col"><span class="font-title-sm text-title-sm text-on-primary tracking-tight leading-none">AURA PMS</span><span class="font-caption text-caption text-secondary-fixed tracking-wider uppercase mt-space-xs">Luxury Hospitality</span></div></div></div><div class="px-space-md py-space-sm"><div class="bg-surface-container-highest/10 rounded-lg p-space-sm flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></span><span class="font-caption text-caption text-secondary-fixed uppercase font-semibold">Boutique Resort</span></div><span class="font-caption text-caption text-on-primary-container px-space-xs py-0.5 rounded bg-surface-container-highest/20">5-Star</span></div></div><nav class="px-space-sm space-y-space-md py-space-sm" data-active-classes="bg-secondary text-on-secondary font-semibold shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Tổng Quan</div><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="dashboard" href="#">Dashboard</a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Quản Lý</div><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="rooms" href="#">Phòng</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="room-types" href="#">Loại phòng</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="bookings" href="#">Đặt phòng</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="customers" href="#">Khách hàng &amp; Hội viên VIP</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="employees" href="#">Nhân viên</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="services" href="#">Dịch vụ</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="invoices" href="#">Hóa đơn</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="reviews" href="#">Đánh giá</a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Nghiệp Vụ Lễ Tân</div><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="check-in-check-out" href="#">Check-in / Check-out</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="room-logs" href="#">Nhật ký phòng</a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Báo Cáo</div><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="revenue" href="#">Doanh thu</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="occupancy" href="#">Công suất phòng</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="booking-statistics" href="#">Thống kê đặt phòng</a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Hệ Thống</div><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="settings" href="#">Cài đặt</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all font-body-sm text-body-sm" data-path="login" href="#">Đăng xuất</a></div></nav></div><div class="p-space-md m-space-sm rounded-lg bg-surface-container-highest/10"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-secondary-fixed text-[20px]">shield_person</span><div class="flex flex-col"><span class="font-caption text-caption text-on-primary-container uppercase">Phiên làm việc</span><span class="font-label-sm text-label-sm text-on-primary font-medium truncate">Quản trị viên cấp cao</span></div></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">menu_open</span></button><div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant"><span class="hover:text-on-surface transition-colors cursor-pointer">Trang chủ</span><span class="text-outline-variant font-caption">/</span><span class="text-on-surface font-medium">Quản lý Khách hàng &amp; CRM</span></div><div class="relative ml-space-md"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><span class="material-symbols-outlined text-outline text-[18px]">search</span></div><input class="w-80 h-10 pl-9 pr-14 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all" placeholder="Tìm phòng, mã đặt phòng, khách hàng..." type="text"/><div class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none"><kbd class="px-1.5 py-0.5 rounded bg-surface-container-lowest font-caption text-caption text-outline shadow-sm">Ctrl K</kbd></div></div></div><div class="flex items-center gap-space-md"><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1.5 rounded-full bg-surface-container-low"><span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span><span class="w-2 h-2 rounded-full bg-secondary -ml-2"></span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Khách sạn: Aura Grand Resort &amp; Spa</span></div><button class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-error text-on-error font-caption text-[10px] flex items-center justify-center font-bold">3</span></button><button class="inline-flex items-center gap-space-xs px-space-md h-10 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md font-medium hover:bg-secondary/90 shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-all" type="button"><span class="material-symbols-outlined text-[18px]">person_add</span><span>+ Thêm khách hàng</span></button><div class="flex items-center gap-space-sm pl-space-sm cursor-pointer select-none group"><img alt="Trần Nam Phong Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-surface-container-high" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo4jhUqnXHB4TFnzfDLd47kitbrvEhg03gF7_eVZ7EFI-yu3fYCpMI4ARfr0NrxYcoHIEKGQlGbybTgMEm2c6C1lPYiXPqB976tVvov4xp7vP_bB9fUEGzPnC9w6Wbdwln04XVfD_50x_kJ0GsjifQ01l2cbp2qsroo42jDzsdLxq7UWeC-B24MapUAswNuTG_N3yIFumm3FfH-Bw8aReToAUDW-XYeuyVz8mG5w"/><div class="flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface font-semibold group-hover:text-secondary transition-colors">Trần Nam Phong</span><span class="font-caption text-caption text-on-surface-variant font-medium">Administrator</span></div><span class="material-symbols-outlined text-outline group-hover:text-on-surface transition-colors text-[18px]">expand_more</span></div></div></header><main class="relative pt-16 w-full min-h-screen px-space-xl py-space-xl bg-background"><div class="flex flex-col w-full space-y-space-lg">
+<!-- Header / Breadcrumb / Actions Section -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-col space-y-space-xs">
+<div class="flex items-center gap-space-xs font-caption text-caption text-on-surface-variant">
+<span class="hover:text-on-surface transition-colors cursor-pointer">Trang chủ</span>
+<span class="text-outline-variant font-caption">/</span>
+<span class="hover:text-on-surface transition-colors cursor-pointer">Quản lý</span>
+<span class="text-outline-variant font-caption">/</span>
+<span class="text-secondary font-semibold">Hồ sơ Khách hàng &amp; Hội viên VIP</span>
+</div>
+<div class="flex items-baseline gap-space-sm flex-wrap">
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight">Quản lý Khách hàng &amp; Hội viên VIP</h1>
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px]">hotel_class</span>
+          360° Luxury CRM
+        </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-4xl">
+        Quản trị cơ sở dữ liệu khách hàng CRM 360°, theo dõi lịch sử lưu trú, phân hạng thẻ thành viên VIP Loyalty và cá nhân hóa trải nghiệm khách sạn nghỉ dưỡng cao cấp.
+      </p>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-space-sm flex-wrap self-start lg:self-center shrink-0">
+<button class="inline-flex items-center gap-space-xs px-space-md h-10 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md font-medium shadow-sm hover:bg-surface-container-low transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-outline">file_download</span>
+<span>Xuất dữ liệu CRM</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-md h-10 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md font-medium shadow-sm hover:bg-surface-container-low transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">workspace_premium</span>
+<span>Cấu hình Hạng thẻ</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-md h-10 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-medium shadow-md hover:bg-primary transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>+ Thêm hồ sơ mới</span>
+</button>
+</div>
+</div>
+<!-- KPI Metric Summary (4 Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Card 1 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Tổng hồ sơ khách hàng</span>
+<span class="font-display-lg text-display-lg text-on-surface font-bold mt-1">4,820</span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[22px]">contacts</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs mt-space-md font-label-sm text-label-sm">
+<span class="inline-flex items-center text-on-secondary-fixed bg-secondary-container/60 px-1.5 py-0.5 rounded font-semibold">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +128
+        </span>
+<span class="text-on-surface-variant">hồ sơ mới trong tháng</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Hội viên VIP hoạt động</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-display-lg text-display-lg text-on-surface font-bold">1,245</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">25.8% tổng tệp</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-secondary-container/40 flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[22px]">loyalty</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-2">
+<div class="flex items-center gap-1.5 font-caption text-caption text-on-surface-variant">
+<span class="inline-block w-2 h-2 rounded-full bg-primary-container"></span>
+<span>48 Diamond</span>
+<span class="text-outline-variant">•</span>
+<span>215 Titanium</span>
+<span class="text-outline-variant">•</span>
+<span>482 Gold</span>
+</div>
+<span class="text-secondary font-label-sm text-label-sm font-semibold">+18.2% YoY</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Doanh thu đóng góp từ VIP</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-display-lg text-display-lg text-on-surface font-bold">892.4 Tr ₫</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">62.6% tổng rev</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-space-md">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Chi tiêu bình quân (ADR VIP):</span>
+<span class="font-label-sm text-label-sm text-on-surface font-bold">5.85 Tr / đêm</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Tỷ lệ quay lại (Retention)</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-display-lg text-display-lg text-on-surface font-bold">38.6%</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">⭐ 4.92 / 5.0</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[22px]">autorenew</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-space-md">
+<div class="w-full bg-surface-container-low rounded-full h-1.5 mr-3 overflow-hidden">
+<div class="bg-secondary h-1.5 rounded-full" style="width: 78%"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold shrink-0">94.8% CSAT</span>
+</div>
+</div>
+</div>
+<!-- Multi-Filter & Segment Tabs Section -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+<!-- Segment Tabs -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-xs overflow-x-auto pb-1 md:pb-0">
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-semibold shrink-0 shadow-sm" type="button">
+          Tất cả khách hàng (4,820)
+        </button>
+<button class="px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md font-medium shrink-0 transition-colors" type="button">
+          Hội viên VIP Loyalty (1,245)
+        </button>
+<button class="px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md font-medium shrink-0 transition-colors" type="button">
+          Khách đang lưu trú (86)
+        </button>
+<button class="px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md font-medium shrink-0 transition-colors" type="button">
+          Khách Doanh nghiệp / MICE (340)
+        </button>
+<button class="px-space-md py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md font-medium shrink-0 transition-colors" type="button">
+          Khách quốc tế (1,560)
+        </button>
+</div>
+<!-- View Switcher -->
+<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg self-end md:self-center">
+<button class="p-1.5 rounded bg-surface-container-lowest text-primary shadow-sm" title="Dạng bảng chi tiết" type="button">
+<span class="material-symbols-outlined text-[18px]">table_rows</span>
+</button>
+<button class="p-1.5 rounded text-outline hover:text-on-surface" title="Dạng thẻ hồ sơ" type="button">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+</div>
+</div>
+<!-- Search & Filters Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-space-sm pt-space-xs">
+<!-- Search Input -->
+<div class="lg:col-span-5 relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-[18px]">person_search</span>
+</div>
+<input class="w-full h-10 pl-9 pr-3 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest shadow-sm" placeholder="Tìm theo Họ tên, SĐT, Email, CCCD/Hộ chiếu, Mã #AURA..." type="text" value="Đoàn Minh Trí"/>
+</div>
+<!-- Dropdown 1: Hạng Thẻ -->
+<div class="lg:col-span-2 relative">
+<select class="w-full h-10 px-3 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface focus:outline-none shadow-sm cursor-pointer appearance-none">
+<option>Hạng thẻ: Tất cả</option>
+<option>VIP Diamond</option>
+<option selected="">VIP Titanium</option>
+<option>VIP Gold</option>
+<option>VIP Silver</option>
+<option>Standard</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-outline text-[18px] pointer-events-none">expand_more</span>
+</div>
+<!-- Dropdown 2: Chi tiêu lũy kế LTV -->
+<div class="lg:col-span-2 relative">
+<select class="w-full h-10 px-3 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface focus:outline-none shadow-sm cursor-pointer appearance-none">
+<option>Chi tiêu: Tất cả LTV</option>
+<option selected="">Trên 100 Tr ₫</option>
+<option>50 - 100 Tr ₫</option>
+<option>Dưới 50 Tr ₫</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-outline text-[18px] pointer-events-none">expand_more</span>
+</div>
+<!-- Dropdown 3: Kênh đặt phòng -->
+<div class="lg:col-span-2 relative">
+<select class="w-full h-10 px-3 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface focus:outline-none shadow-sm cursor-pointer appearance-none">
+<option>Kênh: Tất cả</option>
+<option>Direct Resort</option>
+<option>OTA (Agoda/Booking)</option>
+<option>Concierge / Hotline</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-outline text-[18px] pointer-events-none">expand_more</span>
+</div>
+<!-- Filter Reset / More Button -->
+<div class="lg:col-span-1 flex items-center justify-end">
+<button class="w-full h-10 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface flex items-center justify-center gap-1 text-label-sm font-label-sm transition-colors shadow-sm" title="Xóa bộ lọc" type="button">
+<span class="material-symbols-outlined text-[18px]">filter_alt_off</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Split View: CRM Guest Master List (60%) & 360° Profile Deep-Dive (40%) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: Guest Directory Table (7 cols / ~58%) -->
+<div class="lg:col-span-7 flex flex-col space-y-space-md">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<!-- Table Top Meta -->
+<div class="px-space-md py-space-sm bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface">
+<input checked="" class="rounded accent-primary-container h-4 w-4 cursor-pointer" type="checkbox"/>
+<span class="font-semibold">Khách hàng phù hợp:</span>
+<span class="font-bold text-secondary">5</span>
+<span class="text-on-surface-variant font-normal">/ 4,820 khách</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-caption text-caption text-on-surface-variant">Sắp xếp theo: <strong>Chi tiêu LTV cao nhất</strong></span>
+</div>
+</div>
+<!-- Master Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/60 text-on-surface-variant font-caption text-caption uppercase tracking-wider">
+<th class="py-3 pl-space-md pr-2 w-10">
+<span class="sr-only">Chọn</span>
+</th>
+<th class="py-3 px-3">Khách hàng &amp; Mã thẻ</th>
+<th class="py-3 px-3">Hạng VIP</th>
+<th class="py-3 px-3">Liên hệ</th>
+<th class="py-3 px-3">Lưu trú / LTV</th>
+<th class="py-3 px-3">Trạng thái</th>
+<th class="py-3 pr-space-md pl-2 text-right">Tác vụ</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm text-on-surface">
+<!-- Guest 1: Active Row (Đoàn Minh Trí) -->
+<tr class="bg-secondary-container/20 hover:bg-secondary-container/30 transition-colors cursor-pointer group">
+<td class="py-3.5 pl-space-md pr-2">
+<input checked="" class="rounded accent-primary-container h-4 w-4" type="checkbox"/>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-space-sm">
+<div class="relative shrink-0">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm ring-2 ring-secondary" data-alt="Chân dung doanh nhân Việt Nam nam giới trung niên lịch lãm trong trang phục vest may đo cao cấp tại sảnh khu nghỉ dưỡng sang trọng" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfb5xo4SITeRDg7kOWkmJzUpTQFWwjaPtGnGEs9n_bW6SY-Yd00l5sR49cS4NLSEq-LFm8uqvRk7JNvJY4fszg4CjA6h0XggLZvQkR42gnPD5H76lC1byydkHpuUv53mF5jUnSoKhzFeDponbLfMiDkdia82gcbzVu-TZVvpgN9ysjrhpstQ-3uMJXgLQhxxBIxE4Kx1bV66Uawud6QT_jPH9iQ2718rDqxq7PTA"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold text-[9px]">T</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-bold group-hover:text-secondary transition-colors truncate">Đoàn Minh Trí</span>
+<span class="font-caption text-caption text-secondary font-semibold font-mono">#AURA-8821</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-container text-secondary-fixed text-caption font-caption font-semibold shadow-xs">
+<span class="material-symbols-outlined text-[12px] text-secondary-fixed">diamond</span>
+                    Titanium
+                  </span>
+</td>
+<td class="py-3.5 px-3 min-w-44">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">+84 912 *** 888</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">tri.doan@luxurypacific.vn</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">148.2 Tr ₫</span>
+<span class="font-caption text-caption text-on-surface-variant">14 lượt (32 đêm)</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-secondary-fixed text-caption font-caption font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                    P.402 Ocean Suite
+                  </span>
+</td>
+<td class="py-3.5 pr-space-md pl-2 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container-highest text-secondary" title="Hồ sơ chi tiết 360°" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container-highest text-on-surface-variant" title="Tạo đặt phòng" type="button">
+<span class="material-symbols-outlined text-[18px]">calendar_add_on</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Guest 2: Nguyễn Hoàng Lan -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="py-3.5 pl-space-md pr-2">
+<input class="rounded accent-primary-container h-4 w-4" type="checkbox"/>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-space-sm">
+<div class="relative shrink-0">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="Chân dung nữ doanh nhân Việt Nam thanh lịch quý phái đang mỉm cười nhẹ nhàng trong không gian khách sạn 5 sao mang ánh sáng vàng ấm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF-XlxAQJPRaA9dsFTTLJ_mK_xNTWq_KfuZhxmW2yeh9ctQ06ZQzMkMA43n9dk70W8HafPJTO5S8e9amlPOwNc-j3zzjkjHYPjMmuv2h3zy9UsP8jY3OKuqeppJdgO3crDF00CPiiJa0i6B1KhHiVTJ3SieUUcUwvx7bP8n2k4_IIflWF1Ejyh6Ebj6iNS_kUhWQxr_Zpg8x3X6uw4y7u7z3iiuZBkctiM9wPAhg"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-[9px]">G</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold group-hover:text-secondary transition-colors truncate">Nguyễn Hoàng Lan</span>
+<span class="font-caption text-caption text-outline font-mono">#AURA-9014</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container text-caption font-caption font-semibold">
+<span class="material-symbols-outlined text-[12px] text-secondary">workspace_premium</span>
+                    Gold VIP
+                  </span>
+</td>
+<td class="py-3.5 px-3 min-w-44">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">+84 903 *** 122</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">lan.nguyen@vngroup.com</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">68.5 Tr ₫</span>
+<span class="font-caption text-caption text-on-surface-variant">8 lượt (18 đêm)</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-caption font-caption">
+                    15/10/2025
+                  </span>
+</td>
+<td class="py-3.5 pr-space-md pl-2 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container-high text-on-surface-variant" title="Hồ sơ chi tiết 360°" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container-high text-on-surface-variant" title="Tạo đặt phòng" type="button">
+<span class="material-symbols-outlined text-[18px]">calendar_add_on</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Guest 3: Alexander Vance -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="py-3.5 pl-space-md pr-2">
+<input class="rounded accent-primary-container h-4 w-4" type="checkbox"/>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-space-sm">
+<div class="relative shrink-0">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm ring-2 ring-primary" data-alt="Chân dung quý ông người Anh tóc hoa râm phong thái thượng lưu quý tộc tại resort cao cấp bên bờ biển nhiệt đới" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKB0zLx8hJjCOSruX6bf8Dmhk2yukhScSOY7WgpSA_gtGJhAz-XgsM2EaeAa4RjlKAx14ocmWkBBHHoyA1Ueiv2iw6YgVjw0SGgOADmRyi5iUg2S0F8pV_Wcbxa5MODa6uAMBXFXqoEyhhPDTB8iIwj6IFcBI2W_OpXlWZ4ztSKVWs4O6Q5ITCfYb1eYD6xjdBQHBP_SCV7t3__pny-TDx5mI1JQKsU2pp_6N57Q"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-[9px]">D</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold group-hover:text-secondary transition-colors truncate">Alexander Vance</span>
+<span class="material-symbols-outlined text-[14px] text-secondary" title="VIP Trọn đời">verified</span>
+</div>
+<span class="font-caption text-caption text-outline font-mono">#AURA-7620 • UK</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary text-secondary-fixed text-caption font-caption font-bold shadow-sm">
+<span class="material-symbols-outlined text-[12px] text-secondary-fixed">hotel_class</span>
+                    Diamond VIP
+                  </span>
+</td>
+<td class="py-3.5 px-3 min-w-44">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">+44 7911 *** 450</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">alex.vance@londoncap.co.uk</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">320.0 Tr ₫</span>
+<span class="font-caption text-caption text-on-surface-variant">22 lượt (58 đêm)</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-caption text-caption">
+                    Maybach transfer req.
+                  </span>
+</td>
+<td class="py-3.5 pr-space-md pl-2 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container-high text-on-surface-variant" title="Hồ sơ chi tiết 360°" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container-high text-on-surface-variant" title="Tạo đặt phòng" type="button">
+<span class="material-symbols-outlined text-[18px]">calendar_add_on</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Guest 4: Lê Hoàng Long -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="py-3.5 pl-space-md pr-2">
+<input class="rounded accent-primary-container h-4 w-4" type="checkbox"/>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-space-sm">
+<div class="relative shrink-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center font-bold text-label-md">LL</div>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-[9px]">G</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold group-hover:text-secondary transition-colors truncate">Lê Hoàng Long</span>
+<span class="font-caption text-caption text-outline font-mono">#AURA-9350</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container text-caption font-caption font-semibold">
+<span class="material-symbols-outlined text-[12px] text-secondary">workspace_premium</span>
+                    Gold VIP
+                  </span>
+</td>
+<td class="py-3.5 px-3 min-w-44">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">+84 988 *** 999</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">long.le@hanoiinvest.vn</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">52.4 Tr ₫</span>
+<span class="font-caption text-caption text-on-surface-variant">6 lượt (14 đêm)</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-secondary-fixed text-caption font-caption font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                    Villa 102 Beachfront
+                  </span>
+</td>
+<td class="py-3.5 pr-space-md pl-2 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container-high text-on-surface-variant" title="Hồ sơ chi tiết 360°" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container-high text-on-surface-variant" title="Tạo đặt phòng" type="button">
+<span class="material-symbols-outlined text-[18px]">calendar_add_on</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Guest 5: Elena Rostova -->
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="py-3.5 pl-space-md pr-2">
+<input class="rounded accent-primary-container h-4 w-4" type="checkbox"/>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-space-sm">
+<div class="relative shrink-0">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="Chân dung người phụ nữ Pháp trẻ trung quý phái đang thưởng thức trà chiều tại khu vườn biệt thự khách sạn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC49D_iOY8gkp6kojVeG-hr4ufSayhVqCUmwvLh0NeKADkpKFIMfgcAfQ0Z07axtDGj-02BqHWMLaWWg8jusglR1gw60NVS2ccbe1nhkuOgwoRLkyd-XIg17ZuWIyV0zC_Qhx4V62KYgiDYd9TF3ZQriYcyROFlhBahPVk5vGVWgTQuNCFg5KHih1v4BQC0jmcpu23XyJ5d_ajJyhl6fC1g1HH4qXz05qcmNiY_bQ"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-outline-variant text-on-surface flex items-center justify-center font-bold text-[9px]">S</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold group-hover:text-secondary transition-colors truncate">Elena Rostova</span>
+<span class="font-caption text-caption text-outline font-mono">#AURA-8102 • Pháp</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface text-caption font-caption font-semibold">
+<span class="material-symbols-outlined text-[12px] text-outline">stars</span>
+                    Silver VIP
+                  </span>
+</td>
+<td class="py-3.5 px-3 min-w-44">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">+33 612 *** 890</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">elena.rostova@parisart.fr</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">38.0 Tr ₫</span>
+<span class="font-caption text-caption text-on-surface-variant">4 lượt (12 đêm)</span>
+</div>
+</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-caption font-caption">
+                    Spa &amp; Yoga fan
+                  </span>
+</td>
+<td class="py-3.5 pr-space-md pl-2 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container-high text-on-surface-variant" title="Hồ sơ chi tiết 360°" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container-high text-on-surface-variant" title="Tạo đặt phòng" type="button">
+<span class="material-symbols-outlined text-[18px]">calendar_add_on</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- PMS Standard Pagination -->
+<div class="px-space-md py-space-sm bg-surface-container-low/80 flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm font-caption text-caption text-on-surface-variant">
+<span>Hiển thị <strong>1 - 5</strong> của <strong>4,820</strong> khách hàng</span>
+<span class="text-outline-variant">|</span>
+<span>Hiển thị: <strong>25 / trang</strong></span>
+</div>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-outline hover:text-on-surface flex items-center justify-center transition-colors shadow-xs" disabled="" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary-container text-on-primary font-label-sm text-label-sm font-bold flex items-center justify-center shadow-xs" type="button">
+              1
+            </button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-sm text-label-sm flex items-center justify-center transition-colors shadow-xs" type="button">
+              2
+            </button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-sm text-label-sm flex items-center justify-center transition-colors shadow-xs" type="button">
+              3
+            </button>
+<span class="px-1 text-outline font-caption">...</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-sm text-label-sm flex items-center justify-center transition-colors shadow-xs" type="button">
+              965
+            </button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container flex items-center justify-center transition-colors shadow-xs" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick Operational Advice Banner -->
+<div class="p-space-md rounded-xl bg-surface-container-high/50 flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[22px] shrink-0">tips_and_updates</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Quy chuẩn VIP Aura PMS Protocol:</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Đối với khách hạng <strong>Titanium</strong> &amp; <strong>Diamond</strong> đang lưu trú, Tổng Quản lý (GM) hoặc Trưởng Bộ phận Tiền sảnh (FOM) cần trực tiếp chào đón tại sảnh Executive Lounge hoặc phòng riêng trước 18:00 mỗi ngày.
+          </p>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: 360° Profile Deep-Dive for Active Guest (5 cols / ~42%) -->
+<div class="lg:col-span-5 flex flex-col space-y-space-md">
+<!-- Luxury Digital Membership Card -->
+<div class="relative w-full rounded-2xl p-space-lg text-on-primary shadow-xl overflow-hidden bg-gradient-to-br from-primary-container via-surface-tint to-primary">
+<!-- Background Metallic Glow Details -->
+<div class="absolute -top-16 -right-16 w-52 h-52 bg-secondary-fixed/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-16 -left-16 w-52 h-52 bg-secondary/20 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Top Card Row: Brand & Tier Badge -->
+<div class="flex items-center justify-between relative z-10">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary-fixed text-[26px]">hotel_class</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold tracking-widest text-on-primary uppercase leading-tight">AURA HOTELS &amp; RESORTS</span>
+<span class="font-caption text-caption text-secondary-fixed uppercase tracking-wider">VIP Loyalty Club</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-fixed/20 backdrop-blur-md text-secondary-fixed font-caption text-caption font-bold tracking-wider uppercase">
+            TITANIUM VIP
+          </span>
+</div>
+<!-- Middle Card: Chip & Card Number -->
+<div class="my-space-lg relative z-10 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-primary-container uppercase tracking-widest">Mã số hội viên</span>
+<span class="font-headline-md text-headline-md font-mono tracking-widest text-on-primary font-bold">AURA-TITANIUM-8821</span>
+</div>
+<!-- Digital QR Stamp -->
+<div class="w-12 h-12 bg-white rounded-lg p-1 shrink-0 shadow-md flex items-center justify-center">
+<svg class="w-full h-full text-primary" fill="currentColor" viewbox="0 0 24 24">
+<path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm-2 10h8v8H2v-8zm2 2v4h4v-4H4zm10-14h8v8h-8V2zm2 2v4h4V4h-4zm2 10h-2v2h2v-2zm-2 4h-2v4h4v-2h-2v-2zm4-4h2v6h-2v-6zm0 6h2v2h-2v-2zm-4 0h2v2h-2v-2zM6 6h2v2H6V6zm0 12h2v2H6v-2zm12-12h2v2h-2V6z"></path>
+</svg>
+</div>
+</div>
+<!-- Bottom Card: Guest Name & Expiration -->
+<div class="flex items-end justify-between relative z-10 pt-2 border-t border-white/10">
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-primary-container uppercase tracking-wider">Họ và tên chủ thẻ</span>
+<span class="font-title-sm text-title-sm font-bold text-on-primary tracking-wide">DOAN MINH TRI</span>
+</div>
+<div class="flex items-center gap-space-md text-right">
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-primary-container uppercase">Gia nhập</span>
+<span class="font-caption text-caption font-mono text-on-primary font-semibold">12/2023</span>
+</div>
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-primary-container uppercase">Hiệu lực</span>
+<span class="font-caption text-caption font-mono text-secondary-fixed font-semibold">12/2026</span>
+</div>
+</div>
+</div>
+<!-- Tier Progress Bar Inside Card -->
+<div class="mt-space-md pt-space-xs relative z-10">
+<div class="flex items-center justify-between font-caption text-caption mb-1">
+<span class="text-secondary-fixed font-semibold">18,450 / 25,000 pts</span>
+<span class="text-on-primary-container">Thiếu 6,550 pts (hoặc 3 đêm) để lên <strong>Diamond</strong></span>
+</div>
+<div class="w-full bg-white/20 rounded-full h-1.5 overflow-hidden">
+<div class="bg-secondary-fixed h-1.5 rounded-full" style="width: 73.8%"></div>
+</div>
+</div>
+</div>
+<!-- Deep Dive Tabs Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-space-md space-y-space-md">
+<!-- Tab Navigation -->
+<div class="flex items-center border-b border-surface-container-high pb-2 gap-space-sm overflow-x-auto">
+<button class="pb-1 font-label-md text-label-md font-bold text-secondary border-b-2 border-secondary shrink-0" type="button">
+            Tổng quan &amp; Sở thích
+          </button>
+<button class="pb-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors shrink-0" type="button">
+            Lịch sử lưu trú (14)
+          </button>
+<button class="pb-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors shrink-0" type="button">
+            Chi tiêu &amp; Điểm thưởng
+          </button>
+<button class="pb-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors shrink-0" type="button">
+            Ghi chú phục vụ
+          </button>
+</div>
+<!-- Section 1: Guest Preferences & Concierge Insights -->
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-caption text-caption uppercase tracking-wider text-on-surface-variant font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">room_service</span>
+              Sở thích cá nhân hóa (Concierge Insights)
+            </span>
+<button class="text-caption font-caption text-secondary hover:underline" type="button">Chỉnh sửa</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+<!-- Preference 1 -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary shrink-0 mt-0.5">bed</span>
+<div class="flex flex-col min-w-0">
+<span class="font-caption text-caption text-on-surface-variant uppercase">Phòng nghỉ ưa thích</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium leading-snug">
+                  Tầng cao, hướng trực diện biển, tuyệt đối yên tĩnh, giường King size.
+                </span>
+</div>
+</div>
+<!-- Preference 2 -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-error shrink-0 mt-0.5">no_food</span>
+<div class="flex flex-col min-w-0">
+<span class="font-caption text-caption text-on-surface-variant uppercase">Ẩm thực &amp; Dị ứng</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium leading-snug">
+<strong class="text-error font-semibold">Dị ứng hoa ly</strong>, thích vang đỏ Bordeaux, cà phê đen nóng không đường.
+                </span>
+</div>
+</div>
+<!-- Preference 3 -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary shrink-0 mt-0.5">airline_seat_individual_suite</span>
+<div class="flex flex-col min-w-0">
+<span class="font-caption text-caption text-on-surface-variant uppercase">Gối &amp; Tiện nghi buồng</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium leading-snug">
+                  Menu gối lông vũ mềm (Goose Down), dép đi trong phòng size 42.
+                </span>
+</div>
+</div>
+<!-- Preference 4 -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary shrink-0 mt-0.5">cake</span>
+<div class="flex flex-col min-w-0">
+<span class="font-caption text-caption text-on-surface-variant uppercase">Dịp đặc biệt lưu ý</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium leading-snug">
+                  Kỷ niệm ngày cưới 20/10 hàng năm (setup bánh kem &amp; hoa hồng nhung).
+                </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Financial Breakdown (LTV Distribution) -->
+<div class="space-y-space-xs pt-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-caption text-caption uppercase tracking-wider text-on-surface-variant font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary-container">pie_chart</span>
+              Cơ cấu chi tiêu lũy kế (LTV: 148,200,000 ₫)
+            </span>
+</div>
+<!-- Stacked Bar Chart Visual -->
+<div class="w-full h-3 rounded-full overflow-hidden flex bg-surface-container-high">
+<div class="bg-primary-container h-full" style="width: 70.3%" title="Phòng nghỉ: 70.3%"></div>
+<div class="bg-secondary h-full" style="width: 21.9%" title="Ẩm thực F&amp;B: 21.9%"></div>
+<div class="bg-secondary-fixed h-full" style="width: 7.8%" title="Spa &amp; Tiện ích: 7.8%"></div>
+</div>
+<div class="grid grid-cols-3 gap-space-xs pt-1 font-caption text-caption text-on-surface">
+<div class="flex flex-col">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span>Buồng phòng</span>
+</div>
+<span class="font-bold">104.2 Tr (70.3%)</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>F&amp;B &amp; Lounge</span>
+</div>
+<span class="font-bold">32.5 Tr (21.9%)</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed"></span>
+<span>Spa &amp; Tour</span>
+</div>
+<span class="font-bold">11.5 Tr (7.8%)</span>
+</div>
+</div>
+</div>
+<!-- Section 3: Active Privileges (Titanium Benefits) -->
+<div class="space-y-space-xs pt-space-xs">
+<span class="font-caption text-caption uppercase tracking-wider text-on-surface-variant font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified_user</span>
+            Đặc quyền VIP Titanium đang áp dụng
+          </span>
+<div class="space-y-1.5">
+<div class="flex items-center gap-2 p-2 rounded-lg bg-surface-container-low font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">percent</span>
+<span class="text-on-surface font-medium">Giảm giá 15% tất cả dịch vụ Spa &amp; Nhà hàng (Auto-Folio)</span>
+</div>
+<div class="flex items-center gap-2 p-2 rounded-lg bg-surface-container-low font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">upgrade</span>
+<span class="text-on-surface font-medium">Miễn phí nâng hạng phòng Suite (tùy tình trạng phòng sẵn có)</span>
+</div>
+<div class="flex items-center gap-2 p-2 rounded-lg bg-surface-container-low font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">directions_car</span>
+<span class="text-on-surface font-medium">Đưa đón sân bay bằng xe riêng hạng sang (Đã kích hoạt)</span>
+</div>
+<div class="flex items-center gap-2 p-2 rounded-lg bg-surface-container-low font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">schedule</span>
+<span class="text-on-surface font-medium">Check-in sớm lúc 11:00 &amp; Trả phòng muộn đến 16:00</span>
+</div>
+</div>
+</div>
+<!-- Executive Quick Actions for Guest -->
+<div class="pt-space-sm border-t border-surface-container-high grid grid-cols-1 sm:grid-cols-3 gap-space-xs">
+<button class="px-2 py-2.5 rounded-lg bg-primary-container text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center gap-1 hover:bg-primary transition-colors shadow-xs" type="button">
+<span class="material-symbols-outlined text-[16px]">book_online</span>
+<span>Tạo đặt phòng</span>
+</button>
+<button class="px-2 py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-medium flex items-center justify-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">card_giftcard</span>
+<span>Tặng voucher</span>
+</button>
+<button class="px-2 py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-medium flex items-center justify-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">edit_note</span>
+<span>Ghi chú lễ tân</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

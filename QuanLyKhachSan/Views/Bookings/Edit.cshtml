@@ -15,163 +15,117 @@
     {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
-    ViewData["Title"] = "Chỉnh sửa Booking";
+    ViewData["Title"] = "Chỉnh sửa Booking - " + Model.BookingCode;
 }
-<div class="container py-4">
-    <div class="mb-4">
-        <a asp-controller="Bookings"
-           asp-action="Index"
-           class="btn btn-outline-dark rounded-pill px-4">
-            <i class="bi bi-arrow-left me-2"></i>
-            Quay lại danh sách
+
+<div class="max-w-4xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-sm">edit_calendar</span>
+                <span>Quản lý Đặt phòng</span>
+            </div>
+            <h1 class="font-serif text-2xl md:text-3xl font-bold text-[#0b1c30] mt-1">
+                Chỉnh sửa Booking: @Model.BookingCode
+            </h1>
+        </div>
+        <a asp-controller="Bookings" asp-action="Index" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition shadow-sm">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Danh sách</span>
         </a>
     </div>
-    <div class="card border-0 shadow-lg overflow-hidden">
-        <div class="card-header border-0 text-white p-4"
-             style="background:linear-gradient(135deg,#121212,#3b2d18);">
-            <div class="d-flex align-items-center gap-3">
-                <span class="d-inline-flex align-items-center justify-content-center rounded-3"
-                      style="width:52px;height:52px;background:#c8a96a;color:#111;">
-                    <i class="bi bi-pencil-square fs-4"></i>
-                </span>
+
+    <!-- Edit Form Card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="p-6 bg-[#0b1c30] text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#c5a880]/20 border border-[#c5a880]/40 flex items-center justify-center text-[#c5a880]">
+                    <span class="material-symbols-outlined">edit_document</span>
+                </div>
                 <div>
-                    <h3 class="mb-1">Chỉnh sửa Booking</h3>
-                    <p class="mb-0 text-white-50">
-                        Mã Booking: @Model.BookingCode
-                    </p>
+                    <h3 class="font-serif font-bold text-lg text-white">Cập nhật thông tin lưu trú</h3>
+                    <p class="text-xs text-slate-300">Khách hàng: @(Model.Customer?.FullName ?? "Khách lẻ")</p>
                 </div>
             </div>
+            <span class="text-xs px-3 py-1 rounded-full bg-white/10 font-mono text-slate-200 border border-white/10">ID: #@Model.Id</span>
         </div>
-        <div class="card-body p-4 p-lg-5">
-            <form asp-controller="Bookings"
-                  asp-action="Edit"
-                  asp-route-id="@Model.Id"
-                  method="post">
-                @Html.AntiForgeryToken()
-                <input asp-for="Id" type="hidden" />
-                <div asp-validation-summary="ModelOnly"
-                     class="alert alert-danger">
+
+        <form asp-controller="Bookings" asp-action="Edit" asp-route-id="@Model.Id" method="post" class="p-6 md:p-8 space-y-6">
+            @Html.AntiForgeryToken()
+            <input asp-for="Id" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Mã Booking</label>
+                    <input value="@Model.BookingCode" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 font-mono text-sm cursor-not-allowed" disabled />
                 </div>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">
-                            Mã Booking
-                        </label>
-                        <input value="@Model.BookingCode"
-                               class="form-control form-control-lg"
-                               disabled />
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="Status"
-                               class="form-label fw-semibold">
-                            Trạng thái
-                        </label>
-                        <select asp-for="Status"
-                                asp-items="Html.GetEnumSelectList<BookingStatus>()"
-                                class="form-select form-select-lg">
-                        </select>
-                        <span asp-validation-for="Status"
-                              class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="CheckInDate"
-                               class="form-label fw-semibold">
-                            Ngày nhận phòng
-                        </label>
-                        <input asp-for="CheckInDate"
-                               type="date"
-                               class="form-control form-control-lg" />
-                        <span asp-validation-for="CheckInDate"
-                              class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="CheckOutDate"
-                               class="form-label fw-semibold">
-                            Ngày trả phòng
-                        </label>
-                        <input asp-for="CheckOutDate"
-                               type="date"
-                               class="form-control form-control-lg" />
-                        <span asp-validation-for="CheckOutDate"
-                              class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="Adult"
-                               class="form-label fw-semibold">
-                            Số người lớn
-                        </label>
-                        <input asp-for="Adult"
-                               type="number"
-                               min="1"
-                               class="form-control form-control-lg" />
-                        <span asp-validation-for="Adult"
-                              class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="Children"
-                               class="form-label fw-semibold">
-                            Số trẻ em
-                        </label>
-                        <input asp-for="Children"
-                               type="number"
-                               min="0"
-                               class="form-control form-control-lg" />
-                        <span asp-validation-for="Children"
-                              class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="Deposit"
-                               class="form-label fw-semibold">
-                            Tiền cọc
-                        </label>
-                        <div class="input-group input-group-lg">
-                            <input asp-for="Deposit"
-                                   type="number"
-                                   min="0"
-                                   step="1000"
-                                   class="form-control" />
-                            <span class="input-group-text">VNĐ</span>
-                        </div>
-                        <span asp-validation-for="Deposit"
-                              class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">
-                            Tổng tiền hiện tại
-                        </label>
-                        <div class="form-control form-control-lg bg-light">
-                            @Model.TotalAmount.ToString("N0") VNĐ
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <label asp-for="Note"
-                               class="form-label fw-semibold">
-                            Ghi chú
-                        </label>
-                        <textarea asp-for="Note"
-                                  rows="4"
-                                  class="form-control"
-                                  placeholder="Nhập ghi chú cho Booking"></textarea>
-                        <span asp-validation-for="Note"
-                              class="text-danger small"></span>
+
+                <div>
+                    <label asp-for="Status" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Trạng thái xử lý</label>
+                    <select asp-for="Status" asp-items="Html.GetEnumSelectList<BookingStatus>()" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]"></select>
+                    <span asp-validation-for="Status" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="CheckInDate" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ngày nhận phòng</label>
+                    <input asp-for="CheckInDate" type="date" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" />
+                    <span asp-validation-for="CheckInDate" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="CheckOutDate" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ngày trả phòng</label>
+                    <input asp-for="CheckOutDate" type="date" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" />
+                    <span asp-validation-for="CheckOutDate" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Adult" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số người lớn</label>
+                    <input asp-for="Adult" type="number" min="1" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" />
+                    <span asp-validation-for="Adult" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Children" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số trẻ em</label>
+                    <input asp-for="Children" type="number" min="0" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" />
+                    <span asp-validation-for="Children" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Deposit" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tiền cọc (VNĐ)</label>
+                    <input asp-for="Deposit" type="number" min="0" step="1000" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" />
+                    <span asp-validation-for="Deposit" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tổng tiền dự kiến</label>
+                    <div class="w-full px-4 py-3 rounded-xl border border-[#725b38]/30 bg-[#725b38]/5 text-[#0b1c30] font-bold font-serif text-base">
+                        @Model.TotalAmount.ToString("N0") VNĐ
                     </div>
                 </div>
-                <div class="d-flex flex-wrap gap-2 mt-4">
-                    <button type="submit"
-                            class="btn btn-warning px-4 py-2 fw-semibold">
-                        <i class="bi bi-check-circle me-2"></i>
-                        Lưu thay đổi
-                    </button>
-                    <a asp-controller="Bookings"
-                       asp-action="Index"
-                       class="btn btn-secondary px-4 py-2">
-                        Hủy
-                    </a>
+
+                <div class="md:col-span-2">
+                    <label asp-for="Note" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ghi chú yêu cầu của khách</label>
+                    <textarea asp-for="Note" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" placeholder="Nhập ghi chú đặc biệt cho booking..."></textarea>
+                    <span asp-validation-for="Note" class="text-red-500 text-xs mt-1 block"></span>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+                <a asp-controller="Bookings" asp-action="Index" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition">
+                    Hủy bỏ
+                </a>
+                <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] text-white text-xs font-bold shadow-md hover:shadow-lg transition">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    <span>Lưu thay đổi</span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

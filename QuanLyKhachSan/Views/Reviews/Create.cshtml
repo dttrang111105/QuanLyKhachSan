@@ -1,67 +1,85 @@
 @model QuanLyKhachSan.ViewModels.Reviews.ReviewFormViewModel
 @{
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
-    ViewData["Title"] = "Đánh giá phòng";
+    ViewData["Title"] = "Đánh giá phòng " + Model.RoomNumber;
 }
-<div class="row justify-content-center">
-    <div class="col-lg-7">
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-dark text-white p-4">
-                <h3 class="mb-1">Đánh giá phòng @Model.RoomNumber</h3>
-                <p class="mb-0 text-white-50">
-                    @Model.RoomTypeName
-                    @if (!string.IsNullOrWhiteSpace(Model.BookingCode))
-                    {
-                        <span> · Booking @Model.BookingCode</span>
-                    }
-                </p>
+
+<div class="max-w-2xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-sm">hotel_class</span>
+                <span>Trải nghiệm khách hàng</span>
             </div>
-            <div class="card-body p-4">
-                <form asp-action="Create" method="post">
-                    @Html.AntiForgeryToken()
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    <input asp-for="BookingId" type="hidden" />
-                    <input asp-for="RoomId" type="hidden" />
-                    <div class="mb-4">
-                        <label asp-for="Rating" class="form-label fw-semibold"></label>
-                        <select asp-for="Rating" class="form-select">
-                            <option value="5">5 sao - Tuyệt vời</option>
-                            <option value="4">4 sao - Tốt</option>
-                            <option value="3">3 sao - Bình thường</option>
-                            <option value="2">2 sao - Chưa tốt</option>
-                            <option value="1">1 sao - Rất không hài lòng</option>
-                        </select>
-                        <span asp-validation-for="Rating" class="text-danger"></span>
-                    </div>
-                    <div class="mb-4">
-                        <label asp-for="Comment" class="form-label fw-semibold"></label>
-                        <textarea asp-for="Comment"
-                                  class="form-control"
-                                  rows="6"
-                                  maxlength="1000"
-                                  placeholder="Chia sẻ trải nghiệm của bạn về phòng, vệ sinh, tiện nghi và chất lượng phục vụ..."></textarea>
-                        <div class="form-text">Tối đa 1000 ký tự.</div>
-                        <span asp-validation-for="Comment" class="text-danger"></span>
-                    </div>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-warning">
-                            <i class="bi bi-star-fill me-1"></i>
-                            Gửi đánh giá
-                        </button>
-                        <a asp-controller="Bookings"
-                           asp-action="MyBookings"
-                           class="btn btn-outline-secondary">
-                            Quay lại
-                        </a>
-                    </div>
-                </form>
+            <h1 class="font-serif text-2xl md:text-3xl font-bold text-[#0b1c30] mt-1">
+                Đánh giá Phòng @Model.RoomNumber
+            </h1>
+        </div>
+        <a asp-controller="Bookings" asp-action="MyBookings" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition shadow-sm">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Booking của tôi</span>
+        </a>
+    </div>
+
+    <!-- Review Form Card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="p-6 bg-[#0b1c30] text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#c5a880]/20 border border-[#c5a880]/40 flex items-center justify-center text-[#c5a880]">
+                    <span class="material-symbols-outlined">reviews</span>
+                </div>
+                <div>
+                    <h3 class="font-serif font-bold text-lg text-white">@(Model.RoomTypeName ?? "Hạng phòng sang trọng")</h3>
+                    <p class="text-xs text-slate-300">Booking mã: @(string.IsNullOrWhiteSpace(Model.BookingCode) ? $"#{Model.BookingId}" : Model.BookingCode)</p>
+                </div>
             </div>
         </div>
+
+        <form asp-action="Create" method="post" class="p-6 md:p-8 space-y-6">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+            <input asp-for="BookingId" type="hidden" />
+            <input asp-for="RoomId" type="hidden" />
+
+            <div class="space-y-4">
+                <div>
+                    <label asp-for="Rating" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Mức độ hài lòng</label>
+                    <select asp-for="Rating" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]">
+                        <option value="5">⭐⭐⭐⭐⭐ - 5 Sao (Rất tuyệt vời &amp; Hài lòng)</option>
+                        <option value="4">⭐⭐⭐⭐ - 4 Sao (Tốt, đạt chuẩn kỳ vọng)</option>
+                        <option value="3">⭐⭐⭐ - 3 Sao (Bình thường / Tạm ổn)</option>
+                        <option value="2">⭐⭐ - 2 Sao (Chưa hài lòng, cần cải thiện)</option>
+                        <option value="1">⭐ - 1 Sao (Rất không hài lòng)</option>
+                    </select>
+                    <span asp-validation-for="Rating" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Comment" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Cảm nhận chi tiết</label>
+                    <textarea asp-for="Comment" rows="5" maxlength="1000" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" placeholder="Chia sẻ trải nghiệm của bạn về không gian phòng, tiện nghi, dịch vụ vệ sinh và thái độ nhân viên..."></textarea>
+                    <div class="flex justify-between items-center mt-1 text-[11px] text-slate-400">
+                        <span>Đóng góp của bạn giúp chúng tôi nâng cao chất lượng dịch vụ</span>
+                        <span>Tối đa 1000 ký tự</span>
+                    </div>
+                    <span asp-validation-for="Comment" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+                <a asp-controller="Bookings" asp-action="MyBookings" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition">
+                    Hủy bỏ
+                </a>
+                <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] text-white text-xs font-bold shadow-md hover:shadow-lg transition">
+                    <span class="material-symbols-outlined text-sm">send</span>
+                    <span>Gửi đánh giá</span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
-@section Scripts
-{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

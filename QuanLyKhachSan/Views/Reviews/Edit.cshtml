@@ -3,61 +3,86 @@
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
     ViewData["Title"] = "Sửa đánh giá";
 }
-<div class="row justify-content-center">
-    <div class="col-lg-7">
-        @if (TempData["Info"] != null)
-        {
-            <div class="alert alert-info">@TempData["Info"]</div>
-        }
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-warning p-4">
-                <h3 class="mb-1">Sửa đánh giá phòng @Model.RoomNumber</h3>
-                <p class="mb-0">@Model.RoomTypeName</p>
+
+<div class="max-w-2xl mx-auto">
+    <!-- Breadcrumb & Back -->
+    <div class="mb-6 flex items-center justify-between">
+        <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Quay lại danh sách
+        </a>
+    </div>
+
+    @if (TempData["Info"] != null)
+    {
+        <div class="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-blue-600">info</span>
+            <span>@TempData["Info"]</span>
+        </div>
+    }
+
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <!-- Header Banner -->
+        <div class="bg-gradient-to-r from-[#0b1c30] to-[#1e293b] p-8 text-white relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 opacity-10">
+                <span class="material-symbols-outlined text-[160px]">rate_review</span>
             </div>
-            <div class="card-body p-4">
-                <form asp-action="Edit"
-                      asp-route-id="@Model.Id"
-                      method="post">
-                    @Html.AntiForgeryToken()
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    <input asp-for="Id" type="hidden" />
-                    <input asp-for="RoomId" type="hidden" />
-                    <div class="mb-4">
-                        <label asp-for="Rating" class="form-label fw-semibold"></label>
-                        <select asp-for="Rating" class="form-select">
-                            <option value="5">5 sao - Tuyệt vời</option>
-                            <option value="4">4 sao - Tốt</option>
-                            <option value="3">3 sao - Bình thường</option>
-                            <option value="2">2 sao - Chưa tốt</option>
-                            <option value="1">1 sao - Rất không hài lòng</option>
+            <div class="relative z-10">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-[#c5a880]/20 text-[#c5a880] border border-[#c5a880]/30 uppercase tracking-widest inline-block mb-3">
+                    Đánh giá trải nghiệm
+                </span>
+                <h1 class="font-serif text-2xl lg:text-3xl font-bold tracking-tight">Sửa đánh giá phòng @Model.RoomNumber</h1>
+                <p class="text-slate-300 text-sm mt-1">@Model.RoomTypeName</p>
+            </div>
+        </div>
+
+        <!-- Form Body -->
+        <div class="p-8 lg:p-10">
+            <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="space-y-6">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm"></div>
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="RoomId" type="hidden" />
+
+                <div>
+                    <label asp-for="Rating" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Đánh giá sao <span class="text-rose-500">*</span></label>
+                    <div class="relative">
+                        <select asp-for="Rating" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] focus:border-transparent text-sm text-slate-800 bg-slate-50/50 transition-all font-medium appearance-none">
+                            <option value="5">⭐⭐⭐⭐⭐ 5 sao - Tuyệt vời</option>
+                            <option value="4">⭐⭐⭐⭐ 4 sao - Tốt</option>
+                            <option value="3">⭐⭐⭐ 3 sao - Bình thường</option>
+                            <option value="2">⭐⭐ 2 sao - Chưa tốt</option>
+                            <option value="1">⭐ 1 sao - Rất không hài lòng</option>
                         </select>
-                        <span asp-validation-for="Rating" class="text-danger"></span>
+                        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
                     </div>
-                    <div class="mb-4">
-                        <label asp-for="Comment" class="form-label fw-semibold"></label>
-                        <textarea asp-for="Comment"
-                                  class="form-control"
-                                  rows="6"
-                                  maxlength="1000"></textarea>
-                        <div class="form-text">Tối đa 1000 ký tự.</div>
-                        <span asp-validation-for="Comment" class="text-danger"></span>
+                    <span asp-validation-for="Rating" class="text-xs text-rose-500 mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Comment" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nhận xét chi tiết</label>
+                    <textarea asp-for="Comment" rows="6" maxlength="1000" placeholder="Chia sẻ cảm nhận của quý khách về không gian phòng, dịch vụ và tiện nghi..." class="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] focus:border-transparent text-sm text-slate-800 bg-slate-50/50 transition-all"></textarea>
+                    <div class="flex items-center justify-between mt-1 text-xs text-slate-400">
+                        <span>Nhận xét chân thành giúp chúng tôi nâng cao chất lượng dịch vụ</span>
+                        <span>Tối đa 1000 ký tự</span>
                     </div>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-warning">
-                            Lưu thay đổi
-                        </button>
-                        <a asp-action="Index" class="btn btn-outline-secondary">
-                            Hủy
-                        </a>
-                    </div>
-                </form>
-            </div>
+                    <span asp-validation-for="Comment" class="text-xs text-rose-500 mt-1 block"></span>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-end gap-3">
+                    <a asp-action="Index" class="px-6 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+                        Hủy
+                    </a>
+                    <button type="submit" class="px-7 py-3 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] hover:from-[#b9986b] hover:to-[#634e2f] text-white text-sm font-semibold shadow-lg shadow-[#c5a880]/20 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">save</span>
+                        Lưu thay đổi
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-@section Scripts
-{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

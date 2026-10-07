@@ -4,331 +4,181 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Chỉnh sửa tài khoản";
 }
-<section class="account-edit-heading">
-    <div>
-        <span>Quản trị hệ thống</span>
-        <h2>Chỉnh sửa tài khoản</h2>
-        <p>Cập nhật thông tin, vai trò, trạng thái hoặc đặt lại mật khẩu.</p>
+
+<div class="max-w-5xl mx-auto space-y-6">
+    <!-- Top Action / Breadcrumb -->
+    <div class="flex items-center justify-between">
+        <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Quay lại danh sách tài khoản
+        </a>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold transition-colors">
+            <span class="material-symbols-outlined text-base">visibility</span>
+            Xem chi tiết
+        </a>
     </div>
-    <a asp-action="Index" class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Quay lại
-    </a>
-</section>
-<div class="row g-4">
-    <div class="col-xl-8">
-        <div class="card account-edit-card">
-            <div class="card-header">
-                <div class="account-edit-icon">
-                    <i class="bi bi-pencil-square"></i>
-                </div>
-                <div>
-                    <h4>@Model.Username</h4>
-                    <p>Để trống mật khẩu mới nếu không muốn thay đổi mật khẩu.</p>
-                </div>
-            </div>
-            <form asp-controller="Accounts" asp-action="Edit" asp-route-id="@Model.Id" method="post">
-                @Html.AntiForgeryToken()
-                <input asp-for="Id" type="hidden" />
-                <div class="card-body p-4">
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <label asp-for="Username" class="form-label">Tên đăng nhập <span class="text-danger">*</span></label>
-                            <div class="account-input-group">
-                                <i class="bi bi-person"></i>
-                                <input asp-for="Username" class="form-control" autocomplete="off" />
-                            </div>
-                            <span asp-validation-for="Username" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="PasswordHash" class="form-label">Mật khẩu mới</label>
-                            <div class="account-input-group">
-                                <i class="bi bi-lock"></i>
-                                <input type="password" id="PasswordHash" name="PasswordHash" class="form-control password-input" placeholder="Để trống nếu không đổi" autocomplete="new-password" />
-                                <button type="button" class="password-toggle" aria-label="Hiện mật khẩu">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                            <span asp-validation-for="PasswordHash" class="text-danger small"></span>
-                            <small class="text-muted">Mật khẩu mới phải có ít nhất 6 ký tự.</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="Email" class="form-label">Email <span class="text-danger">*</span></label>
-                            <div class="account-input-group">
-                                <i class="bi bi-envelope"></i>
-                                <input asp-for="Email" type="email" class="form-control" autocomplete="off" />
-                            </div>
-                            <span asp-validation-for="Email" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="PhoneNumber" class="form-label">Số điện thoại</label>
-                            <div class="account-input-group">
-                                <i class="bi bi-telephone"></i>
-                                <input asp-for="PhoneNumber" class="form-control" autocomplete="off" />
-                            </div>
-                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="Role" class="form-label">Vai trò <span class="text-danger">*</span></label>
-                            <div class="account-input-group">
-                                <i class="bi bi-shield-check"></i>
-                                <select asp-for="Role" asp-items="Html.GetEnumSelectList<UserRole>()" class="form-select"></select>
-                            </div>
-                            <span asp-validation-for="Role" class="text-danger small"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label d-block">Trạng thái tài khoản</label>
-                            <div class="account-status-switch">
-                                <div>
-                                    <strong>Cho phép đăng nhập</strong>
-                                    <small>Tắt tùy chọn này để khóa tài khoản.</small>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input asp-for="IsActive" class="form-check-input" role="switch" />
-                                </div>
-                            </div>
-                            <span asp-validation-for="IsActive" class="text-danger small"></span>
-                        </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Left: Edit Form (8 cols) -->
+        <div class="lg:col-span-8">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                <!-- Header -->
+                <div class="bg-gradient-to-r from-[#0b1c30] to-[#1e293b] p-8 text-white relative overflow-hidden">
+                    <div class="absolute -right-8 -bottom-8 opacity-10">
+                        <span class="material-symbols-outlined text-[160px]">manage_accounts</span>
+                    </div>
+                    <div class="relative z-10">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-[#c5a880]/20 text-[#c5a880] border border-[#c5a880]/30 uppercase tracking-widest inline-block mb-3">
+                            Tài khoản #@Model.Id
+                        </span>
+                        <h1 class="font-serif text-2xl lg:text-3xl font-bold tracking-tight">Chỉnh Sửa Tài Khoản</h1>
+                        <p class="text-slate-300 text-sm mt-1">@Model.Username • Để trống mật khẩu mới nếu không muốn thay đổi</p>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-1"></i>Lưu thay đổi
-                    </button>
+
+                <!-- Form Body -->
+                <div class="p-8 lg:p-10">
+                    <form asp-controller="Accounts" asp-action="Edit" asp-route-id="@Model.Id" method="post" class="space-y-6">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="Id" type="hidden" />
+                        <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm"></div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- Username -->
+                            <div>
+                                <label asp-for="Username" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tên đăng nhập <span class="text-rose-500">*</span></label>
+                                <div class="relative">
+                                    <input asp-for="Username" autocomplete="off" class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">person</span>
+                                </div>
+                                <span asp-validation-for="Username" class="text-xs text-rose-500 mt-1 block"></span>
+                            </div>
+
+                            <!-- New Password -->
+                            <div>
+                                <label for="PasswordHash" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Mật khẩu mới</label>
+                                <div class="relative">
+                                    <input type="password" id="PasswordHash" name="PasswordHash" placeholder="Để trống nếu giữ nguyên" autocomplete="new-password" class="w-full pl-11 pr-12 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">lock</span>
+                                    <button type="button" class="password-toggle absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1" data-target="PasswordHash" aria-label="Hiện hoặc ẩn mật khẩu">
+                                        <span class="material-symbols-outlined text-lg">visibility</span>
+                                    </button>
+                                </div>
+                                <span asp-validation-for="PasswordHash" class="text-xs text-rose-500 mt-1 block"></span>
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label asp-for="Email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Email <span class="text-rose-500">*</span></label>
+                                <div class="relative">
+                                    <input asp-for="Email" type="email" autocomplete="off" class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">mail</span>
+                                </div>
+                                <span asp-validation-for="Email" class="text-xs text-rose-500 mt-1 block"></span>
+                            </div>
+
+                            <!-- Phone -->
+                            <div>
+                                <label asp-for="PhoneNumber" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số điện thoại</label>
+                                <div class="relative">
+                                    <input asp-for="PhoneNumber" autocomplete="off" class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium" />
+                                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">call</span>
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-xs text-rose-500 mt-1 block"></span>
+                            </div>
+
+                            <!-- Role -->
+                            <div>
+                                <label asp-for="Role" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Vai trò <span class="text-rose-500">*</span></label>
+                                <div class="relative">
+                                    <select asp-for="Role" asp-items="Html.GetEnumSelectList<UserRole>()" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 transition-all font-medium appearance-none"></select>
+                                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                                </div>
+                                <span asp-validation-for="Role" class="text-xs text-rose-500 mt-1 block"></span>
+                            </div>
+
+                            <!-- Status Switch -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Trạng thái tài khoản</label>
+                                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50/50 cursor-pointer">
+                                    <input asp-for="IsActive" type="checkbox" class="w-4 h-4 rounded text-[#725b38] focus:ring-[#c5a880]" />
+                                    <div>
+                                        <span class="text-sm font-semibold text-slate-800 block">Kích hoạt tài khoản</span>
+                                        <span class="text-[11px] text-slate-400">Tắt tùy chọn này để tạm khóa đăng nhập</span>
+                                    </div>
+                                </label>
+                                <span asp-validation-for="IsActive" class="text-xs text-rose-500 mt-1 block"></span>
+                            </div>
+                        </div>
+
+                        <!-- Action buttons -->
+                        <div class="pt-6 border-t border-slate-100 flex items-center justify-end gap-3">
+                            <a asp-action="Index" class="px-6 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+                                Hủy
+                            </a>
+                            <button type="submit" class="px-7 py-3 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] hover:from-[#b9986b] hover:to-[#634e2f] text-white text-sm font-semibold shadow-lg shadow-[#c5a880]/20 transition-all flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">save</span>
+                                Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
-    <div class="col-xl-4">
-        <div class="card account-information-card">
-            <div class="card-header">
-                <h5><i class="bi bi-info-circle me-2"></i>Thông tin hệ thống</h5>
-            </div>
-            <div class="card-body">
-                <div class="account-information-row">
-                    <span>Mã tài khoản</span>
-                    <strong>#@Model.Id</strong>
-                </div>
-                <div class="account-information-row">
-                    <span>Ngày tạo</span>
-                    <strong>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</strong>
-                </div>
-                <div class="account-information-row">
-                    <span>Lần cập nhật</span>
-                    <strong>@(Model.UpdatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa cập nhật")</strong>
-                </div>
-                <div class="account-information-row">
-                    <span>Đăng nhập gần nhất</span>
-                    <strong>@(Model.LastLogin?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa đăng nhập")</strong>
-                </div>
-                <div class="account-security-note">
-                    <i class="bi bi-shield-lock-fill"></i>
-                    <div>
-                        <strong>Lưu ý bảo mật</strong>
-                        <p>Không hiển thị hoặc sao chép giá trị PasswordHash. Khi nhập mật khẩu mới, hệ thống sẽ tự mã hóa trước khi lưu.</p>
+
+        <!-- Right: Meta Information Card (4 cols) -->
+        <div class="lg:col-span-4 space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-4">
+                <h3 class="font-serif text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-amber-600 text-xl">info</span>
+                    Thông tin hệ thống
+                </h3>
+
+                <div class="space-y-3 divide-y divide-slate-100 text-xs">
+                    <div class="pt-2 flex justify-between">
+                        <span class="text-slate-400">Mã định danh:</span>
+                        <strong class="text-slate-800">#@Model.Id</strong>
                     </div>
+                    <div class="pt-3 flex justify-between">
+                        <span class="text-slate-400">Ngày tạo:</span>
+                        <strong class="text-slate-800">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</strong>
+                    </div>
+                    <div class="pt-3 flex justify-between">
+                        <span class="text-slate-400">Cập nhật:</span>
+                        <strong class="text-slate-800">@(Model.UpdatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa cập nhật")</strong>
+                    </div>
+                    <div class="pt-3 flex justify-between">
+                        <span class="text-slate-400">Đăng nhập cuối:</span>
+                        <strong class="text-slate-800">@(Model.LastLogin?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa đăng nhập")</strong>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/60 text-[11px] text-amber-900 flex items-start gap-2.5">
+                    <span class="material-symbols-outlined text-amber-600 text-base shrink-0 mt-0.5">security</span>
+                    <p class="leading-relaxed">
+                        Mật khẩu được mã hóa an toàn bằng thuật toán băm (BCrypt/PBKDF2). Hệ thống không lưu trữ mật khẩu ở dạng văn bản thuần.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@section Styles {
-    <style>
-        .account-edit-heading {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 26px;
-        }
-            .account-edit-heading > div > span {
-                color: #b58a42;
-                font-size: 11px;
-                font-weight: 800;
-                letter-spacing: 1.7px;
-                text-transform: uppercase;
-            }
-            .account-edit-heading h2 {
-                margin: 6px 0;
-                font-weight: 700;
-            }
-            .account-edit-heading p,
-            .account-edit-card .card-header p {
-                margin: 0;
-                color: #838897;
-            }
-        .account-edit-card,
-        .account-information-card {
-            overflow: hidden;
-            border: 1px solid #e8e9ee;
-            border-radius: 18px;
-            box-shadow: 0 18px 45px rgba(34, 38, 51, 0.07);
-        }
-            .account-edit-card .card-header {
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                padding: 22px 24px;
-                border-bottom: 1px solid #e8e9ee;
-                background: #fff;
-            }
-                .account-edit-card .card-header h4 {
-                    margin: 0 0 4px;
-                    font-weight: 700;
-                }
-        .account-edit-icon {
-            width: 48px;
-            height: 48px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 14px;
-            background: #f4ead7;
-            color: #8f692f;
-            font-size: 20px;
-        }
-        .account-edit-card .form-label {
-            color: #4d5360;
-            font-size: 13px;
-            font-weight: 700;
-        }
-        .account-input-group {
-            position: relative;
-        }
-            .account-input-group > i {
-                position: absolute;
-                top: 50%;
-                left: 14px;
-                z-index: 2;
-                color: #9a9fab;
-                transform: translateY(-50%);
-            }
-            .account-input-group .form-control,
-            .account-input-group .form-select {
-                min-height: 46px;
-                padding-left: 42px;
-                border-color: #e1e3e9;
-                border-radius: 11px;
-            }
-            .account-input-group .password-input {
-                padding-right: 45px;
-            }
-        .password-toggle {
-            position: absolute;
-            top: 50%;
-            right: 8px;
-            z-index: 3;
-            width: 35px;
-            height: 35px;
-            border: 0;
-            border-radius: 8px;
-            background: transparent;
-            color: #858b97;
-            transform: translateY(-50%);
-        }
-            .password-toggle:hover {
-                background: #f4ead7;
-                color: #8f692f;
-            }
-        .account-status-switch {
-            min-height: 46px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 8px 13px;
-            border: 1px solid #e1e3e9;
-            border-radius: 11px;
-        }
-            .account-status-switch > div:first-child {
-                display: flex;
-                flex-direction: column;
-            }
-            .account-status-switch strong {
-                font-size: 12px;
-            }
-            .account-status-switch small {
-                color: #8b909b;
-                font-size: 9px;
-            }
-            .account-status-switch .form-check-input {
-                width: 44px;
-                height: 23px;
-            }
-        .account-edit-card .card-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            padding: 18px 24px;
-            border-top: 1px solid #e8e9ee;
-            background: #fff;
-        }
-        .account-information-card .card-header {
-            padding: 21px;
-            border-bottom: 1px solid #e8e9ee;
-            background: #fff;
-        }
-            .account-information-card .card-header h5 {
-                margin: 0;
-                font-weight: 700;
-            }
-        .account-information-card .card-body {
-            padding: 21px;
-        }
-        .account-information-row {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            padding: 12px 0;
-            border-bottom: 1px solid #eeeef2;
-        }
-            .account-information-row span {
-                color: #838897;
-                font-size: 10px;
-            }
-            .account-information-row strong {
-                color: #424854;
-                font-size: 12px;
-            }
-        .account-security-note {
-            display: flex;
-            gap: 11px;
-            margin-top: 18px;
-            padding: 14px;
-            border-radius: 12px;
-            background: #fff5e3;
-            color: #8f692f;
-        }
-            .account-security-note > i {
-                font-size: 20px;
-            }
-            .account-security-note p {
-                margin: 4px 0 0;
-                color: #7d6b4f;
-                font-size: 10px;
-                line-height: 1.6;
-            }
-        @@media (max-width: 767.98px) {
-            .account-edit-heading {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-        }
-    </style>
-}
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".password-toggle").forEach(function (button) {
                 button.addEventListener("click", function () {
-                    const input = button.parentElement.querySelector(".password-input");
-                    const icon = button.querySelector("i");
+                    const input = document.getElementById(button.dataset.target);
+                    if (!input) return;
                     const showPassword = input.type === "password";
                     input.type = showPassword ? "text" : "password";
-                    icon.className = showPassword ? "bi bi-eye-slash" : "bi bi-eye";
-                    button.setAttribute("aria-label", showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu");
+                    const icon = button.querySelector("span");
+                    if (icon) {
+                        icon.textContent = showPassword ? "visibility_off" : "visibility";
+                    }
                 });
             });
         });

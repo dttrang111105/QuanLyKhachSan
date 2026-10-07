@@ -3,40 +3,76 @@
     Layout = User.IsInRole("Admin")
         ? "~/Views/Shared/_AdminLayout.cshtml"
         : "~/Views/Shared/_ReceptionistLayout.cshtml";
-    ViewData["Title"] = "Thêm dịch vụ";
+    ViewData["Title"] = "Thêm dịch vụ cho Booking";
 }
-<h2>Thêm dịch vụ cho Booking</h2>
-<form asp-action="Create" method="post">
-    <input asp-for="BookingId" type="hidden" />
-    <div class="mb-3">
-        <label asp-for="ServiceId" class="form-label"></label>
-        <select asp-for="ServiceId"
-                asp-items="Model.Services"
-                class="form-select">
-            <option value="">-- Chọn dịch vụ --</option>
-        </select>
-        <span asp-validation-for="ServiceId"
-              class="text-danger"></span>
+
+<div class="max-w-2xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-sm">room_service</span>
+                <span>Quản lý Dịch vụ</span>
+            </div>
+            <h1 class="font-serif text-2xl md:text-3xl font-bold text-[#0b1c30] mt-1">
+                Thêm dịch vụ cho Booking
+            </h1>
+        </div>
+        <a asp-controller="Bookings" asp-action="Details" asp-route-id="@Model.BookingId" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition shadow-sm">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Chi tiết Booking</span>
+        </a>
     </div>
-    <div class="mb-3">
-        <label asp-for="Quantity" class="form-label"></label>
-        <input asp-for="Quantity"
-               class="form-control" />
-        <span asp-validation-for="Quantity"
-              class="text-danger"></span>
+
+    <!-- Create Card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="p-6 bg-[#0b1c30] text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#c5a880]/20 border border-[#c5a880]/40 flex items-center justify-center text-[#c5a880]">
+                    <span class="material-symbols-outlined">add_shopping_cart</span>
+                </div>
+                <div>
+                    <h3 class="font-serif font-bold text-lg text-white">Thêm dịch vụ phát sinh</h3>
+                    <p class="text-xs text-slate-300">Booking ID: #@Model.BookingId</p>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Create" method="post" class="p-6 md:p-8 space-y-6">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+            <input asp-for="BookingId" type="hidden" />
+
+            <div class="space-y-4">
+                <div>
+                    <label asp-for="ServiceId" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Lựa chọn dịch vụ</label>
+                    <select asp-for="ServiceId" asp-items="Model.Services" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]">
+                        <option value="">-- Chọn dịch vụ --</option>
+                    </select>
+                    <span asp-validation-for="ServiceId" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Quantity" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số lượng</label>
+                    <input asp-for="Quantity" type="number" min="1" max="100" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" />
+                    <span asp-validation-for="Quantity" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+                <a asp-controller="Bookings" asp-action="Details" asp-route-id="@Model.BookingId" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition">
+                    Hủy bỏ
+                </a>
+                <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] text-white text-xs font-bold shadow-md hover:shadow-lg transition">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    <span>Xác nhận thêm dịch vụ</span>
+                </button>
+            </div>
+        </form>
     </div>
-    <button class="btn btn-success">
-        Thêm dịch vụ
-    </button>
-    <a asp-controller="Bookings"
-       asp-action="Details"
-       asp-route-id="@Model.BookingId"
-       class="btn btn-secondary">
-        Quay lại
-    </a>
-</form>
+</div>
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }

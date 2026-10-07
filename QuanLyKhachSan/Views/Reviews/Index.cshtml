@@ -1,121 +1,110 @@
 @model IEnumerable<QuanLyKhachSan.Models.Review>
 @{
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
-    ViewData["Title"] = "Đánh giá của tôi";
+    ViewData["Title"] = "Đánh giá của tôi - Aura Grand Resort";
+    var reviews = Model?.ToList() ?? new List<QuanLyKhachSan.Models.Review>();
 }
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
-    <div>
-        <h2 class="mb-1">Đánh giá của tôi</h2>
-        <p class="text-muted mb-0">
-            Quản lý các đánh giá phòng bạn đã gửi.
-        </p>
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-[16px]">rate_review</span>
+                <span>Trải nghiệm dịch vụ</span>
+            </div>
+            <h1 class="font-serif text-2xl sm:text-3xl font-bold text-on-surface mt-1">
+                Đánh Giá Của Tôi
+            </h1>
+            <p class="text-xs text-on-surface-variant mt-1">
+                Chia sẻ ý kiến và đánh giá chất lượng phòng sau mỗi chuyến lưu trú tại Aura Grand Resort.
+            </p>
+        </div>
+        <a asp-controller="Bookings" asp-action="MyBookings" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low text-xs font-bold shadow-sm transition-all no-underline">
+            <span class="material-symbols-outlined text-[18px] text-secondary">calendar_month</span>
+            <span>Booking của tôi</span>
+        </a>
     </div>
-    <a asp-controller="Bookings"
-       asp-action="MyBookings"
-       class="btn btn-outline-primary mt-3 mt-md-0">
-        <i class="bi bi-calendar-check me-1"></i>
-        Xem Booking của tôi
-    </a>
-</div>
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show">
-        @TempData["Success"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show">
-        @TempData["Error"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
-@if (TempData["Info"] != null)
-{
-    <div class="alert alert-info alert-dismissible fade show">
-        @TempData["Info"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
-@if (Model != null && Model.Any())
-{
-    <div class="row g-4">
-        @foreach (var item in Model)
-        {
-            <div class="col-lg-6">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+
+    <!-- Alert Messages -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-[18px]">check_circle</span>
+                <span>@TempData["Success"]</span>
+            </div>
+            <button type="button" class="text-emerald-600 hover:text-emerald-800" onclick="this.parentElement.remove()">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+            </button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-rose-600 text-[18px]">error</span>
+                <span>@TempData["Error"]</span>
+            </div>
+            <button type="button" class="text-rose-600 hover:text-rose-800" onclick="this.parentElement.remove()">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+            </button>
+        </div>
+    }
+
+    <!-- Reviews Grid -->
+    @if (reviews.Any())
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @foreach (var item in reviews)
+            {
+                <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all">
+                    <div class="space-y-3">
+                        <div class="flex items-start justify-between gap-3">
                             <div>
-                                <h5 class="mb-1">
-                                    Phòng @item.Room?.RoomNumber
-                                </h5>
-                                <div class="text-muted small">
-                                    @(item.Room?.RoomType?.Name ?? "Chưa xác định loại phòng")
-                                </div>
+                                <span class="text-[11px] font-bold text-secondary uppercase tracking-wider block">Phòng @item.Room?.RoomNumber</span>
+                                <h3 class="font-bold text-on-surface text-sm mt-0.5">@(item.Room?.RoomType?.Name ?? "Suite Cao Cấp")</h3>
                             </div>
-                            <div class="text-nowrap" aria-label="@item.Rating trên 5 sao">
+                            <div class="flex items-center text-amber-500">
                                 @for (int star = 1; star <= 5; star++)
                                 {
-                                    <span class="@(star <= item.Rating ? "text-warning" : "text-secondary") fs-5">★</span>
+                                    <span class="material-symbols-outlined text-[16px] @(star <= item.Rating ? "font-bold" : "text-slate-300")">star</span>
                                 }
                             </div>
                         </div>
-                        @if (!string.IsNullOrWhiteSpace(item.Comment))
-                        {
-                            <p class="mb-3" style="white-space: pre-line;">@item.Comment</p>
-                        }
-                        else
-                        {
-                            <p class="text-muted fst-italic mb-3">
-                                Bạn chưa nhập nhận xét.
-                            </p>
-                        }
-                        <div class="text-muted small mb-3">
-                            Gửi lúc @item.CreatedAt.ToString("dd/MM/yyyy HH:mm")
-                            @if (item.UpdatedAt.HasValue)
-                            {
-                                <span> · Cập nhật @item.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</span>
-                            }
-                        </div>
-                        <div class="d-flex flex-wrap gap-2">
-                            <a asp-action="Details"
-                               asp-route-id="@item.Id"
-                               class="btn btn-outline-info btn-sm">
-                                Chi tiết
+
+                        <p class="text-xs text-on-surface-variant bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/40 italic leading-relaxed">
+                            "@(string.IsNullOrWhiteSpace(item.Comment) ? "Đã gửi đánh giá sao." : item.Comment)"
+                        </p>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between text-[11px] text-outline">
+                        <span>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                        <div class="flex items-center gap-2">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="px-2.5 py-1 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container-low font-bold transition no-underline text-xs">
+                                Sửa
                             </a>
-                            <a asp-action="Edit"
-                               asp-route-id="@item.Id"
-                               class="btn btn-warning btn-sm">
-                                Sửa đánh giá
-                            </a>
-                            <a asp-action="Delete"
-                               asp-route-id="@item.Id"
-                               class="btn btn-outline-danger btn-sm">
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="px-2.5 py-1 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 font-bold transition no-underline text-xs">
                                 Xóa
                             </a>
                         </div>
                     </div>
                 </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-10 text-center shadow-sm max-w-md mx-auto">
+            <div class="w-14 h-14 rounded-full bg-surface-container text-secondary flex items-center justify-center mx-auto mb-3">
+                <span class="material-symbols-outlined text-2xl">rate_review</span>
             </div>
-        }
-    </div>
-}
-else
-{
-    <div class="card border-0 shadow-sm">
-        <div class="card-body text-center py-5">
-            <div class="display-5 mb-3">⭐</div>
-            <h4>Bạn chưa có đánh giá nào</h4>
-            <p class="text-muted">
-                Sau khi checkout, hãy mở Booking của tôi và chọn “Đánh giá phòng”.
-            </p>
-            <a asp-controller="Bookings"
-               asp-action="MyBookings"
-               class="btn btn-primary">
-                Mở Booking của tôi
+            <h3 class="font-serif font-bold text-base text-on-surface">Chưa Có Đánh Giá Nào</h3>
+            <p class="text-xs text-on-surface-variant mt-1 mb-5">Sau khi hoàn tất lưu trú và trả phòng, quý khách có thể gửi phản hồi trải nghiệm tại đây.</p>
+            <a asp-controller="Bookings" asp-action="MyBookings" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-md hover:bg-on-background transition no-underline">
+                <span class="material-symbols-outlined text-[16px]">hotel</span>
+                <span>Xem Booking Của Tôi</span>
             </a>
         </div>
-    </div>
-}
+    }
+</div>

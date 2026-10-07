@@ -3,113 +3,103 @@
     Layout = User.IsInRole("Admin")
         ? "~/Views/Shared/_AdminLayout.cshtml"
         : "~/Views/Shared/_ReceptionistLayout.cshtml";
-    ViewData["Title"] = "Thêm dịch vụ";
+    ViewData["Title"] = "Thêm dịch vụ mới";
 }
-<div class="container mt-4">
-    <div class="card shadow border-0 rounded-4">
-        <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">
-                <i class="fas fa-concierge-bell me-2"></i>
+
+<div class="max-w-4xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-sm">room_service</span>
+                <span>Quản lý Dịch vụ</span>
+            </div>
+            <h1 class="font-serif text-2xl md:text-3xl font-bold text-[#0b1c30] mt-1">
                 Thêm dịch vụ mới
-            </h3>
+            </h1>
         </div>
-        <div class="card-body">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                <div class="row">
-                    <!-- Tên dịch vụ -->
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="ServiceName" class="form-label fw-bold">
-                            Tên dịch vụ
-                        </label>
-                        <input asp-for="ServiceName"
-                               class="form-control"
-                               placeholder="Nhập tên dịch vụ..." />
-                        <span asp-validation-for="ServiceName"
-                              class="text-danger"></span>
-                    </div>
-                    <!-- Giá -->
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Price" class="form-label fw-bold">
-                            Giá dịch vụ (VNĐ)
-                        </label>
-                        <input asp-for="Price"
-                               type="number"
-                               class="form-control"
-                               placeholder="Ví dụ: 150000" />
-                        <span asp-validation-for="Price"
-                              class="text-danger"></span>
-                    </div>
-                    <!-- Danh mục -->
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Category" class="form-label fw-bold">
-                            Danh mục
-                        </label>
-                        <select asp-for="Category" class="form-select">
-                            <option value="">-- Chọn danh mục --</option>
-                            <option value="Ăn uống">
-                                🍽 Ăn uống
-                            </option>
-                            <option value="Chăm sóc">
-                                💆 Chăm sóc
-                            </option>
-                            <option value="Giải trí">
-                                🎮 Giải trí
-                            </option>
-                            <option value="Tiện ích">
-                                🚗 Tiện ích
-                            </option>
-                            <option value="Trang trí">
-                                🎉 Trang trí
-                            </option>
-                        </select>
-                        <span asp-validation-for="Category"
-                              class="text-danger"></span>
-                    </div>
-                    <!-- Link ảnh -->
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="ImageUrl" class="form-label fw-bold">
-                            Link hình ảnh
-                        </label>
-                        <input asp-for="ImageUrl"
-                               class="form-control"
-                               placeholder="/images/services/spa.jpg" />
-                        <span asp-validation-for="ImageUrl"
-                              class="text-danger"></span>
-                    </div>
-                    <!-- Mô tả -->
-                    <div class="col-12 mb-3">
-                        <label asp-for="Description"
-                               class="form-label fw-bold">
-                            Mô tả dịch vụ
-                        </label>
-                        <textarea asp-for="Description"
-                                  rows="5"
-                                  class="form-control"
-                                  placeholder="Nhập mô tả dịch vụ..."></textarea>
-                        <span asp-validation-for="Description"
-                              class="text-danger"></span>
-                    </div>
+        <a asp-action="Index" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition shadow-sm">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Danh sách</span>
+        </a>
+    </div>
+
+    <!-- Create Card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="p-6 bg-[#0b1c30] text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#c5a880]/20 border border-[#c5a880]/40 flex items-center justify-center text-[#c5a880]">
+                    <span class="material-symbols-outlined">add_circle</span>
                 </div>
-                <hr />
-                <div class="d-flex justify-content-between">
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i>
-                        Quay lại
-                    </a>
-                    <button type="submit"
-                            class="btn btn-success">
-                        <i class="fas fa-save"></i>
-                        Lưu dịch vụ
-                    </button>
+                <div>
+                    <h3 class="font-serif font-bold text-lg text-white">Thông tin dịch vụ &amp; Tiện ích</h3>
+                    <p class="text-xs text-slate-300">Khởi tạo dịch vụ phục vụ khách lưu trú</p>
                 </div>
-            </form>
+            </div>
         </div>
+
+        <form asp-action="Create" method="post" class="p-6 md:p-8 space-y-6">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tên dịch vụ -->
+                <div>
+                    <label asp-for="ServiceName" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tên dịch vụ</label>
+                    <input asp-for="ServiceName" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" placeholder="Ví dụ: Giặt là cao cấp, Buffet sáng..." />
+                    <span asp-validation-for="ServiceName" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <!-- Giá dịch vụ -->
+                <div>
+                    <label asp-for="Price" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Giá dịch vụ (VNĐ)</label>
+                    <input asp-for="Price" type="number" min="0" step="1000" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" placeholder="150000" />
+                    <span asp-validation-for="Price" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <!-- Danh mục -->
+                <div>
+                    <label asp-for="Category" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Danh mục dịch vụ</label>
+                    <select asp-for="Category" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]">
+                        <option value="">-- Chọn danh mục --</option>
+                        <option value="Ăn uống">🍽 Ăn uống</option>
+                        <option value="Chăm sóc">💆 Chăm sóc &amp; Spa</option>
+                        <option value="Giải trí">🎮 Thư giãn &amp; Giải trí</option>
+                        <option value="Tiện ích">🚗 Đưa đón &amp; Tiện ích</option>
+                        <option value="Trang trí">🎉 Sự kiện &amp; Trang trí</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <!-- Link ảnh -->
+                <div>
+                    <label asp-for="ImageUrl" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Đường dẫn hình ảnh</label>
+                    <input asp-for="ImageUrl" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" placeholder="https://... hoặc /images/services/spa.jpg" />
+                    <span asp-validation-for="ImageUrl" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <!-- Mô tả -->
+                <div class="md:col-span-2">
+                    <label asp-for="Description" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Mô tả chi tiết dịch vụ</label>
+                    <textarea asp-for="Description" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#725b38]/20 focus:border-[#725b38]" placeholder="Nhập mô tả quy trình phục vụ, đặc quyền..."></textarea>
+                    <span asp-validation-for="Description" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+                <a asp-action="Index" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition">
+                    Hủy bỏ
+                </a>
+                <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] text-white text-xs font-bold shadow-md hover:shadow-lg transition">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    <span>Lưu dịch vụ</span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }

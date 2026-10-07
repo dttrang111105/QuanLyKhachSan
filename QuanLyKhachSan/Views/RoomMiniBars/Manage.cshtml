@@ -1,97 +1,97 @@
-﻿@model QuanLyKhachSan.ViewModels.RoomMiniBarViewModel
-
+@model QuanLyKhachSan.ViewModels.RoomMiniBarViewModel
 @{
     ViewData["Title"] = "Minibar phòng " + Model.RoomNumber;
     Layout = User.IsInRole("Admin") ? "_AdminLayout" : "_ReceptionistLayout";
 }
 
-<div class="container-fluid py-4">
-    <div class="mb-4">
-        <a asp-action="Index" class="btn btn-outline-secondary mb-3">
-            Quay lại
+<div class="max-w-4xl mx-auto py-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold text-secondary uppercase tracking-wider mb-1">
+                <span>Quản Lý Hệ Thống</span>
+                <span class="text-slate-400">/</span>
+                <a asp-action="Index" class="text-slate-600 hover:text-secondary">Minibar</a>
+                <span class="text-slate-400">/</span>
+                <span class="text-on-surface">Cài đặt phòng @Model.RoomNumber</span>
+            </div>
+            <h1 class="text-2xl font-bold font-serif text-on-surface">Cài Đặt Minibar Phòng @Model.RoomNumber</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Chọn danh mục sản phẩm được trang bị và định mức số lượng chuẩn</p>
+        </div>
+        <a asp-action="Index"
+           class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-all">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>Quay lại</span>
         </a>
-        <h2 class="mb-1">Minibar phòng @Model.RoomNumber</h2>
-        <p class="text-muted mb-0">
-            Chọn mặt hàng được trang bị và thiết lập số lượng chuẩn, số lượng hiện có.
-        </p>
     </div>
 
-    <form asp-action="Manage" method="post">
+    <!-- Form Container -->
+    <form asp-action="Manage" method="post" class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
         @Html.AntiForgeryToken()
         <input asp-for="RoomId" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="p-4 text-rose-600 text-xs font-semibold"></div>
 
-        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 text-slate-500 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200/60">
+                    <tr>
+                        <th class="py-3 px-4 text-center w-16">Trang Bị</th>
+                        <th class="py-3 px-4">Tên Mặt Hàng</th>
+                        <th class="py-3 px-4 text-right">Giá Sử Dụng</th>
+                        <th class="py-3 px-4 w-44">Số Lượng Chuẩn</th>
+                        <th class="py-3 px-4 w-44">Hiện Có Thực Tế</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700">
+                    @for (var i = 0; i < Model.Items.Count; i++)
+                    {
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3 px-4 text-center">
+                                <input asp-for="Items[i].IsEnabled"
+                                       class="w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer minibar-enabled accent-secondary" />
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="font-bold text-on-surface">@Model.Items[i].Name</span>
+                                <input asp-for="Items[i].Id" type="hidden" />
+                                <input asp-for="Items[i].RoomChargeItemId" type="hidden" />
+                                <input asp-for="Items[i].Name" type="hidden" />
+                                <input asp-for="Items[i].UsedPrice" type="hidden" />
+                            </td>
+                            <td class="py-3 px-4 text-right font-bold text-secondary">
+                                @Model.Items[i].UsedPrice.ToString("N0") <small class="text-slate-400 font-normal">đ</small>
+                            </td>
+                            <td class="py-3 px-4">
+                                <input asp-for="Items[i].StandardQuantity" type="number" min="0" max="1000"
+                                       class="w-full h-9 px-3 bg-slate-50 border border-slate-200 text-xs rounded-xl focus:outline-none focus:bg-white focus:border-secondary font-semibold standard-quantity" />
+                                <span asp-validation-for="Items[i].StandardQuantity" class="text-rose-600 text-[10px] mt-0.5 block"></span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <input asp-for="Items[i].CurrentQuantity" type="number" min="0" max="1000"
+                                       class="w-full h-9 px-3 bg-slate-50 border border-slate-200 text-xs rounded-xl focus:outline-none focus:bg-white focus:border-secondary font-semibold current-quantity" />
+                                <span asp-validation-for="Items[i].CurrentQuantity" class="text-rose-600 text-[10px] mt-0.5 block"></span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-        <div class="card shadow-sm">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th style="width: 80px;" class="text-center">Dùng</th>
-                                <th>Mặt hàng</th>
-                                <th class="text-end">Giá sử dụng</th>
-                                <th style="width: 180px;">Số lượng chuẩn</th>
-                                <th style="width: 180px;">Hiện có</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (var i = 0; i < Model.Items.Count; i++)
-                            {
-                                <tr>
-                                    <td class="text-center">
-                                        <input asp-for="Items[i].IsEnabled"
-                                               class="form-check-input minibar-enabled" />
-                                    </td>
-                                    <td>
-                                        <strong>@Model.Items[i].Name</strong>
-
-                                        <input asp-for="Items[i].Id" type="hidden" />
-                                        <input asp-for="Items[i].RoomChargeItemId" type="hidden" />
-                                        <input asp-for="Items[i].Name" type="hidden" />
-                                        <input asp-for="Items[i].UsedPrice" type="hidden" />
-                                    </td>
-                                    <td class="text-end">
-                                        @Model.Items[i].UsedPrice.ToString("N0") VNĐ
-                                    </td>
-                                    <td>
-                                        <input asp-for="Items[i].StandardQuantity"
-                                               class="form-control standard-quantity"
-                                               min="0"
-                                               max="1000" />
-                                        <span asp-validation-for="Items[i].StandardQuantity"
-                                              class="text-danger"></span>
-                                    </td>
-                                    <td>
-                                        <input asp-for="Items[i].CurrentQuantity"
-                                               class="form-control current-quantity"
-                                               min="0"
-                                               max="1000" />
-                                        <span asp-validation-for="Items[i].CurrentQuantity"
-                                              class="text-danger"></span>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card-footer bg-white d-flex justify-content-end gap-2">
-                <a asp-action="Index" class="btn btn-outline-secondary">
-                    Hủy
-                </a>
-                <button type="submit" class="btn btn-primary">
-                    Lưu minibar
-                </button>
-            </div>
+        <div class="p-5 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3">
+            <a asp-action="Index"
+               class="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all">
+                Hủy bỏ
+            </a>
+            <button type="submit"
+                    class="px-6 py-2.5 rounded-xl bg-primary-container hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px] text-secondary-fixed">save</span>
+                <span>Lưu Cấu Hình Minibar</span>
+            </button>
         </div>
     </form>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
     <script>
         document.querySelectorAll('tbody tr').forEach(function (row) {
             const enabled = row.querySelector('.minibar-enabled');
@@ -100,10 +100,8 @@
 
             function updateState() {
                 const isEnabled = enabled.checked;
-
                 standard.disabled = !isEnabled;
                 current.disabled = !isEnabled;
-
                 if (!isEnabled) {
                     standard.value = 0;
                     current.value = 0;

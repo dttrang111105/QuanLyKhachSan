@@ -1,173 +1,226 @@
-﻿@model QuanLyKhachSan.ViewModels.BookingCreateViewModel
+@model QuanLyKhachSan.ViewModels.BookingCreateViewModel
 @{
     bool isAdmin = User.IsInRole("Admin");
     Layout = isAdmin ? "~/Views/Shared/_AdminLayout.cshtml" : "~/Views/Shared/_ReceptionistLayout.cshtml";
     ViewData["Title"] = "Đặt phòng cho khách";
 }
-<div class="d-flex justify-content-between align-items-center gap-3 mb-4">
-    <div>
-        <span class="text-uppercase text-warning fw-bold small">Nghiệp vụ đặt phòng</span>
-        <h2 class="fw-bold mb-1">Đặt phòng cho khách</h2>
-        <p class="text-muted mb-0">Chọn khách hàng có sẵn hoặc tạo hồ sơ cho khách trực tiếp đến quầy.</p>
+
+<div class="max-w-5xl mx-auto py-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold text-secondary uppercase tracking-wider mb-1">
+                <span>Nghiệp Vụ Lễ Tân</span>
+                <span class="text-slate-400">/</span>
+                <span class="text-on-surface">Đặt Phòng Walk-in</span>
+            </div>
+            <h1 class="text-2xl font-bold font-serif text-on-surface">Tạo Phiếu Đặt Phòng Cho Khách</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Chọn hồ sơ khách hàng có sẵn hoặc tạo hồ sơ nhanh cho khách trực tiếp đến quầy</p>
+        </div>
+        <a asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.RoomId"
+           class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-all">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>Quay lại</span>
+        </a>
     </div>
-    <a asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.RoomId" class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Quay lại
-    </a>
-</div>
-<form asp-controller="Bookings" asp-action="CreateForCustomer" method="post">
-    @Html.AntiForgeryToken()
-    <input asp-for="RoomId" type="hidden" />
-    <input asp-for="RoomNumber" type="hidden" />
-    <input asp-for="RoomTypeName" type="hidden" />
-    <input asp-for="PricePerNight" type="hidden" />
-    <input asp-for="MaxOccupancy" type="hidden" />
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-    }
-    <div class="row g-4">
-        <div class="col-xl-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body p-4">
-                    <span class="badge bg-success mb-3">Phòng đang chọn</span>
-                    <h2 class="fw-bold mb-1">Phòng @Model.RoomNumber</h2>
-                    <p class="text-muted">@Model.RoomTypeName</p>
-                    <hr />
-                    <div class="d-flex justify-content-between mb-3">
-                        <span>Giá mỗi đêm</span>
-                        <strong class="text-danger">@Model.PricePerNight.ToString("N0") VNĐ</strong>
+
+    <form asp-controller="Bookings" asp-action="CreateForCustomer" method="post">
+        @Html.AntiForgeryToken()
+        <input asp-for="RoomId" type="hidden" />
+        <input asp-for="RoomNumber" type="hidden" />
+        <input asp-for="RoomTypeName" type="hidden" />
+        <input asp-for="PricePerNight" type="hidden" />
+        <input asp-for="MaxOccupancy" type="hidden" />
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="ModelOnly" class="p-4 mb-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold"></div>
+        }
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <!-- Cột Trái: Tóm tắt buồng phòng -->
+            <div class="lg:col-span-4 bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+                <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider mb-3 inline-block">
+                    Buồng phòng đã chọn
+                </span>
+                <h2 class="text-2xl font-bold font-serif text-on-surface mb-1">Phòng @Model.RoomNumber</h2>
+                <p class="text-xs text-slate-500 mb-4">@(string.IsNullOrWhiteSpace(Model.RoomTypeName) ? "Hạng phòng cao cấp" : Model.RoomTypeName)</p>
+
+                <div class="space-y-2.5 text-xs text-slate-600 bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-4">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Đơn giá đêm:</span>
+                        <span class="font-bold text-secondary">@Model.PricePerNight.ToString("N0") VNĐ</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-3">
-                        <span>Sức chứa</span>
-                        <strong>@Model.MaxOccupancy người</strong>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Sức chứa tối đa:</span>
+                        <span class="font-bold text-on-surface">@Model.MaxOccupancy người</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-3">
-                        <span>Số đêm</span>
-                        <strong id="numberOfNights">@Model.NumberOfNights</strong>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Số đêm lưu trú:</span>
+                        <span class="font-bold text-on-surface" id="numberOfNights">@Model.NumberOfNights</span>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <span>Tạm tính</span>
-                        <strong id="estimatedTotal" class="text-danger">@Model.EstimatedTotal.ToString("N0") VNĐ</strong>
-                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex items-baseline justify-between">
+                    <span class="text-xs font-bold text-slate-700">Tạm tính:</span>
+                    <span id="estimatedTotal" class="text-xl font-bold font-serif text-secondary">@Model.EstimatedTotal.ToString("N0") VNĐ</span>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white p-4">
-                    <h4 class="fw-bold mb-1">Thông tin khách hàng</h4>
-                    <p class="text-muted mb-0">Khách đã có hồ sơ hoặc khách mới đến trực tiếp tại quầy.</p>
-                </div>
-                <div class="card-body p-4">
-                    <div class="form-check form-switch mb-4">
-                        <input asp-for="CreateNewCustomer" class="form-check-input" />
-                        <label asp-for="CreateNewCustomer" class="form-check-label fw-semibold">
-                            Khách trực tiếp đến quầy, chưa có hồ sơ
+
+            <!-- Cột Phải: Thông tin khách & lưu trú -->
+            <div class="lg:col-span-8 bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+                <!-- Chọn loại khách -->
+                <div>
+                    <h2 class="text-sm font-bold text-on-surface uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-[18px]">person</span>
+                        <span>Thông Tin Khách Hàng</span>
+                    </h2>
+
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 mb-4 flex items-center gap-3">
+                        <input asp-for="CreateNewCustomer" class="w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer accent-secondary" id="CreateNewCustomer" />
+                        <label for="CreateNewCustomer" class="text-xs font-bold text-slate-700 cursor-pointer">
+                            Khách trực tiếp đến quầy (tạo hồ sơ nhanh)
                         </label>
                     </div>
+
+                    <!-- Khách có sẵn -->
                     <div id="existingCustomerSection">
-                        <label asp-for="CustomerId" class="form-label fw-semibold"></label>
-                        <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-select">
-                            <option value="">-- Chọn khách hàng --</option>
+                        <label asp-for="CustomerId" class="block text-xs font-bold text-slate-700 mb-1.5">Chọn tài khoản khách hàng</label>
+                        <select asp-for="CustomerId" asp-items="ViewBag.Customers"
+                                class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all">
+                            <option value="">-- Chọn khách hàng đã có tài khoản --</option>
                         </select>
-                        <span asp-validation-for="CustomerId" class="text-danger"></span>
+                        <span asp-validation-for="CustomerId" class="text-rose-600 text-[11px] mt-1 block"></span>
                     </div>
-                    <div id="newCustomerSection" class="d-none">
-                        <div class="border rounded-4 bg-light p-4">
-                            <h5 class="fw-bold mb-3">
-                                <i class="bi bi-person-plus me-1"></i>Thông tin khách mới
-                            </h5>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label asp-for="GuestFullName" class="form-label fw-semibold"></label>
-                                    <input asp-for="GuestFullName" class="form-control" placeholder="Nguyễn Văn A" />
-                                    <span asp-validation-for="GuestFullName" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="GuestPhone" class="form-label fw-semibold"></label>
-                                    <input asp-for="GuestPhone" class="form-control" placeholder="09xxxxxxxx" />
-                                    <span asp-validation-for="GuestPhone" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="GuestCitizenId" class="form-label fw-semibold"></label>
-                                    <input asp-for="GuestCitizenId" class="form-control" placeholder="Nhập CCCD nếu có" />
-                                    <span asp-validation-for="GuestCitizenId" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="GuestEmail" class="form-label fw-semibold"></label>
-                                    <input asp-for="GuestEmail" class="form-control" placeholder="Email nếu có" />
-                                    <span asp-validation-for="GuestEmail" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="GuestGender" class="form-label fw-semibold"></label>
-                                    <select asp-for="GuestGender" class="form-select">
-                                        <option value="">-- Chọn giới tính --</option>
-                                        <option value="Nam">Nam</option>
-                                        <option value="Nữ">Nữ</option>
-                                        <option value="Khác">Khác</option>
-                                    </select>
-                                    <span asp-validation-for="GuestGender" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="GuestDateOfBirth" class="form-label fw-semibold"></label>
-                                    <input asp-for="GuestDateOfBirth" class="form-control" />
-                                    <span asp-validation-for="GuestDateOfBirth" class="text-danger"></span>
-                                </div>
-                                <div class="col-12">
-                                    <label asp-for="GuestAddress" class="form-label fw-semibold"></label>
-                                    <input asp-for="GuestAddress" class="form-control" placeholder="Địa chỉ khách hàng" />
-                                    <span asp-validation-for="GuestAddress" class="text-danger"></span>
-                                </div>
+
+                    <!-- Khách mới -->
+                    <div id="newCustomerSection" class="hidden space-y-4 pt-2">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label asp-for="GuestFullName" class="block text-xs font-bold text-slate-700 mb-1.5">Họ và tên khách</label>
+                                <input asp-for="GuestFullName" placeholder="Nguyễn Văn A"
+                                       class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-semibold" />
+                                <span asp-validation-for="GuestFullName" class="text-rose-600 text-[11px] mt-1 block"></span>
+                            </div>
+
+                            <div>
+                                <label asp-for="GuestPhone" class="block text-xs font-bold text-slate-700 mb-1.5">Số điện thoại</label>
+                                <input asp-for="GuestPhone" placeholder="0901234567"
+                                       class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                                <span asp-validation-for="GuestPhone" class="text-rose-600 text-[11px] mt-1 block"></span>
+                            </div>
+
+                            <div>
+                                <label asp-for="GuestCitizenId" class="block text-xs font-bold text-slate-700 mb-1.5">Số CCCD / Hộ chiếu</label>
+                                <input asp-for="GuestCitizenId" placeholder="12 chữ số CCCD"
+                                       class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                                <span asp-validation-for="GuestCitizenId" class="text-rose-600 text-[11px] mt-1 block"></span>
+                            </div>
+
+                            <div>
+                                <label asp-for="GuestEmail" class="block text-xs font-bold text-slate-700 mb-1.5">Email liên hệ</label>
+                                <input asp-for="GuestEmail" placeholder="guest@example.com"
+                                       class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                                <span asp-validation-for="GuestEmail" class="text-rose-600 text-[11px] mt-1 block"></span>
+                            </div>
+
+                            <div>
+                                <label asp-for="GuestGender" class="block text-xs font-bold text-slate-700 mb-1.5">Giới tính</label>
+                                <select asp-for="GuestGender"
+                                        class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all">
+                                    <option value="">-- Chọn giới tính --</option>
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label asp-for="GuestDateOfBirth" class="block text-xs font-bold text-slate-700 mb-1.5">Ngày sinh</label>
+                                <input asp-for="GuestDateOfBirth" type="date"
+                                       class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label asp-for="GuestAddress" class="block text-xs font-bold text-slate-700 mb-1.5">Địa chỉ</label>
+                                <input asp-for="GuestAddress" placeholder="Địa chỉ thường trú / lưu trú"
+                                       class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
                             </div>
                         </div>
                     </div>
-                    <hr class="my-4" />
-                    <h5 class="fw-bold mb-3">Thông tin lưu trú</h5>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label asp-for="CheckInDate" class="form-label fw-semibold"></label>
-                            <input asp-for="CheckInDate" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
-                            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                </div>
+
+                <hr class="border-slate-100" />
+
+                <!-- Thông tin lưu trú -->
+                <div>
+                    <h2 class="text-sm font-bold text-on-surface uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-[18px]">calendar_today</span>
+                        <span>Thông Tin Lưu Trú</span>
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label asp-for="CheckInDate" class="block text-xs font-bold text-slate-700 mb-1.5">Ngày nhận phòng</label>
+                            <input asp-for="CheckInDate" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" id="CheckInDate"
+                                   class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-semibold" />
+                            <span asp-validation-for="CheckInDate" class="text-rose-600 text-[11px] mt-1 block"></span>
                         </div>
-                        <div class="col-md-6">
-                            <label asp-for="CheckOutDate" class="form-label fw-semibold"></label>
-                            <input asp-for="CheckOutDate" class="form-control" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
-                            <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+
+                        <div>
+                            <label asp-for="CheckOutDate" class="block text-xs font-bold text-slate-700 mb-1.5">Ngày trả phòng</label>
+                            <input asp-for="CheckOutDate" type="date" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" id="CheckOutDate"
+                                   class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-semibold" />
+                            <span asp-validation-for="CheckOutDate" class="text-rose-600 text-[11px] mt-1 block"></span>
                         </div>
-                        <div class="col-md-4">
-                            <label asp-for="Adult" class="form-label fw-semibold"></label>
-                            <input asp-for="Adult" class="form-control" min="1" max="@Model.MaxOccupancy" />
-                            <span asp-validation-for="Adult" class="text-danger"></span>
+
+                        <div>
+                            <label asp-for="Adult" class="block text-xs font-bold text-slate-700 mb-1.5">Người lớn</label>
+                            <input asp-for="Adult" type="number" min="1" max="@Model.MaxOccupancy"
+                                   class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                            <span asp-validation-for="Adult" class="text-rose-600 text-[11px] mt-1 block"></span>
                         </div>
-                        <div class="col-md-4">
-                            <label asp-for="Children" class="form-label fw-semibold"></label>
-                            <input asp-for="Children" class="form-control" min="0" max="@Model.MaxOccupancy" />
-                            <span asp-validation-for="Children" class="text-danger"></span>
+
+                        <div>
+                            <label asp-for="Children" class="block text-xs font-bold text-slate-700 mb-1.5">Trẻ em</label>
+                            <input asp-for="Children" type="number" min="0" max="@Model.MaxOccupancy"
+                                   class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                            <span asp-validation-for="Children" class="text-rose-600 text-[11px] mt-1 block"></span>
                         </div>
-                        <div class="col-md-4">
-                            <label asp-for="Deposit" class="form-label fw-semibold"></label>
-                            <input asp-for="Deposit" class="form-control" min="0" step="1000" />
-                            <span asp-validation-for="Deposit" class="text-danger"></span>
+
+                        <div class="md:col-span-2">
+                            <label asp-for="Deposit" class="block text-xs font-bold text-slate-700 mb-1.5">Tiền đặt cọc (VNĐ)</label>
+                            <input asp-for="Deposit" type="number" min="0" step="10000"
+                                   class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-semibold" />
+                            <span asp-validation-for="Deposit" class="text-rose-600 text-[11px] mt-1 block"></span>
                         </div>
-                        <div class="col-12">
-                            <label asp-for="Note" class="form-label fw-semibold"></label>
-                            <textarea asp-for="Note" class="form-control" rows="3" maxlength="500" placeholder="Yêu cầu đặc biệt, giờ dự kiến đến..."></textarea>
-                            <span asp-validation-for="Note" class="text-danger"></span>
+
+                        <div class="md:col-span-2">
+                            <label asp-for="Note" class="block text-xs font-bold text-slate-700 mb-1.5">Ghi chú yêu cầu đặc biệt</label>
+                            <textarea asp-for="Note" rows="3" placeholder="Yêu cầu giường phụ, giờ nhận sớm..."
+                                      class="w-full p-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all"></textarea>
+                            <span asp-validation-for="Note" class="text-rose-600 text-[11px] mt-1 block"></span>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer bg-white p-4 d-flex justify-content-end gap-2">
-                    <a asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.RoomId" class="btn btn-outline-secondary">Hủy</a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-calendar-check me-1"></i>Xác nhận đặt phòng
+
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+                    <a asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.RoomId"
+                       class="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all">
+                        Hủy
+                    </a>
+                    <button type="submit"
+                            class="px-6 py-2.5 rounded-xl bg-primary-container hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-secondary-fixed">calendar_check</span>
+                        <span>Xác Nhận Đặt Phòng</span>
                     </button>
                 </div>
             </div>
         </div>
-    </div>
-</form>
-@section Scripts
-{
+    </form>
+</div>
+
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -180,19 +233,21 @@
             const nightsElement = document.getElementById("numberOfNights");
             const totalElement = document.getElementById("estimatedTotal");
             const price = @Model.PricePerNight.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
             function updateCustomerMode() {
                 const isNew = createNewCustomer.checked;
-                existingSection.classList.toggle("d-none", isNew);
-                newSection.classList.toggle("d-none", !isNew);
+                if (existingSection) existingSection.classList.toggle("hidden", isNew);
+                if (newSection) newSection.classList.toggle("hidden", !isNew);
                 if (isNew && customerSelect) customerSelect.value = "";
             }
+
             function updateTotal() {
                 if (!checkIn.value || !checkOut.value) return;
                 const start = new Date(checkIn.value + "T00:00:00");
                 const end = new Date(checkOut.value + "T00:00:00");
                 const nights = Math.max(0, Math.round((end - start) / 86400000));
-                nightsElement.textContent = nights;
-                totalElement.textContent = new Intl.NumberFormat("vi-VN").format(nights * price) + " VNĐ";
+                if (nightsElement) nightsElement.textContent = nights;
+                if (totalElement) totalElement.textContent = new Intl.NumberFormat("vi-VN").format(nights * price) + " VNĐ";
                 if (checkIn.value) {
                     const minimum = new Date(checkIn.value + "T00:00:00");
                     minimum.setDate(minimum.getDate() + 1);
@@ -201,9 +256,10 @@
                         String(minimum.getDate()).padStart(2, "0");
                 }
             }
-            createNewCustomer.addEventListener("change", updateCustomerMode);
-            checkIn.addEventListener("change", updateTotal);
-            checkOut.addEventListener("change", updateTotal);
+
+            createNewCustomer?.addEventListener("change", updateCustomerMode);
+            checkIn?.addEventListener("change", updateTotal);
+            checkOut?.addEventListener("change", updateTotal);
             updateCustomerMode();
             updateTotal();
         });

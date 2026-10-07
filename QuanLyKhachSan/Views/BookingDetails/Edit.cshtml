@@ -1,62 +1,74 @@
 @model QuanLyKhachSan.Models.BookingDetail
 
 @{
-    ViewData["Title"] = "Chỉnh sửa Booking Detail";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Chỉnh sửa chi tiết đặt phòng";
 }
-<h2>Chỉnh sửa Booking Detail</h2>
-<hr />
-<form asp-action="Edit" method="post">
-    @Html.AntiForgeryToken()
-    <input asp-for="Id" type="hidden" />
-    <input asp-for="BookingId" type="hidden" />
-    <input asp-for="RoomId" type="hidden" />
-    <div class="mb-3">
-        <label class="form-label">
-            Booking
-        </label>
-        <input class="form-control" value="@Model.BookingId" readonly />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">
-            Phòng
-        </label>
-        <input class="form-control" value="@Model.RoomId" readonly />
-    </div>
-    <div class="mb-3">
-        <label asp-for="PricePerNight" class="form-label">
-        </label>
-        <input asp-for="PricePerNight" class="form-control" readonly />
-    </div>
-    <div class="mb-3">
-        <label asp-for="NumberOfNights" class="form-label">
-        </label>
-        <input asp-for="NumberOfNights" class="form-control" />
-        <span asp-validation-for="NumberOfNights" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="DiscountPercent" class="form-label">
-        </label>
-        <input asp-for="DiscountPercent" class="form-control" />
-        <span asp-validation-for="DiscountPercent"
-              class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="TotalPrice" class="form-label">
-        </label>
-        <input asp-for="TotalPrice" class="form-control" readonly />
+
+<div class="max-w-3xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Quay lại danh sách
+        </a>
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Lưu
-    </button>
-    <a asp-action="Index" class="btn btn-secondary">
-        Quay lại
-    </a>
-</form>
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-[#0b1c30] to-[#1e293b] p-8 text-white relative overflow-hidden">
+            <h1 class="font-serif text-2xl font-bold">Chỉnh Sửa Chi Tiết Đặt Phòng</h1>
+            <p class="text-slate-300 text-sm mt-1">Cập nhật số đêm lưu trú và tỷ lệ chiết khấu</p>
+        </div>
 
-@section Scripts
-{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+        <div class="p-8">
+            <form asp-action="Edit" method="post" class="space-y-6">
+                @Html.AntiForgeryToken()
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="BookingId" type="hidden" />
+                <input asp-for="RoomId" type="hidden" />
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Mã Booking</label>
+                        <input class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-sm text-slate-600 font-medium" value="@Model.BookingId" readonly />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Mã Phòng</label>
+                        <input class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-sm text-slate-600 font-medium" value="@Model.RoomId" readonly />
+                    </div>
+
+                    <div>
+                        <label asp-for="PricePerNight" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Đơn giá / đêm</label>
+                        <input asp-for="PricePerNight" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-sm text-slate-600 font-medium" readonly />
+                    </div>
+
+                    <div>
+                        <label asp-for="NumberOfNights" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Số đêm lưu trú</label>
+                        <input asp-for="NumberOfNights" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 font-medium" />
+                        <span asp-validation-for="NumberOfNights" class="text-xs text-rose-500 mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="DiscountPercent" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Chiết khấu (%)</label>
+                        <input asp-for="DiscountPercent" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c5a880] text-sm text-slate-800 bg-slate-50/50 font-medium" />
+                        <span asp-validation-for="DiscountPercent" class="text-xs text-rose-500 mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="TotalPrice" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tổng tiền</label>
+                        <input asp-for="TotalPrice" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-sm text-slate-600 font-bold" readonly />
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+                    <a asp-action="Index" class="px-6 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">Hủy</a>
+                    <button type="submit" class="px-7 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] hover:from-[#b9986b] hover:to-[#634e2f] text-white text-sm font-semibold shadow-lg shadow-[#c5a880]/20 transition-all">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

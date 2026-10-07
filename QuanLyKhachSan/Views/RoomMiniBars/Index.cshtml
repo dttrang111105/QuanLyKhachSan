@@ -1,132 +1,144 @@
-﻿@model IEnumerable<QuanLyKhachSan.Models.Room>
-
+@model IEnumerable<QuanLyKhachSan.Models.Room>
 @{
     ViewData["Title"] = "Quản lý minibar";
     Layout = User.IsInRole("Admin") ? "_AdminLayout" : "_ReceptionistLayout";
 }
 
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="mb-1">Quản lý Minibar</h2>
-            <p class="text-muted mb-0">Theo dõi số lượng minibar theo từng phòng.</p>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+    <div>
+        <div class="flex items-center gap-2 text-xs font-bold text-secondary uppercase tracking-wider mb-1">
+            <span>Quản Lý Hệ Thống</span>
+            <span class="text-slate-400">/</span>
+            <span class="text-on-surface">Minibar Buồng Phòng</span>
         </div>
+        <h1 class="text-2xl lg:text-3xl font-bold text-on-surface font-serif tracking-tight">Quản Lý Minibar & Tiêu Chuẩn Phòng</h1>
+        <p class="text-xs text-slate-500 mt-1">Giám sát lượng đồ uống, snack và số lượng tồn minibar theo từng buồng phòng.</p>
     </div>
-
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["Success"]
-        </div>
-    }
-
-    @if (!Model.Any())
-    {
-        <div class="alert alert-info">
-            Chưa có phòng nào trong hệ thống.
-        </div>
-    }
-    else
-    {
-        <div class="row g-4">
-            @foreach (var room in Model)
-            {
-                var minibarItems = room.RoomMiniBarItems
-                    .Where(item => !item.IsDeleted && item.RoomChargeItem != null)
-                    .OrderBy(item => item.RoomChargeItem!.Name)
-                    .ToList();
-
-                var totalStandard = minibarItems.Sum(item => item.StandardQuantity);
-                var totalCurrent = minibarItems.Sum(item => item.CurrentQuantity);
-
-                <div class="col-xl-4 col-lg-6">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-0">Phòng @room.RoomNumber</h5>
-                                <small class="text-muted">
-                                    @(room.RoomType?.Name ?? "Chưa xác định")
-                                </small>
-                            </div>
-                            <span class="badge bg-secondary">
-                                Tầng @room.Floor
-                            </span>
-                        </div>
-
-                        <div class="card-body">
-                            @if (!minibarItems.Any())
-                            {
-                                <div class="text-muted mb-3">
-                                    Phòng chưa thiết lập minibar.
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="table-responsive">
-                                    <table class="table table-sm align-middle mb-3">
-                                        <thead>
-                                            <tr>
-                                                <th>Mặt hàng</th>
-                                                <th class="text-center">Chuẩn</th>
-                                                <th class="text-center">Hiện có</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in minibarItems)
-                                            {
-                                                <tr>
-                                                    <td>@item.RoomChargeItem!.Name</td>
-                                                    <td class="text-center">@item.StandardQuantity</td>
-                                                    <td class="text-center">
-                                                        @if (item.CurrentQuantity < item.StandardQuantity)
-                                                        {
-                                                            <span class="badge bg-warning text-dark">
-                                                                @item.CurrentQuantity
-                                                            </span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span class="badge bg-success">
-                                                                @item.CurrentQuantity
-                                                            </span>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="small text-muted mb-3">
-                                    Tổng hiện có: <strong>@totalCurrent</strong> / @totalStandard sản phẩm
-                                </div>
-                            }
-
-                            <div class="d-flex gap-2 flex-wrap">
-                                <a asp-action="Manage"
-                                   asp-route-id="@room.Id"
-                                   class="btn btn-primary">
-                                    Quản lý minibar
-                                </a>
-
-                                @if (minibarItems.Any())
-                                {
-                                    <form asp-action="Refill"
-                                          asp-route-id="@room.Id"
-                                          method="post">
-                                        @Html.AntiForgeryToken()
-                                        <button type="submit"
-                                                class="btn btn-outline-success"
-                                                onclick="return confirm('Bổ sung tất cả minibar của phòng @room.RoomNumber về số lượng chuẩn?');">
-                                            Bổ sung đầy
-                                        </button>
-                                    </form>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
+    <div class="flex items-center gap-2">
+        <a asp-controller="RoomChargeItems" asp-action="Index"
+           class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-all">
+            <span class="material-symbols-outlined text-[18px]">receipt_long</span>
+            <span>Bảng Giá Minibar & Tài Sản</span>
+        </a>
+    </div>
 </div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="p-3.5 mb-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center gap-2">
+        <span class="material-symbols-outlined text-[18px]">check_circle</span>
+        <span>@TempData["Success"]</span>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="bg-white rounded-3xl border border-slate-200 p-12 text-center text-slate-400 text-xs">
+        <span class="material-symbols-outlined text-4xl mb-2 text-slate-300">local_bar</span>
+        <div>Chưa có phòng nào trong hệ thống</div>
+    </div>
+}
+else
+{
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach (var room in Model)
+        {
+            var minibarItems = room.RoomMiniBarItems?
+                .Where(item => !item.IsDeleted && item.RoomChargeItem != null)
+                .OrderBy(item => item.RoomChargeItem!.Name)
+                .ToList() ?? new List<QuanLyKhachSan.Models.RoomMiniBarItem>();
+
+            var totalStandard = minibarItems.Sum(item => item.StandardQuantity);
+            var totalCurrent = minibarItems.Sum(item => item.CurrentQuantity);
+            bool isFull = totalCurrent >= totalStandard && totalStandard > 0;
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-xl bg-amber-50 text-secondary flex items-center justify-center font-bold">
+                                <span class="material-symbols-outlined text-[18px]">door_front</span>
+                            </div>
+                            <div>
+                                <h2 class="text-base font-bold text-on-surface">Phòng @room.RoomNumber</h2>
+                                <span class="text-[10px] text-slate-400">@(room.RoomType?.Name ?? "Tiêu chuẩn")</span>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold @(isFull ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800")">
+                            Tầng @room.Floor
+                        </span>
+                    </div>
+
+                    @if (!minibarItems.Any())
+                    {
+                        <div class="p-4 rounded-xl bg-slate-50 text-slate-400 text-xs text-center my-3">
+                            Phòng chưa thiết lập danh mục minibar
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="border border-slate-100 rounded-xl overflow-hidden mb-3">
+                            <table class="w-full text-xs text-left">
+                                <thead class="bg-slate-50 text-slate-400 uppercase text-[9px] font-bold">
+                                    <tr>
+                                        <th class="py-2 px-3">Mặt Hàng</th>
+                                        <th class="py-2 px-2 text-center">Chuẩn</th>
+                                        <th class="py-2 px-3 text-right">Hiện Có</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-slate-700">
+                                    @foreach (var item in minibarItems)
+                                    {
+                                        <tr>
+                                            <td class="py-1.5 px-3 font-semibold">@item.RoomChargeItem!.Name</td>
+                                            <td class="py-1.5 px-2 text-center text-slate-400">@item.StandardQuantity</td>
+                                            <td class="py-1.5 px-3 text-right">
+                                                @if (item.CurrentQuantity < item.StandardQuantity)
+                                                {
+                                                    <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[11px]">
+                                                        @item.CurrentQuantity
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[11px]">
+                                                        @item.CurrentQuantity
+                                                    </span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-3 px-1">
+                            <span>Tổng tồn kho:</span>
+                            <span class="font-bold text-on-surface">@totalCurrent / @totalStandard sản phẩm</span>
+                        </div>
+                    }
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex items-center gap-2">
+                    <a asp-action="Manage" asp-route-id="@room.Id"
+                       class="flex-1 py-2 px-3 rounded-xl bg-primary-container hover:bg-slate-800 text-white text-xs font-bold text-center transition-all">
+                        Cài đặt Minibar
+                    </a>
+
+                    @if (minibarItems.Any())
+                    {
+                        <form asp-action="Refill" asp-route-id="@room.Id" method="post" class="inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit"
+                                    class="py-2 px-3 rounded-xl border border-emerald-200 hover:bg-emerald-50 text-emerald-700 text-xs font-bold transition-all"
+                                    onclick="return confirm('Bổ sung tất cả minibar của phòng @room.RoomNumber về số lượng chuẩn?');"
+                                    title="Bổ sung đầy số lượng chuẩn">
+                                <span class="material-symbols-outlined text-[16px] block">refresh</span>
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

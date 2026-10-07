@@ -1,468 +1,186 @@
-﻿@model IEnumerable<QuanLyKhachSan.Models.Service>
+@model IEnumerable<QuanLyKhachSan.Models.Service>
 @{
-    ViewData["Title"] = "Dịch vụ khách sạn";
+    ViewData["Title"] = "Dịch vụ & Trải nghiệm - Aura Grand Resort";
     Layout = "_CustomerLayout";
-    var services = Model?.ToList()
-        ?? new List<QuanLyKhachSan.Models.Service>();
+    var services = Model?.ToList() ?? new List<QuanLyKhachSan.Models.Service>();
+
+    string GetServiceIcon(string? category)
+    {
+        return category?.Trim().ToLower() switch
+        {
+            "ăn uống" or "f&b" or "ẩm thực" => "restaurant",
+            "chăm sóc" or "spa" or "massage" => "spa",
+            "giải trí" or "tour" => "sports_gymnastics",
+            "tiện ích" or "xe" or "di chuyển" => "airport_shuttle",
+            "giặt là" or "laundry" => "local_laundry_service",
+            _ => "room_service"
+        };
+    }
 }
-<style>
-    .customer-services-page {
-        min-height: 75vh;
-        padding: 70px 0 90px;
-        background: radial-gradient( circle at top right, rgba(197, 151, 67, 0.16), transparent 32% ), radial-gradient( circle at bottom left, rgba(197, 151, 67, 0.10), transparent 28% ), #f7f5f0;
-    }
-    .services-heading {
-        max-width: 760px;
-        margin: 0 auto 48px;
-        text-align: center;
-    }
-    .services-heading-label {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 12px;
-        padding: 7px 15px;
-        border: 1px solid rgba(181, 133, 47, 0.35);
-        border-radius: 999px;
-        background: rgba(210, 174, 101, 0.12);
-        color: #9b6b20;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-    }
-    .services-heading h1 {
-        margin-bottom: 15px;
-        color: #202020;
-        font-family: "Cinzel", serif;
-        font-size: 42px;
-        font-weight: 700;
-    }
-    .services-heading p {
-        margin: 0;
-        color: #777;
-        font-size: 16px;
-        line-height: 1.8;
-    }
-    .service-card {
-        position: relative;
-        height: 100%;
-        overflow: hidden;
-        border: 1px solid #e4ddd1;
-        border-radius: 22px;
-        background: #fff;
-        box-shadow: 0 15px 40px rgba(30, 25, 18, 0.08);
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-        .service-card:hover {
-            border-color: rgba(187, 139, 52, 0.65);
-            box-shadow: 0 25px 55px rgba(30, 25, 18, 0.16);
-            transform: translateY(-8px);
-        }
-    .service-card-top {
-        position: relative;
-        min-height: 175px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        background: radial-gradient( circle at 80% 20%, rgba(225, 187, 104, 0.32), transparent 35% ), linear-gradient(145deg, #0b0b0b, #282015);
-    }
-        .service-card-top::before {
-            content: "";
-            position: absolute;
-            width: 170px;
-            height: 170px;
-            border: 1px solid rgba(214, 175, 91, 0.25);
-            border-radius: 50%;
-        }
-        .service-card-top::after {
-            content: "";
-            position: absolute;
-            width: 115px;
-            height: 115px;
-            border: 1px solid rgba(214, 175, 91, 0.18);
-            border-radius: 50%;
-        }
-    .service-icon {
-        position: relative;
-        z-index: 2;
-        width: 84px;
-        height: 84px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid rgba(245, 210, 131, 0.65);
-        border-radius: 23px;
-        background: linear-gradient(145deg, #eccb79, #b67a21);
-        color: #181109;
-        font-size: 37px;
-        box-shadow: 0 15px 32px rgba(0, 0, 0, 0.28);
-        transform: rotate(-3deg);
-        transition: transform 0.3s ease;
-    }
-    .service-card:hover .service-icon {
-        transform: rotate(0deg) scale(1.08);
-    }
-    .service-category {
-        position: absolute;
-        top: 17px;
-        right: 17px;
-        z-index: 3;
-        padding: 7px 13px;
-        border: 1px solid rgba(231, 199, 126, 0.35);
-        border-radius: 999px;
-        background: rgba(0, 0, 0, 0.45);
-        color: #e8c46c;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 1.4px;
-        text-transform: uppercase;
-        backdrop-filter: blur(5px);
-    }
-    .service-card-body {
-        display: flex;
-        min-height: 310px;
-        flex-direction: column;
-        padding: 27px;
-    }
-    .service-card-title {
-        min-height: 60px;
-        margin-bottom: 10px;
-        color: #242424;
-        font-size: 23px;
-        font-weight: 750;
-        line-height: 1.35;
-    }
-    .service-card-description {
-        min-height: 72px;
-        margin-bottom: 22px;
-        color: #777;
-        font-size: 14px;
-        line-height: 1.7;
-    }
-    .service-card-information {
-        display: flex;
-        align-items: end;
-        justify-content: space-between;
-        gap: 15px;
-        margin-top: auto;
-        padding-top: 20px;
-        border-top: 1px solid #ede8df;
-    }
-    .service-price-label {
-        display: block;
-        margin-bottom: 3px;
-        color: #999;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
-    .service-price {
-        color: #a66f1d;
-        font-size: 23px;
-        font-weight: 800;
-        white-space: nowrap;
-    }
-    .service-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: #21884f;
-        font-size: 12px;
-        font-weight: 700;
-    }
-        .service-status::before {
-            content: "";
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #2ebd6c;
-            box-shadow: 0 0 0 4px rgba(46, 189, 108, 0.13);
-        }
-    .service-book-button {
-        width: 100%;
-        min-height: 51px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 9px;
-        margin-top: 22px;
-        border: 1px solid #c59947;
-        border-radius: 11px;
-        background: linear-gradient(145deg, #e6c36e, #b47a25);
-        color: #181108;
-        font-size: 14px;
-        font-weight: 750;
-        text-decoration: none;
-        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-    }
-        .service-book-button:hover {
-            background: linear-gradient(145deg, #efd583, #c88e32);
-            color: #181108;
-            box-shadow: 0 11px 22px rgba(175, 119, 32, 0.28);
-            transform: translateY(-2px);
-        }
-    .services-information-box {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        margin-top: 50px;
-        padding: 24px 28px;
-        border: 1px solid rgba(189, 143, 62, 0.35);
-        border-radius: 17px;
-        background: linear-gradient( 135deg, rgba(255, 251, 240, 0.96), rgba(242, 228, 195, 0.8) );
-    }
-    .services-information-icon {
-        width: 52px;
-        height: 52px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        border-radius: 14px;
-        background: #1d1a15;
-        color: #d8ad56;
-        font-size: 22px;
-    }
-    .services-information-box h4 {
-        margin-bottom: 4px;
-        color: #2f2a21;
-        font-size: 16px;
-        font-weight: 750;
-    }
-    .services-information-box p {
-        margin: 0;
-        color: #716958;
-        font-size: 13px;
-        line-height: 1.6;
-    }
-    .services-empty {
-        max-width: 650px;
-        margin: 0 auto;
-        padding: 55px 30px;
-        border: 1px dashed #cfb77f;
-        border-radius: 22px;
-        background: #fff;
-        text-align: center;
-    }
-    .services-empty-icon {
-        width: 80px;
-        height: 80px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        border-radius: 50%;
-        background: rgba(199, 157, 74, 0.16);
-        color: #aa761f;
-        font-size: 34px;
-    }
-    .services-empty h3 {
-        margin-bottom: 9px;
-        color: #2c2923;
-        font-size: 22px;
-        font-weight: 750;
-    }
-    .services-empty p {
-        margin-bottom: 23px;
-        color: #777;
-    }
-    .services-back-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 11px 20px;
-        border-radius: 9px;
-        background: #222;
-        color: #fff;
-        text-decoration: none;
-    }
-        .services-back-button:hover {
-            background: #b8822d;
-            color: #fff;
-        }
-    @@media (max-width: 991.98px) {
-        .services-heading h1 {
-            font-size: 36px;
-        }
-        .service-card-title,
-        .service-card-description {
-            min-height: auto;
-        }
-    }
-    @@media (max-width: 767.98px) {
-        .customer-services-page {
-            padding: 45px 0 70px;
-        }
-        .services-heading {
-            margin-bottom: 35px;
-        }
-            .services-heading h1 {
-                font-size: 30px;
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <!-- Header Banner -->
+    <div class="text-center max-w-3xl mx-auto space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container text-secondary text-xs font-bold uppercase tracking-widest">
+            <span class="material-symbols-outlined text-[16px]">spa</span>
+            <span>Trải Nghiệm Đẳng Cấp 5 Sao</span>
+        </div>
+        <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface tracking-tight">
+            Dịch Vụ &amp; Trải Nghiệm Thượng Lưu
+        </h1>
+        <p class="text-sm text-on-surface-variant leading-relaxed">
+            Thưởng thức tinh hoa ẩm thực, tái tạo năng lượng với liệu trình Spa chuyên sâu và tận hưởng chuỗi tiện ích độc quyền được chuẩn hóa chuẩn quốc tế tại Aura Grand Resort.
+        </p>
+    </div>
+
+    <!-- Filter & Search Toolbar -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/60 shadow-sm">
+        <div class="flex flex-wrap items-center gap-2" id="categoryFilterButtons">
+            <button type="button" data-category="" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-primary text-white transition-all">
+                Tất cả dịch vụ (@services.Count)
+            </button>
+            <button type="button" data-category="ăn uống" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-all">
+                Ẩm thực &amp; Bar
+            </button>
+            <button type="button" data-category="chăm sóc" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-all">
+                Spa &amp; Trị liệu
+            </button>
+            <button type="button" data-category="giải trí" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-all">
+                Tour &amp; Giải trí
+            </button>
+            <button type="button" data-category="tiện ích" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-all">
+                Tiện ích &amp; Xe
+            </button>
+        </div>
+        <div class="relative w-full sm:w-72">
+            <input type="text" id="customerServiceSearch" placeholder="Tìm kiếm dịch vụ..."
+                   class="w-full h-10 pl-9 pr-4 bg-surface-container-low border border-outline-variant text-xs rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:border-secondary transition-all" />
+            <span class="material-symbols-outlined text-[18px] text-outline absolute left-2.5 top-1/2 -translate-y-1/2">search</span>
+        </div>
+    </div>
+
+    <!-- Services Grid -->
+    @if (services.Any())
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="servicesGrid">
+            @foreach (var s in services)
+            {
+                string icon = GetServiceIcon(s.Category);
+                string searchContent = $"{s.ServiceName} {s.Category} {s.Description}".ToLower();
+
+                <div class="service-card flex flex-col justify-between bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group hover:-translate-y-1"
+                     data-category="@(s.Category?.ToLower() ?? "")" data-search="@searchContent">
+                    <!-- Top Visual Header -->
+                    <div class="relative h-44 bg-gradient-to-br from-primary-container to-[#282015] p-6 flex flex-col justify-between overflow-hidden">
+                        <div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full border border-white/10 opacity-30 pointer-events-none"></div>
+                        <div class="flex items-center justify-between z-10">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/10 text-secondary-fixed backdrop-blur-sm border border-white/10">
+                                @(string.IsNullOrWhiteSpace(s.Category) ? "Dịch Vụ Resort" : s.Category)
+                            </span>
+                            @if (s.IsAvailable)
+                            {
+                                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Sẵn sàng
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-[11px] font-semibold text-rose-400">Tạm dừng</span>
+                            }
+                        </div>
+                        <div class="flex items-end justify-between z-10">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-secondary-container to-secondary text-primary-container flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-[28px]">@icon</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-white/60 block uppercase">Giá trọn gói</span>
+                                <span class="text-xl font-bold font-serif text-secondary-fixed">@s.Price.ToString("N0") <small class="text-xs font-normal">đ</small></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Body Content -->
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div class="space-y-2">
+                            <h3 class="font-serif text-xl font-bold text-on-surface group-hover:text-secondary transition-colors">
+                                @s.ServiceName
+                            </h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed line-clamp-3">
+                                @(string.IsNullOrWhiteSpace(s.Description) ? "Dịch vụ cao cấp phục vụ bởi đội ngũ chuyên nghiệp tiêu chuẩn 5 sao." : s.Description)
+                            </p>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="pt-4 border-t border-outline-variant/40">
+                            @if (s.IsAvailable)
+                            {
+                                <a asp-controller="Services" asp-action="BookService" asp-route-id="@s.Id"
+                                   class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-secondary to-primary-container text-white text-xs font-bold shadow-md hover:shadow-lg hover:opacity-95 transition-all no-underline">
+                                    <span class="material-symbols-outlined text-[16px]">calendar_add_on</span>
+                                    <span>Đặt Dịch Vụ Ngay</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <button disabled class="w-full py-3 px-4 rounded-xl bg-surface-container text-outline text-xs font-bold cursor-not-allowed">
+                                    Tạm Dừng Phục Vụ
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
             }
-            .services-heading p {
-                font-size: 14px;
-            }
-        .service-card-body {
-            min-height: auto;
-            padding: 23px;
-        }
-        .services-information-box {
-            align-items: flex-start;
-            padding: 20px;
-        }
+        </div>
     }
-</style>
-<section class="customer-services-page">
-    <div class="container">
-        <div class="services-heading">
-            <span class="services-heading-label">
-                <i class="bi bi-stars"></i>
-                Luxury Hotel Services
-            </span>
-            <h1>Dịch vụ khách sạn</h1>
-            <p>
-                Lựa chọn những dịch vụ tiện ích cao cấp để kỳ nghỉ của bạn
-                trở nên thoải mái, thuận tiện và đáng nhớ hơn.
+    else
+    {
+        <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-12 text-center text-on-surface-variant shadow-sm">
+            <span class="material-symbols-outlined text-5xl text-outline mb-3">spa</span>
+            <h3 class="font-serif text-lg font-bold text-on-surface">Chưa Có Dịch Vụ Nào</h3>
+            <p class="text-xs text-on-surface-variant max-w-md mx-auto mt-1">
+                Các gói dịch vụ và trải nghiệm đang được chuẩn bị và cập nhật.
             </p>
         </div>
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger mb-4">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                @TempData["Error"]
-            </div>
-        }
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success mb-4">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                @TempData["Success"]
-            </div>
-        }
-        @if (services.Any())
-        {
-            <div class="row g-4">
-                @foreach (var service in services)
-                {
-                    var text =
-                    $"{service.ServiceName} {service.Category}"
-                    .ToLower();
-                    var iconClass = "bi-stars";
-                    if (text.Contains("giặt") ||
-                    text.Contains("laundry"))
-                    {
-                        iconClass = "bi-basket2-fill";
-                    }
-                    else if (text.Contains("buffet") ||
-                    text.Contains("food") ||
-                    text.Contains("ăn"))
-                    {
-                        iconClass = "bi-cup-hot-fill";
-                    }
-                    else if (text.Contains("spa") ||
-                    text.Contains("massage"))
-                    {
-                        iconClass = "bi-flower1";
-                    }
-                    else if (text.Contains("gym") ||
-                    text.Contains("fitness") ||
-                    text.Contains("hồ bơi"))
-                    {
-                        iconClass = "bi-heart-pulse-fill";
-                    }
-                    else if (text.Contains("xe") ||
-                    text.Contains("transport"))
-                    {
-                        iconClass = "bi-car-front-fill";
-                    }
-                    else if (text.Contains("trang trí") ||
-                    text.Contains("decoration") ||
-                    text.Contains("sự kiện"))
-                    {
-                        iconClass = "bi-balloon-heart-fill";
-                    }
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <article class="service-card">
-                            <div class="service-card-top">
-                                <span class="service-category">
-                                    @(string.IsNullOrWhiteSpace(service.Category)
-                                                                ? "Luxury Service"
-                                                                : service.Category)
-                                </span>
-                                <span class="service-icon">
-                                    <i class="bi @iconClass"></i>
-                                </span>
-                            </div>
-                            <div class="service-card-body">
-                                <h2 class="service-card-title">
-                                    @service.ServiceName
-                                </h2>
-                                <p class="service-card-description">
-                                    @(string.IsNullOrWhiteSpace(service.Description)
-                                                                ? "Dịch vụ tiện ích chất lượng cao được cung cấp trong thời gian khách hàng lưu trú."
-                                                                : service.Description)
-                                </p>
-                                <div class="service-card-information">
-                                    <div>
-                                        <span class="service-price-label">
-                                            Giá dịch vụ
-                                        </span>
-                                        <strong class="service-price">
-                                            @service.Price.ToString("N0") VNĐ
-                                        </strong>
-                                    </div>
-                                    <span class="service-status">
-                                        Đang phục vụ
-                                    </span>
-                                </div>
-                                <a asp-controller="Services"
-                                   asp-action="BookService"
-                                   asp-route-id="@service.Id"
-                                   class="service-book-button">
-                                    <i class="bi bi-bag-plus-fill"></i>
-                                    Đặt dịch vụ ngay
-                                    <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
-                        </article>
-                    </div>
-                }
-            </div>
-            <div class="services-information-box">
-                <span class="services-information-icon">
-                    <i class="bi bi-info-circle-fill"></i>
-                </span>
-                <div>
-                    <h4>Điều kiện đặt dịch vụ</h4>
-                    <p>
-                        Bạn cần có Booking đang ở trạng thái đã nhận phòng
-                        để sử dụng dịch vụ. Chi phí dịch vụ sẽ được cộng vào
-                        hóa đơn của Booking tương ứng.
-                    </p>
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="services-empty">
-                <span class="services-empty-icon">
-                    <i class="bi bi-bag-x"></i>
-                </span>
-                <h3>Chưa có dịch vụ để hiển thị</h3>
-                <p>
-                    Hiện tại khách sạn chưa thêm dịch vụ hoặc các dịch vụ
-                    đang tạm ngừng hoạt động.
-                </p>
-                <a asp-controller="Home"
-                   asp-action="Index"
-                   class="services-back-button">
-                    <i class="bi bi-arrow-left"></i>
-                    Quay lại trang chủ
-                </a>
-            </div>
-        }
-    </div>
-</section>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('customerServiceSearch');
+            const catButtons = document.querySelectorAll('.cat-btn');
+            const cards = document.querySelectorAll('.service-card');
+            let activeCategory = '';
+
+            function filterCards() {
+                const query = (searchInput?.value || '').toLowerCase().trim();
+
+                cards.forEach(card => {
+                    const cardSearch = (card.getAttribute('data-search') || '').toLowerCase();
+                    const cardCat = (card.getAttribute('data-category') || '').toLowerCase();
+
+                    const matchesQuery = !query || cardSearch.includes(query);
+                    const matchesCategory = !activeCategory || cardCat.includes(activeCategory);
+
+                    card.style.display = (matchesQuery && matchesCategory) ? '' : 'none';
+                });
+            }
+
+            catButtons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    catButtons.forEach(b => {
+                        b.classList.remove('bg-primary', 'text-white');
+                        b.classList.add('bg-surface-container-low', 'text-on-surface-variant');
+                    });
+                    this.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
+                    this.classList.add('bg-primary', 'text-white');
+
+                    activeCategory = (this.getAttribute('data-category') || '').toLowerCase();
+                    filterCards();
+                });
+            });
+
+            if (searchInput) searchInput.addEventListener('input', filterCards);
+        });
+    </script>
+}

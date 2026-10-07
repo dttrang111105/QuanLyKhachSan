@@ -1,136 +1,61 @@
 @model QuanLyKhachSan.Models.Customer
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xóa khách hàng";
 }
-<h1>Delete</h1>
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>QuanLyKhachSan.Models.Customer</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AccountId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AccountId)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Account)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Account)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfBirth)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfBirth)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CitizenId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CitizenId)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Avatar)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Avatar)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Bookings)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Bookings)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Reviews)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Reviews)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>
-    </dl>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+
+<div class="max-w-xl mx-auto">
+    <div class="mb-6 flex items-center justify-between">
+        <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#0b1c30] transition-colors">
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Quay lại danh sách
+        </a>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-rose-100 overflow-hidden">
+        <!-- Danger Header -->
+        <div class="bg-rose-50 border-b border-rose-100 p-8 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-2xl">person_remove</span>
+            </div>
+            <div>
+                <h1 class="font-serif text-xl font-bold text-slate-900">Xác nhận xóa khách hàng</h1>
+                <p class="text-sm text-slate-500 mt-1">Hồ sơ khách hàng: #@Model.Id - @Model.FullName</p>
+            </div>
+        </div>
+
+        <!-- Warning content -->
+        <div class="p-8 space-y-6">
+            <p class="text-sm text-slate-600 leading-relaxed">
+                Bạn có chắc chắn muốn xóa khách hàng <strong class="text-slate-900">@Model.FullName</strong> khỏi hệ thống không?
+            </p>
+
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 space-y-2 text-xs">
+                <div class="flex justify-between py-1 border-b border-slate-200/60">
+                    <span class="text-slate-500">Số điện thoại:</span>
+                    <strong class="text-slate-800">@(string.IsNullOrWhiteSpace(Model.Phone) ? "Chưa cập nhật" : Model.Phone)</strong>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-200/60">
+                    <span class="text-slate-500">Email:</span>
+                    <strong class="text-slate-800">@(string.IsNullOrWhiteSpace(Model.Email) ? "Chưa cập nhật" : Model.Email)</strong>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span class="text-slate-500">CCCD:</span>
+                    <strong class="text-slate-800 font-mono">@(string.IsNullOrWhiteSpace(Model.CitizenId) ? "Chưa cập nhật" : Model.CitizenId)</strong>
+                </div>
+            </div>
+
+            <form asp-action="Delete" method="post" class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <a asp-action="Index" class="px-6 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+                    Hủy
+                </a>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold shadow-lg shadow-rose-600/20 transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">delete</span>
+                    Xác nhận xóa
+                </button>
+            </form>
+        </div>
+    </div>
 </div>

@@ -4,158 +4,127 @@
     ViewData["Title"] = "Thêm phòng mới";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-@section Styles {
-    <style>
-        .room-form-page {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .room-form-card {
-            background: #ffffff;
-            border: 1px solid #dcebf3;
-            border-radius: 18px;
-            box-shadow: 0 12px 35px rgba(30, 91, 122, 0.10);
-            overflow: hidden;
-        }
-        .room-form-header {
-            padding: 24px 28px;
-            background: linear-gradient(135deg, #eaf7fc, #f8fcfe);
-            border-bottom: 1px solid #dcebf3;
-        }
-            .room-form-header h2 {
-                margin: 0 0 6px;
-                color: #123f56;
-                font-size: 26px;
-                font-weight: 700;
-            }
-            .room-form-header p {
-                margin: 0;
-                color: #668494;
-            }
-        .room-form-body {
-            padding: 28px;
-        }
-        .room-form-label {
-            color: #244f64;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        .room-form-control,
-        .room-form-select {
-            min-height: 46px;
-            border: 1px solid #cfe0e9;
-            border-radius: 10px;
-        }
-            .room-form-control:focus,
-            .room-form-select:focus {
-                border-color: #2c86aa;
-                box-shadow: 0 0 0 0.2rem rgba(44, 134, 170, 0.15);
-            }
-        textarea.room-form-control {
-            min-height: 130px;
-            resize: vertical;
-        }
-        .room-form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            padding-top: 10px;
-        }
-        .btn-room-back,
-        .btn-room-save {
-            min-width: 135px;
-            border-radius: 10px;
-            padding: 11px 18px;
-            font-weight: 600;
-        }
-        .btn-room-back {
-            color: #31566a;
-            background: #eef5f8;
-            border: 1px solid #d2e2e9;
-        }
-        .btn-room-save {
-            color: #ffffff;
-            background: #19779c;
-            border: 1px solid #19779c;
-        }
-            .btn-room-save:hover {
-                color: #ffffff;
-                background: #145f7d;
-                border-color: #145f7d;
-            }
-    </style>
-}
-<div class="room-form-page">
-    <div class="room-form-card">
-        <div class="room-form-header">
-            <h2><i class="bi bi-door-open me-2"></i>Thêm phòng mới</h2>
-            <p>Nhập đầy đủ thông tin để tạo phòng mới trong hệ thống.</p>
+
+<div class="max-w-4xl mx-auto py-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold text-secondary uppercase tracking-wider mb-1">
+                <span>Quản Lý Hệ Thống</span>
+                <span class="text-slate-400">/</span>
+                <a asp-action="Index" class="text-slate-600 hover:text-secondary">Buồng Phòng</a>
+                <span class="text-slate-400">/</span>
+                <span class="text-on-surface">Thêm mới</span>
+            </div>
+            <h1 class="text-2xl font-bold font-serif text-on-surface">Thêm Phòng Mới</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Khởi tạo dữ liệu buồng phòng vào hệ thống quản lý PMS</p>
         </div>
-        <div class="room-form-body">
-            <form asp-action="Create" method="post">
-                @Html.AntiForgeryToken()
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label asp-for="RoomNumber" class="form-label room-form-label">Số phòng</label>
-                        <input asp-for="RoomNumber" class="form-control room-form-control" placeholder="Ví dụ: 101" />
-                        <span asp-validation-for="RoomNumber" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="RoomTypeId" class="form-label room-form-label">Loại phòng</label>
-                        <select asp-for="RoomTypeId" asp-items="ViewBag.RoomTypeId" class="form-select room-form-select">
-                            <option value="">-- Chọn loại phòng --</option>
-                        </select>
-                        <span asp-validation-for="RoomTypeId" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="Floor" class="form-label room-form-label">Tầng</label>
-                        <input asp-for="Floor" type="number" min="1" class="form-control room-form-control" />
-                        <span asp-validation-for="Floor" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="RoomSize" class="form-label room-form-label">Diện tích (m²)</label>
-                        <input asp-for="RoomSize" type="number" min="1" step="0.01" class="form-control room-form-control" />
-                        <span asp-validation-for="RoomSize" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="MaxOccupancy" class="form-label room-form-label">Sức chứa</label>
-                        <input asp-for="MaxOccupancy" type="number" min="1" class="form-control room-form-control" />
-                        <span asp-validation-for="MaxOccupancy" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="PriceDay" class="form-label room-form-label">Giá/ngày</label>
-                        <input asp-for="PriceDay" type="number" min="0" step="1000" class="form-control room-form-control" />
-                        <span asp-validation-for="PriceDay" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="PriceWeek" class="form-label room-form-label">Giá/tuần</label>
-                        <input asp-for="PriceWeek" type="number" min="0" step="1000" class="form-control room-form-control" />
-                        <span asp-validation-for="PriceWeek" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label asp-for="Status" class="form-label room-form-label">Trạng thái</label>
-                        <select asp-for="Status" asp-items="Html.GetEnumSelectList<RoomStatus>()" class="form-select room-form-select"></select>
-                        <span asp-validation-for="Status" class="text-danger"></span>
-                    </div>
-                    <div class="col-12">
-                        <label asp-for="Description" class="form-label room-form-label">Mô tả</label>
-                        <textarea asp-for="Description" class="form-control room-form-control" placeholder="Nhập mô tả phòng..."></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="room-form-actions">
-                    <a asp-action="Index" class="btn btn-room-back">
-                        <i class="bi bi-arrow-left me-1"></i>Quay lại
-                    </a>
-                    <button type="submit" class="btn btn-room-save">
-                        <i class="bi bi-check-circle me-1"></i>Lưu phòng
-                    </button>
-                </div>
-            </form>
+        <a asp-action="Index"
+           class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-all">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>Quay lại</span>
+        </a>
+    </div>
+
+    <!-- Form Container -->
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-100 flex items-center gap-3 bg-slate-50/50">
+            <div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center font-bold">
+                <span class="material-symbols-outlined text-[20px]">meeting_room</span>
+            </div>
+            <div>
+                <h2 class="text-sm font-bold text-on-surface">Thông Tin Buồng Phòng</h2>
+                <p class="text-xs text-slate-500">Thiết lập thông số kỹ thuật và biểu phí phòng</p>
+            </div>
         </div>
+
+        <form asp-action="Create" method="post" class="p-6 sm:p-8 space-y-6">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-rose-600 text-xs font-semibold"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <label asp-for="RoomNumber" class="block text-xs font-bold text-slate-700 mb-1.5">Số phòng / Mã phòng</label>
+                    <input asp-for="RoomNumber" placeholder="VD: 101, P.202, VIP-301"
+                           class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-semibold" />
+                    <span asp-validation-for="RoomNumber" class="text-rose-600 text-[11px] mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="RoomTypeId" class="block text-xs font-bold text-slate-700 mb-1.5">Loại phòng</label>
+                    <select asp-for="RoomTypeId" asp-items="ViewBag.RoomTypeId"
+                            class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all">
+                        <option value="">-- Chọn loại phòng --</option>
+                    </select>
+                    <span asp-validation-for="RoomTypeId" class="text-rose-600 text-[11px] mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Floor" class="block text-xs font-bold text-slate-700 mb-1.5">Tầng</label>
+                    <input asp-for="Floor" type="number" min="1" placeholder="VD: 1"
+                           class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                    <span asp-validation-for="Floor" class="text-rose-600 text-[11px] mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="MaxOccupancy" class="block text-xs font-bold text-slate-700 mb-1.5">Sức chứa tối đa (người)</label>
+                    <input asp-for="MaxOccupancy" type="number" min="1" placeholder="VD: 2"
+                           class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                    <span asp-validation-for="MaxOccupancy" class="text-rose-600 text-[11px] mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="RoomSize" class="block text-xs font-bold text-slate-700 mb-1.5">Diện tích (m²)</label>
+                    <input asp-for="RoomSize" type="number" min="1" step="0.1" placeholder="VD: 35.5"
+                           class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                    <span asp-validation-for="RoomSize" class="text-rose-600 text-[11px] mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Status" class="block text-xs font-bold text-slate-700 mb-1.5">Trạng thái phòng</label>
+                    <select asp-for="Status" asp-items="Html.GetEnumSelectList<RoomStatus>()"
+                            class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all">
+                    </select>
+                    <span asp-validation-for="Status" class="text-rose-600 text-[11px] mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="PriceDay" class="block text-xs font-bold text-slate-700 mb-1.5">Giá theo ngày (VNĐ/đêm)</label>
+                    <input asp-for="PriceDay" type="number" min="0" step="10000" placeholder="VD: 1200000"
+                           class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-semibold" />
+                    <span asp-validation-for="PriceDay" class="text-rose-600 text-[11px] mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="PriceWeek" class="block text-xs font-bold text-slate-700 mb-1.5">Giá theo tuần (VNĐ)</label>
+                    <input asp-for="PriceWeek" type="number" min="0" step="10000" placeholder="VD: 7000000"
+                           class="w-full h-11 px-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all" />
+                    <span asp-validation-for="PriceWeek" class="text-rose-600 text-[11px] mt-1 block"></span>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label asp-for="Description" class="block text-xs font-bold text-slate-700 mb-1.5">Mô tả chi tiết phòng</label>
+                    <textarea asp-for="Description" rows="4" placeholder="Mô tả hướng nhìn, tiện nghi, ban công..."
+                              class="w-full p-4 bg-slate-50 border border-slate-200 text-on-surface text-sm rounded-xl focus:outline-none focus:bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all"></textarea>
+                    <span asp-validation-for="Description" class="text-rose-600 text-[11px] mt-1 block"></span>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-100 flex items-center justify-end gap-3">
+                <a asp-action="Index"
+                   class="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all">
+                    Hủy bỏ
+                </a>
+                <button type="submit"
+                        class="px-6 py-2.5 rounded-xl bg-primary-container hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[18px] text-secondary-fixed">save</span>
+                    <span>Lưu Buồng Phòng</span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

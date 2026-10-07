@@ -1,864 +1,427 @@
-﻿@using System.Text.Json
+@using System.Text.Json
 @using QuanLyKhachSan.Enums
 @model QuanLyKhachSan.ViewModels.Dashboard.DashboardViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Tổng quan quản trị";
-    ViewData["BodyClass"] = "admin-dashboard-page";
+    ViewData["Title"] = "Bảng điều khiển quản trị";
     double occupancyRate = Model.TotalRooms > 0 ? (double)Model.OccupiedRooms / Model.TotalRooms * 100 : 0;
-    double availableRate = Model.TotalRooms > 0 ? (double)Model.AvailableRooms / Model.TotalRooms * 100 : 0;
-    double maintenanceRate = Model.TotalRooms > 0 ? (double)Model.MaintenanceRooms / Model.TotalRooms * 100 : 0;
-    string occupancyRateCss = System.Math.Min(100, System.Math.Max(0, occupancyRate))
-        .ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
-    string occupancyRateText = occupancyRate.ToString("0.0");
-    string BookingStatusText(BookingStatus status)
-    {
-        return status switch
-        {
-            BookingStatus.Pending => "Chờ xác nhận",
-            BookingStatus.Confirmed => "Đã xác nhận",
-            BookingStatus.CheckedIn => "Đang lưu trú",
-            BookingStatus.CheckedOut => "Đã trả phòng",
-            BookingStatus.Cancelled => "Đã hủy",
-            _ => status.ToString()
-        };
-    }
-    string BookingStatusClass(BookingStatus status)
-    {
-        return status switch
-        {
-            BookingStatus.Pending => "status-pending",
-            BookingStatus.Confirmed => "status-confirmed",
-            BookingStatus.CheckedIn => "status-checkedin",
-            BookingStatus.CheckedOut => "status-checkedout",
-            BookingStatus.Cancelled => "status-cancelled",
-            _ => string.Empty
-        };
-    }
-    string Initial(string? value)
-    {
-        return string.IsNullOrWhiteSpace(value) ? "K" : value.Trim().Substring(0, 1).ToUpper();
-    }
-    string RoomList(QuanLyKhachSan.Models.Booking booking)
-    {
-        var roomNumbers = booking.BookingDetails
-            .Where(detail => !detail.IsDeleted)
-            .Select(detail => detail.Room)
-            .OfType<QuanLyKhachSan.Models.Room>()
-            .Select(room => room.RoomNumber)
-            .Where(roomNumber => !string.IsNullOrWhiteSpace(roomNumber))
-            .Distinct()
-            .ToList();
-
-        return roomNumbers.Count > 0 ? string.Join(", ", roomNumbers) : "Chưa xếp phòng";
-    }
+    string adminName = Model.FullName ?? User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "Quản trị viên";
 }
-<section class="admin-dashboard-hero" aria-labelledby="adminDashboardTitle">
-    <div class="admin-dashboard-hero-content">
-        <span class="admin-dashboard-kicker">
-            <i class="bi bi-stars"></i>
-            Luxury Hotel Management
-        </span>
-        <h2 id="adminDashboardTitle">
-            Chào mừng trở lại,
-            <span>
-                @(Model.FullName ?? User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "Quản trị viên")
-            </span>
-        </h2>
-        <p>
-            Theo dõi doanh thu, công suất phòng, khách lưu trú và các hoạt động
-            vận hành quan trọng của khách sạn trên một màn hình quản trị thống nhất.
-        </p>
-        <div class="admin-dashboard-actions">
-            <a asp-controller="Bookings" asp-action="Index" class="admin-outline-action">
-                <i class="bi bi-calendar2-check"></i>
-                Quản lý Booking
+
+<div class="space-y-6">
+    <!-- GREETING & CONTROLS RIBBON -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm">
+        <div class="space-y-1">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-secondary-fixed text-on-secondary-fixed">Live Operations</span>
+                <span class="text-xs text-on-surface-variant flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Hệ thống đang hoạt động ổn định
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight m-0">
+                Chào mừng trở lại, @adminName 👋
+            </h1>
+            <p class="text-xs sm:text-sm text-on-surface-variant font-light m-0">
+                Công suất phòng hiện đạt <strong class="text-secondary font-bold">@occupancyRate.ToString("0.0")%</strong> với @Model.OccupiedRooms/@Model.TotalRooms phòng đang lưu trú.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+            <a asp-controller="Bookings" asp-action="CreateForCustomer" class="px-4 py-2.5 bg-secondary hover:bg-secondary/90 text-white text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5 no-underline">
+                <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                <span>+ Đặt phòng tại quầy</span>
             </a>
-            <a asp-controller="Rooms" asp-action="Create" class="admin-primary-action">
-                <i class="bi bi-plus-lg"></i>
-                Thêm phòng mới
+            <a asp-controller="Reports" asp-action="Index" class="px-4 py-2.5 bg-surface-container-low hover:bg-surface-container border border-outline-variant text-on-surface text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5 no-underline">
+                <span class="material-symbols-outlined text-[18px]">analytics</span>
+                <span>Báo cáo chi tiết</span>
             </a>
         </div>
     </div>
-    <div class="admin-dashboard-hero-overview" aria-label="Tổng quan vận hành">
-        <div class="admin-hero-overview-card admin-hero-overview-main">
-            <div class="admin-hero-overview-heading">
-                <span>Công suất phòng hiện tại</span>
-                <i class="bi bi-bar-chart-line-fill"></i>
-            </div>
-            <strong>@occupancyRate.ToString("0.0")%</strong>
-            <div class="admin-hero-progress" aria-hidden="true">
-                <span style="width: @occupancyRateCss%"></span>
-            </div>
-            <small>
-                @Model.OccupiedRooms phòng đang có khách trên tổng số @Model.TotalRooms phòng
-            </small>
-        </div>
-        <div class="admin-hero-overview-grid">
-            <div class="admin-hero-mini-card">
-                <span class="admin-hero-mini-icon">
-                    <i class="bi bi-door-open"></i>
-                </span>
+
+    <!-- 4 KEY KPI METRIC CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <!-- Metric 1: Total Rooms -->
+        <div class="bg-surface-container-lowest p-5 sm:p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
                 <div>
-                    <small>Phòng trống</small>
-                    <strong>@Model.AvailableRooms</strong>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Tổng số phòng</span>
+                    <h3 class="text-3xl font-extrabold text-on-surface mt-1 m-0">@Model.TotalRooms</h3>
+                </div>
+                <div class="w-11 h-11 rounded-xl bg-surface-container-low text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[24px]">meeting_room</span>
                 </div>
             </div>
-            <div class="admin-hero-mini-card">
-                <span class="admin-hero-mini-icon gold">
-                    <i class="bi bi-hourglass-split"></i>
-                </span>
+            <div class="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between text-xs text-on-surface-variant">
+                <span>@Model.TotalCustomers khách hàng</span>
+                <span class="font-bold text-secondary">@Model.TotalBookings bookings</span>
+            </div>
+        </div>
+
+        <!-- Metric 2: Available Rooms -->
+        <div class="bg-surface-container-lowest p-5 sm:p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
                 <div>
-                    <small>Chờ xác nhận</small>
-                    <strong>@Model.PendingBookings</strong>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Phòng trống</span>
+                    <h3 class="text-3xl font-extrabold text-emerald-600 mt-1 m-0">@Model.AvailableRooms</h3>
+                </div>
+                <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[24px]">door_front</span>
                 </div>
             </div>
+            <div class="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between text-xs">
+                <span class="text-on-surface-variant">Sẵn sàng đón tiếp</span>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">Sẵn sàng</span>
+            </div>
+        </div>
+
+        <!-- Metric 3: Occupied Rooms -->
+        <div class="bg-surface-container-lowest p-5 sm:p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Đang lưu trú</span>
+                    <h3 class="text-3xl font-extrabold text-secondary mt-1 m-0">@Model.OccupiedRooms</h3>
+                </div>
+                <div class="w-11 h-11 rounded-xl bg-secondary-container/40 text-secondary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[24px]">key</span>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between text-xs">
+                <span class="text-on-surface-variant">Check-in hôm nay: <strong>@Model.CheckInsToday</strong></span>
+                <span class="text-on-surface-variant">Check-out: <strong>@Model.CheckOutsToday</strong></span>
+            </div>
+        </div>
+
+        <!-- Metric 4: Revenue Today / Month -->
+        <div class="bg-surface-container-lowest p-5 sm:p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Doanh thu tháng này</span>
+                    <h3 class="text-2xl font-extrabold text-on-surface mt-1 m-0">@Model.RevenueThisMonth.ToString("N0") <small class="text-xs font-normal">VNĐ</small></h3>
+                </div>
+                <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[24px]">payments</span>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between text-xs text-on-surface-variant">
+                <span>Hôm nay: <strong class="text-emerald-600">@Model.RevenueToday.ToString("N0") đ</strong></span>
+                <span>Tuần: <strong class="text-secondary">@Model.RevenueThisWeek.ToString("N0") đ</strong></span>
+            </div>
         </div>
     </div>
-</section>
-<section class="admin-dashboard-stat-grid" aria-label="Chỉ số quản trị">
-    <a asp-controller="Reports" asp-action="Index" class="admin-stat-card stat-revenue">
-        <div class="admin-stat-card-top">
-            <span class="admin-stat-icon">
-                <i class="bi bi-wallet2"></i>
-            </span>
-            <span class="admin-stat-trend positive">
-                <i class="bi bi-graph-up-arrow"></i>
-                Tháng này
-            </span>
-        </div>
-        <span class="admin-stat-label">Doanh thu tháng</span>
-        <strong class="admin-stat-value admin-money-value">
-            @Model.RevenueThisMonth.ToString("N0")
-            <small>VNĐ</small>
-        </strong>
-        <div class="admin-stat-footer">
-            <span>
-                Hôm nay:
-                <b>@Model.RevenueToday.ToString("N0") VNĐ</b>
-            </span>
-            <i class="bi bi-arrow-up-right"></i>
-        </div>
-    </a>
-    <a asp-controller="Bookings" asp-action="Index" class="admin-stat-card stat-booking">
-        <div class="admin-stat-card-top">
-            <span class="admin-stat-icon">
-                <i class="bi bi-calendar2-week-fill"></i>
-            </span>
-            <span class="admin-stat-trend neutral">
-                @Model.PendingBookings chờ duyệt
-            </span>
-        </div>
-        <span class="admin-stat-label">Tổng Booking</span>
-        <strong class="admin-stat-value">@Model.TotalBookings</strong>
-        <div class="admin-stat-footer">
-            <span>
-                Đã xác nhận:
-                <b>@Model.ConfirmedBookings booking</b>
-            </span>
-            <i class="bi bi-arrow-up-right"></i>
-        </div>
-    </a>
-    <a asp-controller="Rooms" asp-action="Index" class="admin-stat-card stat-room">
-        <div class="admin-stat-card-top">
-            <span class="admin-stat-icon">
-                <i class="bi bi-door-open-fill"></i>
-            </span>
-            <span class="admin-stat-trend neutral">
-                @occupancyRate.ToString("0.0")% sử dụng
-            </span>
-        </div>
-        <span class="admin-stat-label">Tổng số phòng</span>
-        <strong class="admin-stat-value">@Model.TotalRooms</strong>
-        <div class="admin-stat-footer">
-            <span>
-                Còn trống:
-                <b>@Model.AvailableRooms phòng</b>
-            </span>
-            <i class="bi bi-arrow-up-right"></i>
-        </div>
-    </a>
-    <a asp-controller="Customers" asp-action="Index" class="admin-stat-card stat-customer">
-        <div class="admin-stat-card-top">
-            <span class="admin-stat-icon">
-                <i class="bi bi-people-fill"></i>
-            </span>
-            <span class="admin-stat-trend positive">
-                <i class="bi bi-person-check"></i>
-                Đang hoạt động
-            </span>
-        </div>
-        <span class="admin-stat-label">Tổng khách hàng</span>
-        <strong class="admin-stat-value">@Model.TotalCustomers</strong>
-        <div class="admin-stat-footer">
-            <span>
-                Nhân sự:
-                <b>@Model.TotalEmployees người</b>
-            </span>
-            <i class="bi bi-arrow-up-right"></i>
-        </div>
-    </a>
-</section>
-<section class="admin-today-strip" aria-labelledby="todayActivityTitle">
-    <div class="admin-today-heading">
-        <span class="admin-today-icon">
-            <i class="bi bi-sun-fill"></i>
-        </span>
-        <div>
-            <strong id="todayActivityTitle">Hoạt động hôm nay</strong>
-            <small>Cập nhật theo dữ liệu hiện có</small>
-        </div>
-    </div>
-    <div class="admin-today-items">
-        <a asp-controller="Bookings" asp-action="Index" class="admin-today-item">
-            <span class="today-item-icon today-checkin">
-                <i class="bi bi-box-arrow-in-right"></i>
-            </span>
-            <div>
-                <strong>@Model.CheckInsToday</strong>
-                <small>Nhận phòng hôm nay</small>
+
+    <!-- REVENUE CHART & QUICK STATS -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Revenue Chart Box (8 cols) -->
+        <div class="lg:col-span-8 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-base font-bold text-on-surface m-0 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-[20px]">show_chart</span>
+                        <span>Biểu đồ doanh thu kinh doanh</span>
+                    </h3>
+                    <p class="text-xs text-on-surface-variant m-0 mt-0.5" id="chartRangeText">@Model.SelectedWeekRange</p>
+                </div>
+
+                <!-- Tab Selectors & Week Navigation -->
+                <div class="flex items-center gap-2">
+                    <div class="inline-flex rounded-xl bg-surface-container-low p-1 border border-outline-variant/60 text-xs font-bold">
+                        <button type="button" id="btnTabWeek" class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm" onclick="switchChartTab('week')">Theo tuần</button>
+                        <button type="button" id="btnTabMonth" class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface" onclick="switchChartTab('month')">Tháng này</button>
+                        <button type="button" id="btnTabQuarter" class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface" onclick="switchChartTab('quarter')">Quý này</button>
+                    </div>
+
+                    <div class="flex items-center gap-1" id="weekNavControls">
+                        <button type="button" class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface border border-outline-variant" onclick="changeWeekOffset(-1)" title="Tuần trước">
+                            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                        </button>
+                        <button type="button" id="btnNextWeek" class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface border border-outline-variant disabled:opacity-40" onclick="changeWeekOffset(1)" title="Tuần sau" @(Model.CanGoToNextWeek ? "" : "disabled")>
+                            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <i class="bi bi-chevron-right admin-today-arrow"></i>
-        </a>
-        <a asp-controller="Bookings" asp-action="Index" class="admin-today-item">
-            <span class="today-item-icon today-checkout">
-                <i class="bi bi-box-arrow-right"></i>
-            </span>
-            <div>
-                <strong>@Model.CheckOutsToday</strong>
-                <small>Trả phòng hôm nay</small>
+
+            <!-- Canvas Container -->
+            <div class="relative h-72 sm:h-80 w-full">
+                <canvas id="revenueChart"></canvas>
             </div>
-            <i class="bi bi-chevron-right admin-today-arrow"></i>
-        </a>
-        <a asp-controller="Bookings" asp-action="Index" class="admin-today-item">
-            <span class="today-item-icon today-pending">
-                <i class="bi bi-hourglass-split"></i>
-            </span>
+        </div>
+
+        <!-- Operational Summary (4 cols) -->
+        <div class="lg:col-span-4 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-6 flex flex-col justify-between">
             <div>
-                <strong>@Model.PendingBookings</strong>
-                <small>Booking chờ xử lý</small>
-            </div>
-            <i class="bi bi-chevron-right admin-today-arrow"></i>
-        </a>
-        <a asp-controller="Rooms" asp-action="Index" class="admin-today-item">
-            <span class="today-item-icon today-maintenance">
-                <i class="bi bi-tools"></i>
-            </span>
-            <div>
-                <strong>@Model.MaintenanceRooms</strong>
-                <small>Phòng đang bảo trì</small>
-            </div>
-            <i class="bi bi-chevron-right admin-today-arrow"></i>
-        </a>
-    </div>
-</section>
-<section class="admin-dashboard-insights-grid">
-    <article class="admin-panel admin-revenue-panel">
-        <div class="admin-panel-header admin-revenue-panel-header">
-            <div>
-                <span>Phân tích doanh thu</span>
-                <h3 id="adminRevenueTitle">
-                    Doanh thu theo tuần
+                <h3 class="text-base font-bold text-on-surface m-0 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">hotel_class</span>
+                    <span>Tình trạng phòng &amp; Booking</span>
                 </h3>
-            </div>
+                <p class="text-xs text-on-surface-variant m-0 mt-0.5">Tổng quan tình hình phòng thực tế</p>
 
-            <div class="admin-revenue-header-actions">
-                <div class="admin-revenue-control-stack">
-                    <div class="admin-revenue-period-switch"
-                         role="group" aria-label="Chọn khoảng thời gian xem doanh thu">
-
-                        <button type="button" class="admin-revenue-period-button active"
-                                data-revenue-period="week" aria-pressed="true">
-                            Tuần
-                        </button>
-
-                        <button type="button" class="admin-revenue-period-button"
-                                data-revenue-period="month" aria-pressed="false">
-                            Tháng
-                        </button>
-
-                        <button type="button" class="admin-revenue-period-button"
-                                data-revenue-period="quarter" aria-pressed="false">
-                            Quý
-                        </button>
+                <!-- Status Bars -->
+                <div class="space-y-3 mt-5">
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="text-emerald-700">Phòng trống sẵn sàng (@Model.AvailableRooms)</span>
+                            <span>@(((double)Model.AvailableRooms / (Model.TotalRooms > 0 ? Model.TotalRooms : 1) * 100).ToString("0.0"))%</span>
+                        </div>
+                        <div class="w-full bg-surface-container-low h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-emerald-500 h-full rounded-full" style="width: @(((double)Model.AvailableRooms / (Model.TotalRooms > 0 ? Model.TotalRooms : 1) * 100).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                        </div>
                     </div>
 
-                    <div class="admin-week-navigation" id="adminWeekNavigation"
-                         data-week-offset="@Model.WeekOffset">
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="text-secondary">Đang có khách lưu trú (@Model.OccupiedRooms)</span>
+                            <span>@occupancyRate.ToString("0.0")%</span>
+                        </div>
+                        <div class="w-full bg-surface-container-low h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-secondary h-full rounded-full" style="width: @occupancyRate.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)%"></div>
+                        </div>
+                    </div>
 
-                        <button type="button" id="adminPreviousWeekButton"
-                                class="admin-week-navigation-button" title="Xem tuần trước">
-                            <i class="bi bi-chevron-left"></i>
-                        </button>
-
-                        <span class="admin-week-range" id="adminWeekRange">
-                            @Model.SelectedWeekRange
-                        </span>
-
-                        <button type="button" id="adminNextWeekButton"
-                                class="admin-week-navigation-button" title="Xem tuần kế tiếp">
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="text-amber-700">Phòng đang bảo trì (@Model.MaintenanceRooms)</span>
+                            <span>@(((double)Model.MaintenanceRooms / (Model.TotalRooms > 0 ? Model.TotalRooms : 1) * 100).ToString("0.0"))%</span>
+                        </div>
+                        <div class="w-full bg-surface-container-low h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-amber-500 h-full rounded-full" style="width: @(((double)Model.MaintenanceRooms / (Model.TotalRooms > 0 ? Model.TotalRooms : 1) * 100).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="admin-panel-summary">
-                    <small id="adminRevenueSummaryLabel">
-                        Tổng doanh thu tuần
-                    </small>
+                <!-- Booking Pending alert -->
+                <div class="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-amber-600 text-[24px]">pending_actions</span>
+                        <div>
+                            <p class="text-xs font-bold text-amber-900 m-0">@Model.PendingBookings booking đang chờ duyệt</p>
+                            <p class="text-[11px] text-amber-700 m-0">Khách đặt trực tuyến cần xác nhận</p>
+                        </div>
+                    </div>
+                    <a asp-controller="Bookings" asp-action="Index" asp-route-filter="pending" class="px-3 py-1.5 rounded-lg bg-amber-600 text-white text-xs font-bold hover:bg-amber-700 transition-colors no-underline">
+                        Xử lý
+                    </a>
+                </div>
+            </div>
 
-                    <strong id="adminRevenueSummaryValue">
-                        @Model.RevenueThisWeek.ToString("N0") VNĐ
-                    </strong>
-                </div>
+            <div class="pt-4 border-t border-outline-variant/60 flex items-center justify-between text-xs">
+                <span class="text-on-surface-variant">Doanh thu dịch vụ tháng:</span>
+                <strong class="text-secondary font-bold">@Model.ServiceRevenueThisMonth.ToString("N0") VNĐ</strong>
             </div>
         </div>
+    </div>
 
-        <div class="admin-chart-container admin-revenue-chart">
-            <canvas id="adminRevenueChart" role="img" aria-label="Biểu đồ doanh thu tuần này">
-            </canvas>
-        </div>
-    </article>
-    <article class="admin-panel admin-room-panel">
-        <div class="admin-panel-header">
-            <div>
-                <span>Tình trạng phòng</span>
-                <h3>Cơ cấu sử dụng phòng</h3>
+    <!-- TABLES: RECENT BOOKINGS & QUICK ROOMS -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Recent Bookings Table (7 cols) -->
+        <div class="lg:col-span-7 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base font-bold text-on-surface m-0 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">receipt</span>
+                    <span>Đặt phòng gần đây</span>
+                </h3>
+                <a asp-controller="Bookings" asp-action="Index" class="text-xs font-bold text-secondary hover:text-on-surface transition-colors no-underline">
+                    Xem tất cả &rarr;
+                </a>
             </div>
-        </div>
-        <div class="admin-chart-container admin-room-chart">
-            <canvas id="adminRoomChart" role="img" aria-label="Biểu đồ tình trạng phòng"></canvas>
-        </div>
-        <div class="admin-room-legend">
-            <div>
-                <span class="legend-dot available"></span>
-                <div>
-                    <small>Còn trống</small>
-                    <strong>@Model.AvailableRooms</strong>
-                    <span>@availableRate.ToString("0.0")%</span>
-                </div>
-            </div>
-            <div>
-                <span class="legend-dot occupied"></span>
-                <div>
-                    <small>Đang có khách</small>
-                    <strong>@Model.OccupiedRooms</strong>
-                    <span>@occupancyRate.ToString("0.0")%</span>
-                </div>
-            </div>
-            <div>
-                <span class="legend-dot maintenance"></span>
-                <div>
-                    <small>Bảo trì</small>
-                    <strong>@Model.MaintenanceRooms</strong>
-                    <span>@maintenanceRate.ToString("0.0")%</span>
-                </div>
-            </div>
-        </div>
-    </article>
-</section>
-<section class="admin-dashboard-bottom-grid">
-    <article class="admin-panel admin-quick-panel">
-        <div class="admin-panel-header">
-            <div>
-                <span>Truy cập nhanh</span>
-                <h3>Thao tác quản trị</h3>
-            </div>
-        </div>
-        <div class="admin-quick-actions">
-            <a asp-controller="Bookings" asp-action="Index" class="admin-quick-action">
-                <span class="quick-action-icon booking">
-                    <i class="bi bi-calendar-plus"></i>
-                </span>
-                <div>
-                    <strong>Quản lý Booking</strong>
-                    <small>Xác nhận, Check In và Check Out</small>
-                </div>
-                <i class="bi bi-chevron-right"></i>
-            </a>
-            <a asp-controller="Rooms" asp-action="Create" class="admin-quick-action">
-                <span class="quick-action-icon room">
-                    <i class="bi bi-door-open"></i>
-                </span>
-                <div>
-                    <strong>Thêm phòng mới</strong>
-                    <small>Cập nhật kho phòng khách sạn</small>
-                </div>
-                <i class="bi bi-chevron-right"></i>
-            </a>
-            <a asp-controller="Employees" asp-action="Create" class="admin-quick-action">
-                <span class="quick-action-icon employee">
-                    <i class="bi bi-person-plus"></i>
-                </span>
-                <div>
-                    <strong>Thêm nhân viên</strong>
-                    <small>Quản lý nhân sự khách sạn</small>
-                </div>
-                <i class="bi bi-chevron-right"></i>
-            </a>
-        </div>
-    </article>
-    <article class="admin-panel admin-booking-panel">
-        <div class="admin-panel-header">
-            <div>
-                <span>Hoạt động mới nhất</span>
-                <h3>Booking gần đây</h3>
-            </div>
-            <a asp-controller="Bookings" asp-action="Index" class="admin-panel-link">
-                Xem tất cả
-                <i class="bi bi-arrow-right"></i>
-            </a>
-        </div>
-        <div class="table-responsive admin-dashboard-table-wrap">
-            <table class="table admin-dashboard-table align-middle">
-                <thead>
-                    <tr>
-                        <th>Mã Booking</th>
-                        <th>Khách hàng</th>
-                        <th>Phòng</th>
-                        <th>Nhận phòng</th>
-                        <th>Trạng thái</th>
-                        <th><span class="visually-hidden">Thao tác</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.RecentBookings != null && Model.RecentBookings.Any())
-                    {
-                        foreach (var booking in Model.RecentBookings)
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-surface-container-low text-on-surface-variant uppercase text-[10px] font-bold border-b border-outline-variant">
+                        <tr>
+                            <th class="p-3">Mã Booking</th>
+                            <th class="p-3">Khách hàng</th>
+                            <th class="p-3">Lưu trú</th>
+                            <th class="p-3">Tổng tiền</th>
+                            <th class="p-3">Trạng thái</th>
+                            <th class="p-3 text-right">Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant/60">
+                        @foreach (var b in Model.RecentBookings)
                         {
-                            <tr>
-                                <td>
-                                    <strong class="admin-booking-code">
-                                        @booking.BookingCode
-                                    </strong>
-                                    <small>
-                                        @booking.BookingDate.ToString("dd/MM/yyyy HH:mm")
-                                    </small>
+                            <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                <td class="p-3 font-bold text-on-surface">@b.BookingCode</td>
+                                <td class="p-3">
+                                    <span class="font-semibold text-on-surface block">@(b.Customer?.FullName ?? "Khách vãng lai")</span>
+                                    <span class="text-[10px] text-on-surface-variant">@(b.Customer?.Phone ?? "")</span>
                                 </td>
-                                <td>
-                                    <div class="admin-customer-cell">
-                                        <span class="admin-customer-avatar">
-                                            @Initial(booking.Customer?.FullName)
-                                        </span>
-                                        <div>
-                                            <strong>
-                                                @(booking.Customer?.FullName ?? "Không xác định")
-                                            </strong>
-                                            <small>
-                                                @(booking.Customer?.Phone ?? "Chưa có SĐT")
-                                            </small>
-                                        </div>
-                                    </div>
+                                <td class="p-3 text-[11px]">
+                                    <span>@b.CheckInDate.ToString("dd/MM") - @b.CheckOutDate.ToString("dd/MM/yyyy")</span>
                                 </td>
-                                <td>
-                                    <span class="admin-room-list">
-                                        <i class="bi bi-door-closed"></i>
-                                        @RoomList(booking)
-                                    </span>
+                                <td class="p-3 font-bold text-secondary">@b.TotalAmount.ToString("N0") đ</td>
+                                <td class="p-3">
+                                    @if (b.Status == BookingStatus.Pending)
+                                    {
+                                        <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">Chờ duyệt</span>
+                                    }
+                                    else if (b.Status == BookingStatus.Confirmed)
+                                    {
+                                        <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold">Đã xác nhận</span>
+                                    }
+                                    else if (b.Status == BookingStatus.CheckedIn)
+                                    {
+                                        <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Đang ở</span>
+                                    }
+                                    else if (b.Status == BookingStatus.CheckedOut)
+                                    {
+                                        <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 text-[10px] font-bold">Đã trả phòng</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold">Đã hủy</span>
+                                    }
                                 </td>
-                                <td>
-                                    <span class="admin-checkin-date">
-                                        <i class="bi bi-calendar3"></i>
-                                        @booking.CheckInDate.ToString("dd/MM/yyyy")
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="admin-status-badge @BookingStatusClass(booking.Status)">
-                                        @BookingStatusText(booking.Status)
-                                    </span>
-                                </td>
-                                <td class="text-end">
-                                    <a asp-controller="Bookings" asp-action="Details" asp-route-id="@booking.Id"
-                                       class="admin-table-action" title="Xem chi tiết"
-                                       aria-label="Xem chi tiết booking @booking.BookingCode">
-                                        <i class="bi bi-arrow-up-right"></i>
+                                <td class="p-3 text-right">
+                                    <a asp-controller="Bookings" asp-action="Details" asp-route-id="@b.Id" class="p-1.5 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container transition-colors inline-block no-underline">
+                                        <span class="material-symbols-outlined text-[16px]">visibility</span>
                                     </a>
                                 </td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="6" class="text-center py-5">
-                                <div class="admin-empty-state">
-                                    <i class="bi bi-calendar-x"></i>
-                                    <strong>Chưa có Booking</strong>
-                                    <span>Booking mới sẽ xuất hiện tại đây.</span>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </article>
-</section>
-@section Scripts
-{
+
+        <!-- Available Rooms Quick Allocation (5 cols) -->
+        <div class="lg:col-span-5 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base font-bold text-on-surface m-0 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">meeting_room</span>
+                    <span>Phòng trống sẵn sàng</span>
+                </h3>
+                <a asp-controller="Rooms" asp-action="Index" class="text-xs font-bold text-secondary hover:text-on-surface transition-colors no-underline">
+                    Xem tất cả &rarr;
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                @foreach (var room in Model.AvailableRoomList)
+                {
+                    <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant flex flex-col justify-between space-y-2 hover:border-secondary transition-all">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-base font-extrabold text-on-surface">P.@room.RoomNumber</span>
+                                <span class="text-[10px] text-on-surface-variant block">@(room.RoomType?.Name ?? "Standard") • Tầng @room.Floor</span>
+                            </div>
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-xs font-bold text-secondary">@room.PriceDay.ToString("N0") đ</span>
+                            <a asp-controller="Bookings" asp-action="CreateForCustomer" asp-route-roomId="@room.Id" class="px-2 py-1 bg-primary hover:bg-on-background text-white text-[10px] font-bold rounded-lg no-underline shadow-sm">
+                                Đặt phòng
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
     <script>
+        let currentWeekOffset = @Model.WeekOffset;
+        let chartInstance = null;
+
+        const weekLabels = @Html.Raw(JsonSerializer.Serialize(Model.RevenueWeekLabels));
+        const weekValues = @Html.Raw(JsonSerializer.Serialize(Model.RevenueWeekValues));
+        const monthLabels = @Html.Raw(JsonSerializer.Serialize(Model.RevenueMonthLabels));
+        const monthValues = @Html.Raw(JsonSerializer.Serialize(Model.RevenueMonthValues));
+        const quarterLabels = @Html.Raw(JsonSerializer.Serialize(Model.RevenueQuarterLabels));
+        const quarterValues = @Html.Raw(JsonSerializer.Serialize(Model.RevenueQuarterValues));
+
         document.addEventListener("DOMContentLoaded", function () {
-                    const revenueSeries = {
-            week: {
-                labels: @Html.Raw(JsonSerializer.Serialize(Model.RevenueWeekLabels)),
-                values:@Html.Raw(JsonSerializer.Serialize(Model.RevenueWeekValues)),
-                title: "Doanh thu theo tuần",
-                summaryLabel: @Html.Raw(JsonSerializer.Serialize($"Tổng tuần {Model.SelectedWeekRange}")),
-                total: @Html.Raw(JsonSerializer.Serialize(Model.RevenueThisWeek)),
-                ariaLabel: @Html.Raw(JsonSerializer.Serialize($"Biểu đồ doanh thu tuần {Model.SelectedWeekRange}"))
-        },
+            renderChart(weekLabels, weekValues, "Doanh thu theo tuần (VNĐ)");
+        });
 
-            month: {
-                labels: @Html.Raw(JsonSerializer.Serialize(Model.RevenueMonthLabels)),
-                values: @Html.Raw(JsonSerializer.Serialize(Model.RevenueMonthValues)),
-                title: "Doanh thu tháng này",
-                summaryLabel: "Tổng doanh thu tháng",
-                total: @Html.Raw(JsonSerializer.Serialize(Model.RevenueThisMonth)),
-                ariaLabel: "Biểu đồ doanh thu tháng này"
-            },
-
-            quarter: {
-                labels: @Html.Raw(JsonSerializer.Serialize(Model.RevenueQuarterLabels)),
-                values: @Html.Raw(JsonSerializer.Serialize(Model.RevenueQuarterValues)),
-                title: "Doanh thu quý này",
-                summaryLabel: "Tổng doanh thu quý",
-                total: @Html.Raw(JsonSerializer.Serialize(Model.RevenueThisQuarter)),
-                ariaLabel: "Biểu đồ doanh thu quý này"
+        function renderChart(labels, values, datasetLabel) {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            if (chartInstance) {
+                chartInstance.destroy();
             }
-        };
 
-        const revenueLabels = revenueSeries.week.labels;
-        const revenueValues = revenueSeries.week.values;
-            const roomValues = [@Model.AvailableRooms, @Model.OccupiedRooms, @Model.MaintenanceRooms];
-            const bodyStyles = getComputedStyle(document.body);
-            const luxuryBlue = bodyStyles.getPropertyValue("--dashboard-blue").trim() || "#2f7395";
-            const luxuryNavy = bodyStyles.getPropertyValue("--dashboard-navy").trim() || "#123d55";
-            const luxuryGold = bodyStyles.getPropertyValue("--dashboard-gold").trim() || "#c9a96e";
-            const luxuryGreen = "#3b9b7a";
-            const luxuryWarning = "#d9a24a";
-            const mutedText = "#7d919c";
-            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            Chart.defaults.font.family = "Poppins, DM Sans, sans-serif";
-            Chart.defaults.color = mutedText;
-            const revenueCanvas = document.getElementById("adminRevenueChart");
-            let revenueChart = null;
-            if (revenueCanvas && window.Chart) {
-                const revenueContext = revenueCanvas.getContext("2d");
-                const revenueGradient = revenueContext.createLinearGradient(0, 0, 0, 330);
-                revenueGradient.addColorStop(0, "rgba(47, 115, 149, 0.28)");
-                revenueGradient.addColorStop(1, "rgba(47, 115, 149, 0.01)");
-                revenueChart = new Chart(revenueCanvas, {
-                    type: "line",
-                    data: {
-                        labels: revenueLabels,
-                        datasets: [
-                            {
-                                label: "Doanh thu",
-                                data: revenueValues,
-                                borderColor: luxuryBlue,
-                                backgroundColor: revenueGradient,
-                                pointBackgroundColor: "#ffffff",
-                                pointBorderColor: luxuryBlue,
-                                pointBorderWidth: 3,
-                                pointRadius: 4,
-                                pointHoverRadius: 7,
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.38
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        animation: reducedMotion ? false : {
-                            duration: 850,
-                            easing: "easeOutQuart"
-                        },
-                        interaction: {
-                            intersect: false,
-                            mode: "index"
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                backgroundColor: luxuryNavy,
-                                titleColor: "#ffffff",
-                                bodyColor: "#ffffff",
-                                borderColor: "rgba(201, 169, 110, 0.45)",
-                                borderWidth: 1,
-                                padding: 13,
-                                displayColors: false,
-                                callbacks: {
-                                    label: function (context) {
-                                        return new Intl.NumberFormat("vi-VN").format(
-                                            context.parsed.y
-                                        ) + " VNĐ";
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            x: {
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    color: mutedText,
-                                    font: {
-                                        size: 11,
-                                        weight: "500"
-                                    }
-                                },
-                                border: {
-                                    display: false
-                                }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                grid: {
-                                    color: "rgba(23, 56, 76, 0.075)",
-                                    drawTicks: false
-                                },
-                                ticks: {
-                                    color: mutedText,
-                                    padding: 10,
-                                    callback: function (value) {
-                                        if (value >= 1000000) {
-                                            return (value / 1000000).toLocaleString("vi-VN") + "tr";
-                                        }
-                                        if (value >= 1000) {
-                                            return (value / 1000).toLocaleString("vi-VN") + "k";
-                                        }
-                                        return value;
-                                    }
-                                },
-                                border: {
-                                    display: false
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: datasetLabel,
+                        data: values,
+                        backgroundColor: '#C5A880',
+                        hoverBackgroundColor: '#725B38',
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return Number(context.raw).toLocaleString('vi-VN') + ' VNĐ';
                                 }
                             }
                         }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return (value / 1000000).toLocaleString() + 'M';
+                                },
+                                font: { family: 'Plus Jakarta Sans', size: 11 }
+                            },
+                            grid: { color: '#EFF4FF' }
+                        },
+                        x: {
+                            ticks: { font: { family: 'Plus Jakarta Sans', size: 11 } },
+                            grid: { display: false }
+                        }
                     }
-                });
-        const revenueTitle = document.getElementById("adminRevenueTitle");
-        const revenueSummaryLabel = document.getElementById("adminRevenueSummaryLabel");
-        const revenueSummaryValue = document.getElementById("adminRevenueSummaryValue");
-        const revenuePeriodButtons = document.querySelectorAll("[data-revenue-period]");
-        const weekNavigation = document.getElementById("adminWeekNavigation");
-        const previousWeekButton = document.getElementById("adminPreviousWeekButton");
-        const nextWeekButton = document.getElementById("adminNextWeekButton");
-        const weekRange = document.getElementById("adminWeekRange");
-        const weeklyRevenueUrl = '@Url.Action("GetWeeklyRevenue", "Home")';
-        let selectedWeekOffset = Number(weekNavigation?.dataset.weekOffset ?? 0);
-        let isLoadingWeek = false;
-        /* CHUYỂN TUẦN - THÁNG - QUÝ */
-        revenuePeriodButtons.forEach(function (button) {
-            button.addEventListener("click", function () {
-                const period = button.dataset.revenuePeriod;
-                const selectedSeries = revenueSeries[period];
-                if (!selectedSeries || !revenueChart) {
-                    return;
                 }
-                // Chỉ hiện nút chuyển tuần khi chọn Tuần.
-                if (weekNavigation) {
-                    weekNavigation.hidden = period !== "week";
-                }
-                revenueChart.data.labels = selectedSeries.labels;
-                revenueChart.data.datasets[0].data = selectedSeries.values;
-                revenueChart.update();
-                if (revenueTitle) {
-                    revenueTitle.textContent = selectedSeries.title;
-                }
-                if (revenueSummaryLabel) {
-                    revenueSummaryLabel.textContent = selectedSeries.summaryLabel;
-                }
-                if (revenueSummaryValue) {
-                    revenueSummaryValue.textContent = new Intl.NumberFormat("vi-VN").format(selectedSeries.total) + " VNĐ";
-                }
-                revenueCanvas.setAttribute("aria-label", selectedSeries.ariaLabel);
-                revenuePeriodButtons.forEach(
-                    function (periodButton) {
-                        const isActive = periodButton === button;
-                        periodButton.classList.toggle("active", isActive);
-                        periodButton.setAttribute("aria-pressed", isActive ? "true" : "false");
-                    }
-                );
             });
-        });
-
-        /* BẬT/TẮT NÚT CHUYỂN TUẦN */
-        function updateWeekButtonState() {
-            if (previousWeekButton) {
-                previousWeekButton.disabled = isLoadingWeek || selectedWeekOffset <= -260;
-            }
-            if (nextWeekButton) {
-                nextWeekButton.disabled = isLoadingWeek || selectedWeekOffset >= 0;
-            }
-            if (weekNavigation) {
-                weekNavigation.classList.toggle( "is-loading", isLoadingWeek);
-            }
-        }
-        /* CẬP NHẬT URL NHƯNG KHÔNG TẢI LẠI */
-        function updateWeekUrl() {
-            const currentUrl = new URL(window.location.href);
-            if (selectedWeekOffset === 0) {
-                currentUrl.searchParams.delete("weekOffset");
-            } else {
-                currentUrl.searchParams.set("weekOffset", selectedWeekOffset.toString());
-            }
-            window.history.replaceState({}, "", currentUrl.toString());
-        }
-        /* LẤY DOANH THU TUẦN BẰNG FETCH */
-        async function loadWeeklyRevenue(newWeekOffset) {
-            if (isLoadingWeek || !revenueChart) {
-                return;
-            }
-            isLoadingWeek = true;
-            updateWeekButtonState();
-            try {
-                const requestUrl = weeklyRevenueUrl + "?weekOffset=" + encodeURIComponent(newWeekOffset);
-
-                const response = await fetch(requestUrl, {
-                    method: "GET",
-                    credentials: "same-origin",
-                    headers: {
-                        "Accept": "application/json", "X-Requested-With": "XMLHttpRequest"
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error("HTTP " + response.status );
-                }
-                const data = await response.json();
-                selectedWeekOffset = Number(data.weekOffset);
-                // Lưu dữ liệu tuần vừa tải.
-                revenueSeries.week.labels = data.labels ?? [];
-                revenueSeries.week.values = data.values ?? [];
-                revenueSeries.week.total = Number(data.total ?? 0);
-                revenueSeries.week.title = "Doanh thu theo tuần";
-                revenueSeries.week.summaryLabel = "Tổng tuần " + data.selectedWeekRange;
-                revenueSeries.week.ariaLabel = "Biểu đồ doanh thu tuần " + data.selectedWeekRange;
-                // Cập nhật biểu đồ.
-                revenueChart.data.labels = revenueSeries.week.labels;
-                revenueChart.data.datasets[0].data = revenueSeries.week.values;
-                revenueChart.update();
-                // Cập nhật khoảng ngày.
-                if (weekRange) {
-                    weekRange.textContent = data.selectedWeekRange;
-                }
-                // Cập nhật tiêu đề.
-                if (revenueTitle) {
-                    revenueTitle.textContent = revenueSeries.week.title;
-                }
-                // Cập nhật tổng tiền.
-                if (revenueSummaryLabel) {
-                    revenueSummaryLabel.textContent = revenueSeries.week.summaryLabel;
-                }
-                if (revenueSummaryValue) {
-                    revenueSummaryValue.textContent = new Intl.NumberFormat("vi-VN").format(revenueSeries.week.total) + " VNĐ";
-                }
-                revenueCanvas.setAttribute("aria-label", revenueSeries.week.ariaLabel );
-                if (weekNavigation) {
-                    weekNavigation.dataset.weekOffset = selectedWeekOffset.toString();
-                }
-                updateWeekUrl();
-            } catch (error) {
-                console.error("Lỗi tải doanh thu tuần:", error);
-                alert("Không thể tải dữ liệu doanh thu tuần. " +"Hãy kiểm tra lại kết nối hoặc đăng nhập.");
-            } finally {
-                isLoadingWeek = false;
-                updateWeekButtonState();
-            }
-        }
-        /* SỰ KIỆN NÚT TUẦN TRƯỚC */
-        if (previousWeekButton) {
-            previousWeekButton.addEventListener("click", function () {
-                    loadWeeklyRevenue(selectedWeekOffset - 1);
-                });
-        }
-        /* SỰ KIỆN NÚT TUẦN SAU*/
-        if (nextWeekButton) {
-            nextWeekButton.addEventListener("click", function () {
-                    if (selectedWeekOffset < 0) {
-                        loadWeeklyRevenue(selectedWeekOffset + 1);
-                    }
-                });
         }
 
-        updateWeekButtonState();
-        }
-            const roomCanvas = document.getElementById("adminRoomChart");
-            if (roomCanvas && window.Chart) {
-                const centerTextPlugin = {
-                    id: "roomCenterText", afterDraw(chart) {
-                        const { ctx, chartArea } = chart;
-                        if (!chartArea) {
-                            return;
-                        }
-                        const centerX = (chartArea.left + chartArea.right) / 2;
-                        const centerY = (chartArea.top + chartArea.bottom) / 2;
-                        ctx.save();
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "middle";
-                        ctx.fillStyle = luxuryNavy;
-                        ctx.font = "700 25px Poppins";
-                        ctx.fillText("@occupancyRateText%", centerX, centerY - 7);
-                        ctx.fillStyle = mutedText;
-                        ctx.font = "500 10px Poppins";
-                        ctx.fillText("CÔNG SUẤT", centerX, centerY + 17);
-                        ctx.restore();
-                    }
-                };
-                new Chart(roomCanvas, {
-                    type: "doughnut",
-                    plugins: [centerTextPlugin],
-                    data: {
-                        labels: ["Còn trống", "Đang có khách", "Bảo trì"],
-                        datasets: [
-                            {
-                                data: roomValues,
-                                backgroundColor: [
-                                    luxuryGreen,
-                                    luxuryBlue,
-                                    luxuryWarning
-                                ],
-                                borderColor: "#ffffff",
-                                borderWidth: 5,
-                                hoverOffset: 7
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: "72%",
-                        animation: reducedMotion ? false : {
-                            duration: 850,
-                            easing: "easeOutQuart"
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                backgroundColor: luxuryNavy,
-                                titleColor: "#ffffff",
-                                bodyColor: "#ffffff",
-                                borderColor: "rgba(201, 169, 110, 0.45)",
-                                borderWidth: 1,
-                                padding: 12,
-                                callbacks: {
-                                    label: function (context) {
-                                        return context.label + ": " + context.parsed + " phòng";
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
+        function switchChartTab(tab) {
+            document.getElementById('btnTabWeek').className = "px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface";
+            document.getElementById('btnTabMonth').className = "px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface";
+            document.getElementById('btnTabQuarter').className = "px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface";
+            const navControls = document.getElementById('weekNavControls');
+
+            if (tab === 'week') {
+                document.getElementById('btnTabWeek').className = "px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm font-bold";
+                navControls.style.display = 'flex';
+                document.getElementById('chartRangeText').innerText = "@Model.SelectedWeekRange";
+                renderChart(weekLabels, weekValues, "Doanh thu tuần (VNĐ)");
+            } else if (tab === 'month') {
+                document.getElementById('btnTabMonth').className = "px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm font-bold";
+                navControls.style.display = 'none';
+                document.getElementById('chartRangeText').innerText = "Tháng @DateTime.Today.Month / @DateTime.Today.Year";
+                renderChart(monthLabels, monthValues, "Doanh thu từng ngày trong tháng (VNĐ)");
+            } else if (tab === 'quarter') {
+                document.getElementById('btnTabQuarter').className = "px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm font-bold";
+                navControls.style.display = 'none';
+                document.getElementById('chartRangeText').innerText = "Quý @(((DateTime.Today.Month - 1) / 3) + 1) / @DateTime.Today.Year";
+                renderChart(quarterLabels, quarterValues, "Doanh thu theo quý (VNĐ)");
             }
-        });
+        }
+
+        function changeWeekOffset(delta) {
+            currentWeekOffset += delta;
+            fetch(`/Home/GetWeeklyRevenue?weekOffset=${currentWeekOffset}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('chartRangeText').innerText = data.selectedWeekRange;
+                    document.getElementById('btnNextWeek').disabled = !data.canGoToNextWeek;
+                    renderChart(data.labels, data.values, "Doanh thu tuần (VNĐ)");
+                });
+        }
     </script>
 }

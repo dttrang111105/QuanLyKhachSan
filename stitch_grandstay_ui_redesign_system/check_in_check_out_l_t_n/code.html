@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-primary":"#ffffff","on-surface":"#0b1c30","tertiary":"#000000","tertiary-container":"#001a42","secondary-fixed":"#fedeb2","surface-container-low":"#eff4ff","outline-variant":"#c6c6cd","on-tertiary-container":"#3980f4","surface":"#f8f9ff","secondary":"#725b38","primary-container":"#131b2e","surface-variant":"#d3e4fe","secondary-fixed-dim":"#e0c298","tertiary-fixed":"#d8e2ff","on-primary-fixed-variant":"#3f465c","on-primary-container":"#7c839b","on-primary-fixed":"#131b2e","surface-container-highest":"#d3e4fe","on-tertiary":"#ffffff","surface-container-high":"#dce9ff","on-secondary-container":"#78603e","surface-dim":"#cbdbf5","on-error":"#ffffff","tertiary-fixed-dim":"#adc6ff","on-tertiary-fixed":"#001a42","on-secondary":"#ffffff","secondary-container":"#fedeb2","error":"#ba1a1a","on-secondary-fixed":"#281800","surface-container-lowest":"#ffffff","surface-tint":"#565e74","on-surface-variant":"#45464d","error-container":"#ffdad6","on-secondary-fixed-variant":"#584323","background":"#f8f9ff","primary-fixed":"#dae2fd","surface-bright":"#f8f9ff","primary":"#000000","inverse-primary":"#bec6e0","on-tertiary-fixed-variant":"#004395","outline":"#76777d","on-background":"#0b1c30","inverse-surface":"#213145","inverse-on-surface":"#eaf1ff","surface-container":"#e5eeff","primary-fixed-dim":"#bec6e0","on-error-container":"#93000a"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-mobile":"0.75rem","space-xs":"0.25rem","space-sm":"0.5rem","space-md":"1rem","margin-mobile":"1rem","space-lg":"1.5rem","space-xl":"2rem","margin":"2rem","gutter":"1.5rem"},"fontFamily":{"label-md":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"title-sm":["Plus Jakarta Sans"],"caption":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"display-lg":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"display-lg-mobile":["Plus Jakarta Sans"]},"fontSize":{"label-md":["13px",{"lineHeight":"18px","fontWeight":"500"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"title-sm":["16px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"600"}],"caption":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"headline-md":["18px",{"lineHeight":"26px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg-mobile":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"display-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"label-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"display-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.015em","fontWeight":"700"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-72 bg-primary-container text-on-primary shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center justify-between bg-primary-container"><div class="flex items-center gap-space-sm"><img alt="Aura Hotel PMS Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XbXl40bqNRlyQ4Jt_YHpkUHZJd_cURt-1ELbUGwUSeZPPMYNa25PeB4PHAszjQYDTokHPvk0QtqaaRPlZMcCR4NXTBJ1-GJrmX68RdfK8DNq40xLf-_43J18fs1n-2Sr9uER0dRBwSCoFhRrelKICux7lXM-k5OYqh4qqA-ccB_I8qTTz69I5qJLi2f3-Wh8nvf3kRipqrFEMHRtHAdCFIbOTTMdYysyuUYp_iktE"/><div class="flex flex-col"><span class="font-title-sm text-title-sm text-on-primary tracking-tight leading-none">AURA PMS</span><span class="font-caption text-caption text-secondary-fixed tracking-wider uppercase mt-space-xs">Luxury Hospitality</span></div></div></div><div class="px-space-md py-space-sm"><div class="bg-surface-container-highest/10 rounded-lg p-space-sm flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></span><span class="font-caption text-caption text-secondary-fixed uppercase font-semibold">Boutique Resort</span></div><span class="font-caption text-caption text-on-primary-container px-space-xs py-0.5 rounded bg-surface-container-highest/20">5-Star</span></div></div><nav class="px-space-sm space-y-space-md py-space-sm" data-active-classes="bg-secondary text-on-secondary font-semibold shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Tổng Quan</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="dashboard" href="#"><span class="font-body-sm text-body-sm">Dashboard</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Quản Lý</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="rooms" href="#"><span class="font-body-sm text-body-sm">Phòng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="room-types" href="#"><span class="font-body-sm text-body-sm">Loại phòng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="bookings" href="#"><span class="font-body-sm text-body-sm">Đặt phòng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="customers" href="#"><span class="font-body-sm text-body-sm">Khách hàng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="employees" href="#"><span class="font-body-sm text-body-sm">Nhân viên</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="services" href="#"><span class="font-body-sm text-body-sm">Dịch vụ</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="invoices" href="#"><span class="font-body-sm text-body-sm">Hóa đơn</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="reviews" href="#"><span class="font-body-sm text-body-sm">Đánh giá</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Nghiệp Vụ Lễ Tân</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="check-in-check-out" href="#"><span class="font-body-sm text-body-sm">Check-in / Check-out</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="room-logs" href="#"><span class="font-body-sm text-body-sm">Nhật ký phòng</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Báo Cáo</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="revenue" href="#"><span class="font-body-sm text-body-sm">Doanh thu</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="occupancy" href="#"><span class="font-body-sm text-body-sm">Công suất phòng</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="booking-statistics" href="#"><span class="font-body-sm text-body-sm">Thống kê đặt phòng</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-caption text-caption text-on-primary-container tracking-wider uppercase">Hệ Thống</div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="settings" href="#"><span class="font-body-sm text-body-sm">Cài đặt</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-primary-container hover:bg-surface-container-highest/10 hover:text-on-primary transition-all" data-path="login" href="#"><span class="font-body-sm text-body-sm">Đăng xuất</span></a></div></nav></div><div class="p-space-md m-space-sm rounded-lg bg-surface-container-highest/10"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-secondary-fixed text-[20px]">shield_person</span><div class="flex flex-col"><span class="font-caption text-caption text-on-primary-container uppercase">Phiên làm việc</span><span class="font-label-sm text-label-sm text-on-primary font-medium truncate">Quản trị viên cấp cao</span></div></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">menu_open</span></button><div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant"><span class="hover:text-on-surface transition-colors cursor-pointer">Trang chủ</span><span class="text-outline-variant font-caption">/</span><span class="text-on-surface font-medium">Nghiệp vụ Lễ tân</span></div><div class="relative ml-space-md"><div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><span class="material-symbols-outlined text-outline text-[18px]">search</span></div><input class="w-80 h-10 pl-9 pr-14 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all" placeholder="Tìm phòng, mã đặt phòng, khách hàng..." type="text"/><div class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none"><kbd class="px-1.5 py-0.5 rounded bg-surface-container-lowest font-caption text-caption text-outline shadow-sm">Ctrl K</kbd></div></div></div><div class="flex items-center gap-space-md"><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1.5 rounded-full bg-surface-container-low"><span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span><span class="w-2 h-2 rounded-full bg-secondary -ml-2"></span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Khách sạn: Aura Grand Resort &amp; Spa</span></div><button class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-error text-on-error font-caption text-[10px] flex items-center justify-center font-bold">3</span></button><button class="inline-flex items-center gap-space-xs px-space-md h-10 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md font-medium hover:bg-secondary/90 shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-all" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>+ Tạo đặt phòng</span></button><div class="flex items-center gap-space-sm pl-space-sm cursor-pointer select-none group"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-surface-container-high" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo4jhUqnXHB4TFnzfDLd47kitbrvEhg03gF7_eVZ7EFI-yu3fYCpMI4ARfr0NrxYcoHIEKGQlGbybTgMEm2c6C1lPYiXPqB976tVvov4xp7vP_bB9fUEGzPnC9w6Wbdwln04XVfD_50x_kJ0GsjifQ01l2cbp2qsroo42jDzsdLxq7UWeC-B24MapUAswNuTG_N3yIFumm3FfH-Bw8aReToAUDW-XYeuyVz8mG5w"/><div class="flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface font-semibold group-hover:text-secondary transition-colors">Trần Nam Phong</span><span class="font-caption text-caption text-on-surface-variant font-medium">Administrator</span></div><span class="material-symbols-outlined text-outline group-hover:text-on-surface transition-colors text-[18px]">expand_more</span></div></div></header><main class="relative pt-16 w-full min-h-screen px-space-xl py-space-xl bg-background"><div class="flex flex-col w-full">
+<!-- Top Operational Breadcrumb & Live Stats Bar -->
+<div class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-lg mb-space-lg">
+<div>
+<div class="flex items-center gap-space-xs font-caption text-caption text-secondary uppercase tracking-wider mb-1">
+<span>Nghiệp Vụ Lễ Tân</span>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-semibold">Check-in &amp; Check-out Thực Tế</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight">Nghiệp vụ Check-in &amp; Check-out</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">Xử lý thủ tục nhận phòng, bàn giao thẻ khóa RFID, tạm giữ cọc và thanh toán quyết toán hóa đơn thời gian thực.</p>
+</div>
+<!-- Live Shift Metrics Pill -->
+<div class="flex items-center gap-space-md p-space-sm bg-surface-container-lowest rounded-xl shadow-sm self-start xl:self-auto">
+<div class="flex items-center gap-space-sm px-space-md py-1.5 bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-secondary text-[20px]">room_service</span>
+<div>
+<div class="font-caption text-caption text-on-surface-variant uppercase">Ca Trực Hiện Tại</div>
+<div class="font-label-md text-label-md text-on-surface font-semibold">Ca Sáng (06:00 - 14:30)</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm px-space-md py-1.5 bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-on-tertiary-container text-[20px]">badge</span>
+<div>
+<div class="font-caption text-caption text-on-surface-variant uppercase">Lễ Tân Chính</div>
+<div class="font-label-md text-label-md text-on-surface font-semibold">Trần Nam Phong (FO-08)</div>
+</div>
+</div>
+<div class="hidden sm:flex items-center gap-space-sm px-space-md py-1.5 bg-surface-container-low rounded-lg">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface font-medium" id="live-clock">11:42:18 GMT+7</span>
+</div>
+</div>
+</div>
+<!-- Operational Mode Segmented Tabs -->
+<div class="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest p-space-xs rounded-xl shadow-sm mb-space-lg">
+<div class="flex items-center gap-space-xs p-1 bg-surface-container-low rounded-lg w-full md:w-auto" id="operationalTabs">
+<button class="flex items-center gap-space-sm px-space-lg py-2.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md shadow-sm transition-all tab-trigger active" data-tab="checkin">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed">key</span>
+<span>Thủ tục Nhận phòng (Check-in)</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-caption text-caption font-bold">18 lượt</span>
+</button>
+<button class="flex items-center gap-space-sm px-space-lg py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-all tab-trigger font-label-md text-label-md" data-tab="checkout">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+<span>Thủ tục Trả phòng &amp; Quyết toán</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-caption text-caption font-bold">12 lượt</span>
+</button>
+<button class="flex items-center gap-space-sm px-space-lg py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-all tab-trigger font-label-md text-label-md" data-tab="logs">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span>Nhật ký giao ca &amp; Lưu vết</span>
+</button>
+</div>
+<div class="flex items-center gap-space-sm px-space-sm w-full md:w-auto justify-end">
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-all">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span>In Danh Sách Ca</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-secondary text-on-secondary hover:bg-secondary/90 font-label-md text-label-md shadow-sm transition-all">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>+ Walk-in Trực Tiếp</span>
+</button>
+</div>
+</div>
+<!-- Smart Search & Quick Scanner Bar -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm mb-space-lg">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-center">
+<!-- Search Input -->
+<div class="lg:col-span-7 relative">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-[22px]">search</span>
+</div>
+<input class="w-full h-11 pl-11 pr-24 rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest shadow-sm transition-all" placeholder="Nhập mã đặt phòng (VD: #BK-9082), CCCD/Hộ chiếu, SĐT, hoặc Tên khách..." type="text"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center gap-1.5">
+<kbd class="px-2 py-0.5 rounded bg-surface-container font-caption text-caption text-on-surface-variant shadow-sm">Enter</kbd>
+</div>
+</div>
+<!-- Quick Scan Hardware Integrations -->
+<div class="lg:col-span-5 flex items-center gap-space-sm justify-start lg:justify-end">
+<button class="flex-1 lg:flex-initial inline-flex items-center justify-center gap-space-xs h-11 px-space-md rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-all font-label-md text-label-md">
+<span class="material-symbols-outlined text-secondary text-[20px]">id_card</span>
+<span>Quét CCCD Chip / Hộ chiếu</span>
+</button>
+<button class="flex-1 lg:flex-initial inline-flex items-center justify-center gap-space-xs h-11 px-space-md rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-all font-label-md text-label-md">
+<span class="material-symbols-outlined text-secondary text-[20px]">qr_code_scanner</span>
+<span>Quét QR Booking Pass</span>
+</button>
+</div>
+</div>
+<!-- Quick Filter Tags -->
+<div class="flex flex-wrap items-center gap-space-xs mt-space-md pt-space-sm bg-surface-container-low/40 p-2 rounded-lg">
+<span class="font-caption text-caption text-on-surface-variant uppercase px-2">Bộ lọc nhanh:</span>
+<button class="px-space-md py-1 rounded-full bg-primary-container text-on-primary font-caption text-caption font-semibold shadow-xs">Tất cả hôm nay (18)</button>
+<button class="px-space-md py-1 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container font-caption text-caption font-medium transition-all">Chờ nhận phòng (12)</button>
+<button class="px-space-md py-1 rounded-full bg-surface-container-lowest text-secondary font-caption text-caption font-medium hover:bg-surface-container transition-all">Nhận sớm Early (2)</button>
+<button class="px-space-md py-1 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container font-caption text-caption font-medium transition-all">VIP Khách quý (4)</button>
+<button class="px-space-md py-1 rounded-full bg-surface-container-lowest text-error font-caption text-caption font-medium hover:bg-surface-container transition-all">Đang dọn phòng (3)</button>
+</div>
+</div>
+<!-- Main Operational Split Workspace (Left: Reception Queue | Right: Booking Processing Dossier) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: Reception Arrival Queue (~38% = 5 cols on lg) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<!-- Queue Header Card -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Danh Sách Tiếp Đón</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-caption text-caption font-bold">18 lượt</span>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">Thứ Sáu, 24 Tháng 10, 2025</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" title="Làm mới hàng đợi">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" title="Sắp xếp thời gian">
+<span class="material-symbols-outlined text-[20px]">sort</span>
+</button>
+</div>
+</div>
+<!-- Queue Item Cards List -->
+<div class="flex flex-col gap-space-sm" id="queueListContainer">
+<!-- Card 1 (ACTIVE / CURRENTLY SELECTED) -->
+<article class="pms-card bg-surface-container-lowest p-space-md rounded-xl shadow-md cursor-pointer transition-all relative overflow-hidden bg-gradient-to-r from-secondary/10 via-transparent to-transparent">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary"></div>
+<div class="flex items-start justify-between gap-space-sm mb-space-xs pl-2">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-bold">Nguyễn Thu Thảo</span>
+<span class="px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-caption text-[10px] font-bold uppercase tracking-wider">VIP 2</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-caption text-caption mt-0.5">
+<span class="font-semibold text-secondary">#BK-9082</span>
+<span>•</span>
+<span>Agoda Luxury</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-caption text-caption font-semibold">
+              Chờ Nhận (14:00)
+            </span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm my-space-sm p-space-sm bg-surface-container-low rounded-lg text-on-surface pl-3">
+<div>
+<div class="font-caption text-caption text-on-surface-variant">Phòng Bố Trí</div>
+<div class="font-label-md text-label-md font-bold text-on-surface flex items-center gap-1">
+<span class="text-secondary font-bold">P.402</span>
+<span class="font-normal text-[11px] text-on-surface-variant">(Premier Ocean)</span>
+</div>
+</div>
+<div>
+<div class="font-caption text-caption text-on-surface-variant">Hiện Trạng Buồng</div>
+<div class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Đã kiểm định (Clean)</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-caption text-caption pl-2 pt-1">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-secondary">verified</span>
+<span>Đã thanh toán 100% online</span>
+</span>
+<span class="font-medium text-on-surface">Đến lúc: 13:30 (Sớm 30p)</span>
+</div>
+</article>
+<!-- Card 2: Marcus Vance -->
+<article class="pms-card bg-surface-container-lowest p-space-md rounded-xl shadow-xs hover:shadow-sm cursor-pointer transition-all hover:bg-surface-container-low/30">
+<div class="flex items-start justify-between gap-space-sm mb-space-xs">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Marcus Vance</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-caption text-[10px] font-medium">Quốc Tế</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-caption text-caption mt-0.5">
+<span class="font-medium">#BK-9081</span>
+<span>•</span>
+<span>Booking.com Direct</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-caption text-caption font-medium">
+              14:00 Đến
+            </span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm my-space-sm p-space-sm bg-surface-container-low/60 rounded-lg text-on-surface">
+<div>
+<div class="font-caption text-caption text-on-surface-variant">Phòng Bố Trí</div>
+<div class="font-label-md text-label-md font-semibold text-on-surface">P.205 (Deluxe King)</div>
+</div>
+<div>
+<div class="font-caption text-caption text-on-surface-variant">Cần Thu Cọc</div>
+<div class="font-label-md text-label-md font-semibold text-error">2,000,000 ₫</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-caption text-caption pt-1">
+<span class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px]">luggage</span>
+<span>2 Khách • Hộ chiếu UK</span>
+</span>
+<span class="font-medium">Chờ quét Passport</span>
+</div>
+</article>
+<!-- Card 3: Lê Hoàng Long -->
+<article class="pms-card bg-surface-container-lowest p-space-md rounded-xl shadow-xs hover:shadow-sm cursor-pointer transition-all hover:bg-surface-container-low/30">
+<div class="flex items-start justify-between gap-space-sm mb-space-xs">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Lê Hoàng Long</span>
+<span class="px-1.5 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-caption text-[10px] font-bold">Gia Đình</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-caption text-caption mt-0.5">
+<span class="font-medium">#BK-9080</span>
+<span>•</span>
+<span>Hotline Trực Tiếp</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-caption text-caption font-bold">
+              Early Check-in (12:30)
+            </span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm my-space-sm p-space-sm bg-surface-container-low/60 rounded-lg text-on-surface">
+<div>
+<div class="font-caption text-caption text-on-surface-variant">Biệt Thự Biển</div>
+<div class="font-label-md text-label-md font-semibold text-on-surface">Villa 102 (Beachfront)</div>
+</div>
+<div>
+<div class="font-caption text-caption text-on-surface-variant">Yêu Cầu Đặc Biệt</div>
+<div class="font-label-md text-label-md font-medium text-on-surface">Thêm nôi em bé</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-caption text-caption pt-1">
+<span class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px] text-secondary">pool</span>
+<span>4 Khách • Xe resort đón tại SB</span>
+</span>
+<span class="font-semibold text-secondary">Sẵn sàng bàn giao</span>
+</div>
+</article>
+<!-- Card 4: Đỗ Mỹ Linh -->
+<article class="pms-card bg-surface-container-lowest p-space-md rounded-xl shadow-xs hover:shadow-sm cursor-pointer transition-all hover:bg-surface-container-low/30 opacity-95">
+<div class="flex items-start justify-between gap-space-sm mb-space-xs">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Đỗ Mỹ Linh</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface font-caption text-[10px] font-medium">Club Member</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-caption text-caption mt-0.5">
+<span class="font-medium">#BK-9076</span>
+<span>•</span>
+<span>Aura Website</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-caption text-caption font-medium">
+              Chờ dọn buồng
+            </span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm my-space-sm p-space-sm bg-surface-container-low/60 rounded-lg text-on-surface">
+<div>
+<div class="font-caption text-caption text-on-surface-variant">Phòng Bố Trí</div>
+<div class="font-label-md text-label-md font-semibold text-on-surface">P.302 (Executive Club)</div>
+</div>
+<div>
+<div class="font-caption text-caption text-on-surface-variant">Housekeeping ETA</div>
+<div class="font-label-md text-label-md font-medium text-error">13:45 (Đang khử khuẩn)</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-caption text-caption pt-1">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-outline">hourglass_top</span>
+<span>Mời khách dùng trà tại Club Lounge</span>
+</span>
+<span class="font-medium">Đến lúc 14:00</span>
+</div>
+</article>
+</div>
+<!-- Pagination & View All Queue Footer -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex items-center justify-between">
+<span class="font-caption text-caption text-on-surface-variant px-2">Hiển thị 4 trên 18 hồ sơ chờ</span>
+<div class="flex items-center gap-1">
+<button class="px-space-md py-1 rounded-lg bg-surface-container-low text-on-surface font-caption text-caption font-semibold hover:bg-surface-container transition-all">
+            Xem toàn bộ hàng đợi
+          </button>
+</div>
+</div>
+<!-- Reception Handover Mini Notice -->
+<div class="bg-primary-container text-on-primary p-space-md rounded-xl shadow-sm relative overflow-hidden">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary-fixed text-[24px]">notifications_active</span>
+<div>
+<h4 class="font-label-md text-label-md font-bold text-on-primary">Lưu ý nghiệp vụ ca trực:</h4>
+<p class="font-caption text-caption text-on-primary-container mt-0.5 leading-relaxed">
+              Phòng 402 và Villa 102 đã được General Manager ký thiệp chúc mừng. Đảm bảo mời đồ uống Welcome Drink đặc trưng và bàn giao 2 chìa khóa thẻ RFID trước khi mở lối đi riêng.
+            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Detailed Check-in Processing Dossier (~62% = 7 cols on lg) -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<!-- SECTION A: Header & Booking Summary Strip -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md pb-space-md border-b-0">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-secondary/15 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[28px]">domain_verification</span>
+</div>
+<div>
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">Hồ Sơ Nhận Phòng #BK-9082</span>
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-caption text-caption font-bold uppercase tracking-wider">
+                  Chờ Check-in
+                </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                Kênh phân phối: <span class="font-semibold text-on-surface">Agoda Luxury Partner</span> • Mã tham chiếu OTA: <span class="font-mono text-secondary">AG-VN-883912</span>
+</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">swap_horiz</span>
+<span>Đổi Phòng</span>
+</button>
+<button class="px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">history_edu</span>
+<span>Lịch Sử Khách</span>
+</button>
+</div>
+</div>
+<!-- SECTION B: Guest Profile & Verified Identification -->
+<div class="pt-space-md">
+<div class="flex items-center justify-between mb-space-sm">
+<h3 class="font-title-sm text-title-sm font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">person_pin</span>
+<span>Thông Tin Khách Hàng &amp; Giấy Tờ Tùy Thân</span>
+</h3>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-secondary font-caption text-caption font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>CCCD Đã Xác Minh Chip Hợp Lệ</span>
+</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md bg-surface-container-low p-space-md rounded-xl">
+<!-- Guest Photo & Badge -->
+<div class="md:col-span-3 flex flex-col items-center justify-center p-space-sm bg-surface-container-lowest rounded-lg text-center shadow-xs">
+<img alt="Portrait of guest Nguyen Thu Thao" class="w-20 h-20 rounded-full object-cover shadow-sm mb-space-xs ring-2 ring-secondary/30" data-alt="Close up professional portrait photograph of an elegant Vietnamese woman in her early thirties with sleek styled hair and warm friendly expression, wearing a refined cream silk blazer with soft luxury resort reception lighting in background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADCFp_trs7G7S8XS_EOhvw7b7fQgZgix_FRGh8JfqzfVd9dxFPdq2YopCV6qLGulRl24Gqu8Y4yyfK_RzSYR6rFJqbRsw6QkqZgu5weOEeMm_A_SV9kOZ5YDqfP6MVJwag4isfutLHNwJ0b8aXORu8itetY3XtqhJclqgsT29ZXZICEdSvBDp1eZmJDSnOtiSH9OGoX_tg7ov2WHm5ADyLJZV3sONuc7IDuHGGJA"/>
+<span class="font-label-md text-label-md font-bold text-on-surface">Nguyễn Thu Thảo</span>
+<span class="font-caption text-caption text-secondary uppercase font-bold tracking-wider">Hội viên Titanium</span>
+<span class="font-caption text-caption text-on-surface-variant mt-1">Đã lưu trú: 6 lần</span>
+</div>
+<!-- Identity & Contact Form Matrix -->
+<div class="md:col-span-9 grid grid-cols-1 sm:grid-cols-2 gap-x-space-md gap-y-space-sm">
+<div>
+<label class="block font-caption text-caption text-on-surface-variant uppercase mb-1">Số CCCD / Hộ Chiếu</label>
+<div class="flex items-center gap-2 bg-surface-container-lowest p-2 rounded-lg shadow-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">credit_card</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface tracking-wider font-mono">001198004521</span>
+<span class="ml-auto text-secondary text-[16px] material-symbols-outlined" title="Đã đối soát">check_circle</span>
+</div>
+</div>
+<div>
+<label class="block font-caption text-caption text-on-surface-variant uppercase mb-1">Số Điện Thoại</label>
+<div class="flex items-center gap-2 bg-surface-container-lowest p-2 rounded-lg shadow-xs">
+<span class="material-symbols-outlined text-[18px] text-outline">call</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">0912 458 991</span>
+</div>
+</div>
+<div>
+<label class="block font-caption text-caption text-on-surface-variant uppercase mb-1">Hộp Thư Điện Tử (Email)</label>
+<div class="flex items-center gap-2 bg-surface-container-lowest p-2 rounded-lg shadow-xs truncate">
+<span class="material-symbols-outlined text-[18px] text-outline">alternate_email</span>
+<span class="font-body-md text-body-md font-medium text-on-surface truncate">thuthao.nguyen@example.com</span>
+</div>
+</div>
+<div>
+<label class="block font-caption text-caption text-on-surface-variant uppercase mb-1">Quốc Tịch &amp; Ngày Sinh</label>
+<div class="flex items-center gap-2 bg-surface-container-lowest p-2 rounded-lg shadow-xs">
+<span class="material-symbols-outlined text-[18px] text-outline">public</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">Việt Nam • 15/06/1992</span>
+</div>
+</div>
+<!-- Concierge Guest Preferences -->
+<div class="sm:col-span-2 mt-1">
+<label class="block font-caption text-caption text-secondary uppercase font-semibold mb-1">Ghi chú phục vụ đặc biệt (Concierge Notes)</label>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest border-l-4 border-secondary text-on-surface font-body-sm text-body-sm">
+                  Kỷ niệm 5 năm ngày cưới: Khách yêu cầu tầng cao ngắm hoàng hôn, dị ứng phấn hoa lily (đã bố trí hoa hồng trắng cao cấp), chuẩn bị sẵn 02 gối lông vũ mềm.
+                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION C: Room Allocation & Stay Period -->
+<div class="mt-space-lg pt-space-md">
+<h3 class="font-title-sm text-title-sm font-bold text-on-surface flex items-center gap-2 mb-space-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">meeting_room</span>
+<span>Chi Tiết Phòng Phân Bổ &amp; Thời Gian Lưu Trú</span>
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md p-space-md bg-surface-container-low rounded-xl">
+<!-- Room Showcase Image & Title -->
+<div class="md:col-span-4 relative rounded-lg overflow-hidden group">
+<img alt="Premier Ocean Suite Interior" class="w-full h-36 object-cover rounded-lg group-hover:scale-105 transition-all duration-300" data-alt="Luxury resort five star Premier Ocean Suite bedroom interior, featuring king size bed dressed with crisp Egyptian cotton linens, elegant blonde oak panelling, floor to ceiling glass windows opening to panoramic azure sea balcony at dusk." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwNO1QYYZsmuN74TUHbRmhE834gAc3djxcMp-jn_V1FrZVe2h4UB_7UAAeIr3mSB1VZPtXF8CutOhVC74DBVi57jazvLqaGbVFP47VJMMB804oHSCUZjxxGkAl4e5Z_RijRt-yiZj5yP9Rn2SJHVicY0KW8ZqZ4ppQsn0g-625T70aiSfDS_e8rMHo6f0HUemQ-wog11rlRBlKhTbMBleXIR0-h9TXcdCMJ0mmQw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/80 via-transparent to-transparent flex flex-col justify-end p-2.5 text-on-primary">
+<span class="font-caption text-caption text-secondary-fixed uppercase font-semibold">Tầng 4 • Hướng Trực Diện Biển</span>
+<span class="font-title-sm text-title-sm font-bold">Premier Ocean Suite #402</span>
+</div>
+</div>
+<!-- Stay Metrics & Keycard Issuer -->
+<div class="md:col-span-8 flex flex-col justify-between gap-space-sm">
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-space-sm">
+<div class="p-2 bg-surface-container-lowest rounded-lg">
+<span class="font-caption text-caption text-on-surface-variant block">Nhận Phòng</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">24/10/2025</span>
+<span class="font-caption text-caption text-secondary font-semibold block">14:00 (Hôm nay)</span>
+</div>
+<div class="p-2 bg-surface-container-lowest rounded-lg">
+<span class="font-caption text-caption text-on-surface-variant block">Trả Phòng</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">27/10/2025</span>
+<span class="font-caption text-caption text-on-surface-variant block">12:00 Trưa</span>
+</div>
+<div class="p-2 bg-surface-container-lowest rounded-lg">
+<span class="font-caption text-caption text-on-surface-variant block">Thời Lượng &amp; Khách</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">3 Đêm</span>
+<span class="font-caption text-caption text-on-surface-variant block">2 Người lớn</span>
+</div>
+</div>
+<!-- RFID Keycard Encoder Block -->
+<div class="p-2.5 bg-surface-container-lowest rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm shadow-xs">
+<div class="flex items-center gap-space-sm">
+<div class="p-2 rounded-lg bg-surface-container text-secondary">
+<span class="material-symbols-outlined text-[20px]">nfc</span>
+</div>
+<div>
+<span class="font-label-md text-label-md font-bold text-on-surface">Cấp Thẻ Từ RFID Phòng 402</span>
+<span class="font-caption text-caption text-on-surface-variant block">Đã liên kết thiết bị ghi: Đầu đọc Kaba RFID Reader #1</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface font-mono font-bold text-caption">#KC-402A</span>
+<span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface font-mono font-bold text-caption">#KC-402B</span>
+<button class="px-space-md py-1.5 rounded-lg bg-secondary text-on-secondary hover:bg-secondary/90 font-label-md text-label-md font-medium transition-all flex items-center gap-1 shadow-xs">
+<span class="material-symbols-outlined text-[16px]">contactless</span>
+<span>Ghi Thẻ Mới</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION D: Financial Breakdown, Deposit Collection & Package Perks -->
+<div class="mt-space-lg pt-space-md">
+<h3 class="font-title-sm text-title-sm font-bold text-on-surface flex items-center gap-2 mb-space-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">account_balance_wallet</span>
+<span>Quyết Toán Tài Chính &amp; Thu Tiền Cọc Bảo Đảm</span>
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md">
+<!-- Financial Totals Ledger -->
+<div class="md:col-span-6 bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between">
+<div>
+<span class="font-caption text-caption text-on-surface-variant uppercase font-semibold">Tóm tắt khoản mục</span>
+<div class="mt-space-sm space-y-2 text-body-sm font-body-sm">
+<div class="flex justify-between items-center text-on-surface">
+<span>Tiền phòng (3 đêm x 3,900,000 ₫)</span>
+<span class="font-semibold">11,700,000 ₫</span>
+</div>
+<div class="flex justify-between items-center text-on-surface">
+<span>Thuế GTGT (8%) &amp; Phí dịch vụ (5%)</span>
+<span class="font-semibold">Đã gồm trong gói</span>
+</div>
+<div class="flex justify-between items-center text-secondary font-semibold">
+<span>Trạng thái tiền phòng</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest text-secondary text-caption uppercase">Đã thanh toán trước 100%</span>
+</div>
+<div class="pt-2 flex justify-between items-center font-title-sm text-title-sm font-bold text-on-surface">
+<span>Dư nợ phòng hiện hành</span>
+<span class="text-secondary">0 ₫</span>
+</div>
+</div>
+</div>
+<!-- Included Luxury Packages -->
+<div class="mt-space-md pt-space-sm bg-surface-container-lowest p-space-sm rounded-lg">
+<span class="font-caption text-caption text-secondary font-bold uppercase tracking-wider block mb-1">Gói dịch vụ đã kích hoạt:</span>
+<ul class="text-caption font-caption text-on-surface-variant space-y-1">
+<li class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-secondary">check</span>
+<span>Buffet sáng thượng hạng tại nhà hàng Ocean Pearl (2 khách/ngày)</span>
+</li>
+<li class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-secondary">check</span>
+<span>Đón tiễn sân bay VIP Limousine hai chiều (Đã hoàn tất chiều đón)</span>
+</li>
+<li class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-secondary">check</span>
+<span>Trà chiều miễn phí mỗi ngày tại Horizon Executive Lounge (15:00 - 17:00)</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Deposit Security Form -->
+<div class="md:col-span-6 bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-caption text-caption text-on-surface-variant uppercase font-semibold">Tiền Cọc Bảo Đảm (Security Deposit)</span>
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-caption text-caption font-bold">Cần Thu</span>
+</div>
+<div class="p-space-sm bg-surface-container-lowest rounded-lg mb-space-sm shadow-xs">
+<div class="flex items-baseline justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Mức cọc quy định:</span>
+<span class="font-display-lg text-[22px] font-bold text-on-surface">2,000,000 ₫</span>
+</div>
+<span class="font-caption text-caption text-on-surface-variant block mt-0.5">Dùng để bảo đảm tiêu dùng minibar, nhà hàng, spa &amp; dịch vụ phát sinh</span>
+</div>
+<label class="block font-caption text-caption text-on-surface-variant uppercase mb-1.5">Phương Thức Thu Cọc</label>
+<div class="grid grid-cols-2 gap-space-xs">
+<label class="flex items-center gap-2 p-2 bg-surface-container-lowest rounded-lg cursor-pointer hover:bg-surface-container transition-all">
+<input checked="" class="accent-secondary" name="depositMethod" type="radio"/>
+<span class="font-label-md text-label-md text-on-surface font-medium">Tạm giữ thẻ tín dụng</span>
+</label>
+<label class="flex items-center gap-2 p-2 bg-surface-container-lowest rounded-lg cursor-pointer hover:bg-surface-container transition-all">
+<input class="accent-secondary" name="depositMethod" type="radio"/>
+<span class="font-label-md text-label-md text-on-surface font-medium">Quẹt POS Cọc</span>
+</label>
+<label class="flex items-center gap-2 p-2 bg-surface-container-lowest rounded-lg cursor-pointer hover:bg-surface-container transition-all">
+<input class="accent-secondary" name="depositMethod" type="radio"/>
+<span class="font-label-md text-label-md text-on-surface font-medium">Tiền mặt</span>
+</label>
+<label class="flex items-center gap-2 p-2 bg-surface-container-lowest rounded-lg cursor-pointer hover:bg-surface-container transition-all">
+<input class="accent-secondary" name="depositMethod" type="radio"/>
+<span class="font-label-md text-label-md text-on-surface font-medium">Quét VietQR</span>
+</label>
+</div>
+</div>
+<div class="mt-space-sm flex items-center justify-between text-caption font-caption text-on-surface-variant pt-2">
+<span>Trạng thái máy POS Lễ Tân:</span>
+<span class="text-secondary font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Thiết bị POS Ingenico #02 Kết nối</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION E: Decision Action Footer & Legal Compliance -->
+<div class="mt-space-lg pt-space-md">
+<div class="p-space-md bg-surface-container-low rounded-xl mb-space-md">
+<label class="flex items-start gap-space-sm cursor-pointer select-none">
+<input checked="" class="w-5 h-5 rounded mt-0.5 accent-secondary cursor-pointer" type="checkbox"/>
+<div>
+<span class="font-label-md text-label-md font-bold text-on-surface">Xác nhận đối soát hồ sơ lưu trú chuẩn 5 sao</span>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">
+                  Lễ tân đã đối chiếu trực tiếp bản gốc CCCD/Hộ chiếu, chụp ảnh khuôn mặt khách, hoàn tất chữ ký điện tử trên Phiếu Đăng Ký Lưu Trú (Guest Registration Form) và nhận đủ khoản tiền cọc bảo đảm.
+                </p>
+</div>
+</label>
+</div>
+<!-- Bottom Action Button Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-xs w-full sm:w-auto">
+<button class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-space-xs px-space-md py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-all">
+<span class="material-symbols-outlined text-[18px]">badge</span>
+<span>In Welcome Pass &amp; Thẻ Khóa</span>
+</button>
+<button class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-space-xs px-space-md py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-all">
+<span class="material-symbols-outlined text-[18px]">description</span>
+<span>In Phiếu Reg-Form</span>
+</button>
+<button class="inline-flex items-center justify-center p-2.5 rounded-lg bg-surface-container-low hover:bg-error-container hover:text-error text-on-surface-variant transition-all" title="Báo khách vắng mặt (No-Show)">
+<span class="material-symbols-outlined text-[20px]">person_off</span>
+</button>
+</div>
+<!-- Primary Master Trigger -->
+<button class="w-full sm:w-auto inline-flex items-center justify-center gap-space-sm px-space-xl py-3 rounded-lg bg-primary-container text-on-primary hover:bg-tertiary-container shadow-md transition-all font-title-sm text-title-sm font-bold group" id="btnConfirmCheckIn">
+<span class="material-symbols-outlined text-[22px] text-secondary-fixed group-hover:scale-110 transition-transform">vpn_key</span>
+<span>XÁC NHẬN CHECK-IN &amp; BÀN GIAO PHÒNG 402</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick Switch Banner: Real-time Check-out Counterpart -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">receipt</span>
+</div>
+<div>
+<div class="font-label-md text-label-md font-bold text-on-surface">Đang có 12 phòng đang yêu cầu Trả phòng (Check-out)</div>
+<div class="font-caption text-caption text-on-surface-variant">Phòng 508 (Mr. David Miller) vừa gọi chuông lễ tân yêu cầu quyết toán hóa đơn tức thì.</div>
+</div>
+</div>
+<button class="inline-flex items-center justify-center gap-space-xs px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-all self-end md:self-auto shrink-0">
+<span>Chuyển sang Quầy Quyết Toán</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Live Reception Clock Micro-interaction
+  function updateReceptionClock() {
+    const clockEl = document.getElementById('live-clock');
+    if (!clockEl) return;
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    clockEl.textContent = `${hours}:${minutes}:${seconds} GMT+7`;
+  }
+  setInterval(updateReceptionClock, 1000);
+  updateReceptionClock();
+
+  // Tab Trigger Switching UX (Simulated)
+  const tabButtons = document.querySelectorAll('.tab-trigger');
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabButtons.forEach(b => {
+        b.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm');
+        b.classList.add('text-on-surface-variant');
+      });
+      btn.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm');
+      btn.classList.remove('text-on-surface-variant');
+    });
+  });
+
+  // Check-in Confirmation Button Feedback
+  const confirmBtn = document.getElementById('btnConfirmCheckIn');
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', () => {
+      const originalHtml = confirmBtn.innerHTML;
+      confirmBtn.innerHTML = `
+        <span class="material-symbols-outlined text-[20px] text-secondary-fixed animate-spin">sync</span>
+        <span>Đang khởi tạo mã phòng & kích hoạt thẻ...</span>
+      `;
+      confirmBtn.disabled = true;
+      setTimeout(() => {
+        confirmBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[20px] text-secondary-fixed">check_circle</span>
+          <span>Đã hoàn tất nhận phòng thành công!</span>
+        `;
+        setTimeout(() => {
+          confirmBtn.innerHTML = originalHtml;
+          confirmBtn.disabled = false;
+        }, 3000);
+      }, 1200);
+    });
+  }
+</script></main></div></body></html>

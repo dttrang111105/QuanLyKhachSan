@@ -6,7 +6,7 @@
        : User.IsInRole("Receptionist")
            ? "~/Views/Shared/_ReceptionistLayout.cshtml"
            : "~/Views/Shared/_CustomerLayout.cshtml";
-    ViewData["Title"] = "Chi tiết hóa đơn";
+    ViewData["Title"] = "Hóa đơn thanh toán - " + Model.InvoiceCode;
     var payment = Model.Payments
         .OrderByDescending(x => x.PaymentDate)
         .FirstOrDefault();
@@ -33,298 +33,275 @@
         finalAmount = 0;
     }
 }
-<h2 class="mb-4">
-    Hóa đơn thanh toán
-</h2>
-<div class="card shadow">
-    <div class="card-header bg-primary text-white">
-        <div class="row">
-            <div class="col-md-6">
-                <h4 class="mb-0">
-                    @Model.InvoiceCode
-                </h4>
+
+<div class="max-w-4xl mx-auto space-y-6">
+    <!-- Header Actions -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-sm">receipt_long</span>
+                <span>Hóa đơn dịch vụ</span>
             </div>
-            <div class="col-md-6 text-end">
-                Ngày lập:
-                <strong>
-                    @Model.InvoiceDate.ToString("dd/MM/yyyy HH:mm")
-                </strong>
-            </div>
+            <h1 class="font-serif text-2xl md:text-3xl font-bold text-[#0b1c30] mt-1 flex items-center gap-3">
+                <span>Hóa đơn: @Model.InvoiceCode</span>
+                @if (payment != null && payment.PaymentStatus == PaymentStatus.Paid)
+                {
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 me-1.5"></span> Đã thanh toán
+                    </span>
+                }
+                else
+                {
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 me-1.5"></span> Chờ thanh toán
+                    </span>
+                }
+            </h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <a asp-action="ExportPdf" asp-route-id="@Model.Id" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition shadow-sm">
+                <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                <span>In PDF</span>
+            </a>
+            @if (payment == null || payment.PaymentStatus != PaymentStatus.Paid)
+            {
+                <a asp-controller="Payments" asp-action="PaymentQr" asp-route-invoiceId="@Model.Id" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#725b38] text-white text-xs font-bold shadow-md hover:shadow-lg transition">
+                    <span class="material-symbols-outlined text-sm">qr_code_2</span>
+                    <span>Thanh toán QR</span>
+                </a>
+            }
         </div>
     </div>
-    <div class="card-body">
-        <h5 class="mb-3">
-            Thông tin khách hàng
-        </h5>
-        <table class="table table-bordered">
-            <tr>
-                <th width="220">Khách hàng</th>
-                <td>@Model.Booking.Customer.FullName</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>@Model.Booking.Customer.Email</td>
-            </tr>
-            <tr>
-                <th>Số điện thoại</th>
-                <td>@Model.Booking.Customer.Phone</td>
-            </tr>
-            <tr>
-                <th>Mã Booking</th>
-                <td>@Model.Booking.BookingCode</td>
-            </tr>
-            <tr>
-                <th>Ngày nhận phòng</th>
-                <td>@Model.Booking.CheckInDate.ToString("dd/MM/yyyy")</td>
-            </tr>
-            <tr>
-                <th>Ngày trả phòng</th>
-                <td>@Model.Booking.CheckOutDate.ToString("dd/MM/yyyy")</td>
-            </tr>
-        </table>
-        <hr />
-        <h5>Danh sách phòng</h5>
-        <table class="table table-bordered table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Phòng</th>
-                    <th>Số đêm</th>
-                    <th>Đơn giá</th>
-                    <th>Thành tiền</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (roomDetails.Any())
-                {
-                    @foreach (var item in roomDetails)
-                    {
-                        <tr>
-                            <td>@item.ItemName</td>
-                            <td>@item.Quantity</td>
-                            <td>@item.UnitPrice.ToString("N0") VNĐ</td>
-                            <td>@item.Amount.ToString("N0") VNĐ</td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    @foreach (var item in Model.Booking.BookingDetails)
-                    {
-                        <tr>
-                            <td>@item.Room.RoomNumber</td>
-                            <td>@item.NumberOfNights</td>
-                            <td>@item.PricePerNight.ToString("N0") VNĐ</td>
-                            <td>@item.TotalPrice.ToString("N0") VNĐ</td>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-        <hr />
-        <h5>Dịch vụ sử dụng</h5>
-        <table class="table table-bordered table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Dịch vụ</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá</th>
-                    <th>Thành tiền</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (serviceDetails.Any())
-                {
-                    @foreach (var item in serviceDetails)
-                    {
-                        <tr>
-                            <td>@item.ItemName</td>
-                            <td>@item.Quantity</td>
-                            <td>@item.UnitPrice.ToString("N0") VNĐ</td>
-                            <td>@item.Amount.ToString("N0") VNĐ</td>
-                        </tr>
-                    }
-                }
-                else if (Model.Booking.ServiceBookings.Any())
-                {
-                    @foreach (var item in Model.Booking.ServiceBookings)
-                    {
-                        <tr>
-                            <td>@item.Service.ServiceName</td>
-                            <td>@item.Quantity</td>
-                            <td>@item.UnitPrice.ToString("N0") VNĐ</td>
-                            <td>@item.TotalPrice.ToString("N0") VNĐ</td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="4" class="text-center text-muted">
-                            Không sử dụng dịch vụ
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        @if (miniBarDetails.Any() || compensationDetails.Any())
-        {
-            <hr />
-            <h5>Phụ thu kiểm tra phòng</h5>
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Khoản thu</th>
-                        <th>Loại</th>
-                        <th>Số lượng</th>
-                        <th>Đơn giá</th>
-                        <th>Thành tiền</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in miniBarDetails)
-                    {
-                        <tr>
-                            <td>@item.ItemName</td>
-                            <td>MiniBar</td>
-                            <td>@item.Quantity</td>
-                            <td>@item.UnitPrice.ToString("N0") VNĐ</td>
-                            <td>@item.Amount.ToString("N0") VNĐ</td>
-                        </tr>
-                    }
-                    @foreach (var item in compensationDetails)
-                    {
-                        <tr>
-                            <td>@item.ItemName</td>
-                            <td>Đền bù</td>
-                            <td>@item.Quantity</td>
-                            <td>@item.UnitPrice.ToString("N0") VNĐ</td>
-                            <td>@item.Amount.ToString("N0") VNĐ</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        <hr />
-        <div class="row">
-            <div class="col-md-6">
-                <h5>Trạng thái thanh toán</h5>
-                @if (payment == null)
-                {
-                    <span class="badge bg-warning fs-6">
-                        Chưa thanh toán
-                    </span>
-                }
-                else if (payment.PaymentStatus == PaymentStatus.Paid)
-                {
-                    <span class="badge bg-success fs-6">
-                        Đã thanh toán
-                    </span>
-                }
-                else if (payment.PaymentStatus == PaymentStatus.Pending)
-                {
-                    <span class="badge bg-info fs-6">
-                        Đang xử lý
-                    </span>
-                }
-                else if (payment.PaymentStatus == PaymentStatus.Failed)
-                {
-                    <span class="badge bg-danger fs-6">
-                        Thanh toán thất bại
-                    </span>
-                }
-                else
-                {
-                    <span class="badge bg-secondary fs-6">
-                        Đã hoàn tiền
-                    </span>
-                }
+
+    <!-- Luxury Folio Card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <!-- Top Editorial Banner -->
+        <div class="p-6 md:p-8 bg-[#0b1c30] text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="text-[11px] font-bold tracking-widest text-[#c5a880] uppercase block">GrandStay Luxury Hotel &amp; Resort</span>
+                <h2 class="font-serif text-xl md:text-2xl font-bold mt-1 text-white">Phiếu Thu &amp; Hóa Đơn Thanh Toán</h2>
+                <p class="text-xs text-slate-300 mt-1">Ngày lập: @Model.InvoiceDate.ToString("dd/MM/yyyy HH:mm")</p>
             </div>
-            <div class="col-md-6">
-                <table class="table table-borderless">
-                    <tr>
-                        <th>Tiền phòng</th>
-                        <td class="text-end">
-                            @Model.RoomAmount.ToString("N0") VNĐ
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Tiền dịch vụ</th>
-                        <td class="text-end">
-                            @Model.ServiceAmount.ToString("N0") VNĐ
-                        </td>
-                    </tr>
+            <div class="text-left md:text-right">
+                <span class="text-xs text-slate-400 block font-mono">MÃ BOOKING: @Model.Booking.BookingCode</span>
+                <div class="text-2xl font-bold font-serif text-[#c5a880] mt-1">@Model.TotalAmount.ToString("N0") VNĐ</div>
+            </div>
+        </div>
+
+        <div class="p-6 md:p-8 space-y-8">
+            <!-- Guest & Booking Information -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 rounded-xl bg-slate-50 border border-slate-100 text-sm">
+                <div class="space-y-2">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Khách hàng</span>
+                    <div class="font-bold text-slate-800 text-base">@Model.Booking.Customer?.FullName</div>
+                    <div class="text-xs text-slate-600 flex items-center gap-1"><span class="material-symbols-outlined text-xs">mail</span> @Model.Booking.Customer?.Email</div>
+                    <div class="text-xs text-slate-600 flex items-center gap-1"><span class="material-symbols-outlined text-xs">call</span> @Model.Booking.Customer?.Phone</div>
+                </div>
+                <div class="space-y-2">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Thời gian lưu trú</span>
+                    <div class="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                        <span>@Model.Booking.CheckInDate.ToString("dd/MM/yyyy")</span>
+                        <span class="material-symbols-outlined text-xs text-slate-400">arrow_forward</span>
+                        <span>@Model.Booking.CheckOutDate.ToString("dd/MM/yyyy")</span>
+                    </div>
+                    <div class="text-xs text-slate-500">Người lớn: @Model.Booking.Adult | Trẻ em: @Model.Booking.Children</div>
+                </div>
+            </div>
+
+            <!-- Room Charges -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm text-[#725b38]">hotel</span>
+                    Chi phí phòng nghỉ
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-y border-slate-100">
+                            <tr>
+                                <th class="py-2.5 px-4">Hạng phòng / Số phòng</th>
+                                <th class="py-2.5 px-4 text-center">Số đêm</th>
+                                <th class="py-2.5 px-4 text-right">Đơn giá</th>
+                                <th class="py-2.5 px-4 text-right">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            @if (roomDetails.Any())
+                            {
+                                @foreach (var item in roomDetails)
+                                {
+                                    <tr>
+                                        <td class="py-3 px-4 font-semibold text-slate-800">@item.ItemName</td>
+                                        <td class="py-3 px-4 text-center text-slate-600">@item.Quantity</td>
+                                        <td class="py-3 px-4 text-right text-slate-600">@item.UnitPrice.ToString("N0") VNĐ</td>
+                                        <td class="py-3 px-4 text-right font-bold text-slate-900">@item.Amount.ToString("N0") VNĐ</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                @foreach (var item in Model.Booking.BookingDetails)
+                                {
+                                    <tr>
+                                        <td class="py-3 px-4 font-semibold text-slate-800">Phòng @item.Room?.RoomNumber</td>
+                                        <td class="py-3 px-4 text-center text-slate-600">@item.NumberOfNights</td>
+                                        <td class="py-3 px-4 text-right text-slate-600">@item.PricePerNight.ToString("N0") VNĐ</td>
+                                        <td class="py-3 px-4 text-right font-bold text-slate-900">@item.TotalPrice.ToString("N0") VNĐ</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Service Charges -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm text-[#725b38]">room_service</span>
+                    Dịch vụ &amp; Tiện ích phát sinh
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-y border-slate-100">
+                            <tr>
+                                <th class="py-2.5 px-4">Tên dịch vụ</th>
+                                <th class="py-2.5 px-4 text-center">Số lượng</th>
+                                <th class="py-2.5 px-4 text-right">Đơn giá</th>
+                                <th class="py-2.5 px-4 text-right">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            @if (serviceDetails.Any())
+                            {
+                                @foreach (var item in serviceDetails)
+                                {
+                                    <tr>
+                                        <td class="py-3 px-4 font-semibold text-slate-800">@item.ItemName</td>
+                                        <td class="py-3 px-4 text-center text-slate-600">@item.Quantity</td>
+                                        <td class="py-3 px-4 text-right text-slate-600">@item.UnitPrice.ToString("N0") VNĐ</td>
+                                        <td class="py-3 px-4 text-right font-bold text-slate-900">@item.Amount.ToString("N0") VNĐ</td>
+                                    </tr>
+                                }
+                            }
+                            else if (Model.Booking.ServiceBookings.Any())
+                            {
+                                @foreach (var item in Model.Booking.ServiceBookings)
+                                {
+                                    <tr>
+                                        <td class="py-3 px-4 font-semibold text-slate-800">@item.Service?.ServiceName</td>
+                                        <td class="py-3 px-4 text-center text-slate-600">@item.Quantity</td>
+                                        <td class="py-3 px-4 text-right text-slate-600">@item.UnitPrice.ToString("N0") VNĐ</td>
+                                        <td class="py-3 px-4 text-right font-bold text-slate-900">@item.TotalPrice.ToString("N0") VNĐ</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="py-4 text-center text-slate-400 text-xs">Không sử dụng dịch vụ bổ sung.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Minibar & Damages if any -->
+            @if (miniBarDetails.Any() || compensationDetails.Any())
+            {
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm text-[#725b38]">inventory_2</span>
+                        Phụ thu kiểm tra phòng Checkout
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-y border-slate-100">
+                                <tr>
+                                    <th class="py-2.5 px-4">Hạng mục</th>
+                                    <th class="py-2.5 px-4">Phân loại</th>
+                                    <th class="py-2.5 px-4 text-center">Số lượng</th>
+                                    <th class="py-2.5 px-4 text-right">Đơn giá</th>
+                                    <th class="py-2.5 px-4 text-right">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @foreach (var item in miniBarDetails)
+                                {
+                                    <tr>
+                                        <td class="py-3 px-4 font-semibold text-slate-800">@item.ItemName</td>
+                                        <td class="py-3 px-4 text-xs font-bold text-[#725b38]">MiniBar</td>
+                                        <td class="py-3 px-4 text-center text-slate-600">@item.Quantity</td>
+                                        <td class="py-3 px-4 text-right text-slate-600">@item.UnitPrice.ToString("N0") VNĐ</td>
+                                        <td class="py-3 px-4 text-right font-bold text-slate-900">@item.Amount.ToString("N0") VNĐ</td>
+                                    </tr>
+                                }
+                                @foreach (var item in compensationDetails)
+                                {
+                                    <tr>
+                                        <td class="py-3 px-4 font-semibold text-slate-800">@item.ItemName</td>
+                                        <td class="py-3 px-4 text-xs font-bold text-rose-600">Đền bù / Hỏng mất</td>
+                                        <td class="py-3 px-4 text-center text-slate-600">@item.Quantity</td>
+                                        <td class="py-3 px-4 text-right text-slate-600">@item.UnitPrice.ToString("N0") VNĐ</td>
+                                        <td class="py-3 px-4 text-right font-bold text-slate-900">@item.Amount.ToString("N0") VNĐ</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+
+            <!-- Summary Calculations -->
+            <div class="flex flex-col md:flex-row justify-between items-start gap-6 pt-6 border-t border-slate-100">
+                <div class="w-full md:w-1/2 space-y-3">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ghi chú thanh toán</span>
+                    <p class="text-xs text-slate-500 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        Cảm ơn quý khách đã tin tưởng và lựa chọn kỳ nghỉ tại khách sạn của chúng tôi. Mọi thắc mắc về hóa đơn xin vui lòng liên hệ quầy Lễ tân.
+                    </p>
+                </div>
+
+                <div class="w-full md:w-1/2 space-y-2 text-sm">
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span class="text-slate-500">Tiền phòng:</span>
+                        <span class="font-semibold text-slate-800">@Model.RoomAmount.ToString("N0") VNĐ</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span class="text-slate-500">Tiền dịch vụ:</span>
+                        <span class="font-semibold text-slate-800">@Model.ServiceAmount.ToString("N0") VNĐ</span>
+                    </div>
                     @if (miniBarAmount > 0)
                     {
-                        <tr>
-                            <th>MiniBar</th>
-                            <td class="text-end">
-                                @miniBarAmount.ToString("N0") VNĐ
-                            </td>
-                        </tr>
+                        <div class="flex justify-between py-1 border-b border-slate-100">
+                            <span class="text-slate-500">Phụ thu MiniBar:</span>
+                            <span class="font-semibold text-slate-800">@miniBarAmount.ToString("N0") VNĐ</span>
+                        </div>
                     }
                     @if (compensationAmount > 0)
                     {
-                        <tr>
-                            <th>Đền bù tài sản</th>
-                            <td class="text-end">
-                                @compensationAmount.ToString("N0") VNĐ
-                            </td>
-                        </tr>
+                        <div class="flex justify-between py-1 border-b border-slate-100">
+                            <span class="text-slate-500">Bồi thường tài sản:</span>
+                            <span class="font-semibold text-slate-800">@compensationAmount.ToString("N0") VNĐ</span>
+                        </div>
                     }
-                    <tr>
-                        <th>Tiền cọc</th>
-                        <td class="text-end">
-                            @Model.Booking.Deposit.ToString("N0") VNĐ
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Giảm giá</th>
-                        <td class="text-end">
-                            @Model.DiscountPercent %
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Thuế VAT (@Model.TaxPercent%)</th>
-                        <td class="text-end">
-                            @taxAmount.ToString("N0") VNĐ
-                        </td>
-                    </tr>
-                    <tr class="table-warning">
-                        <th class="fs-5">
-                            Còn phải thanh toán
-                        </th>
-                        <th class="text-end text-danger fs-4">
-                            @finalAmount.ToString("N0") VNĐ
-                        </th>
-                    </tr>
-                </table>
+                    <div class="flex justify-between py-1 border-b border-slate-100 text-rose-600">
+                        <span>Đã đặt cọc:</span>
+                        <span class="font-semibold">-@Model.Booking.Deposit.ToString("N0") VNĐ</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100 text-slate-500">
+                        <span>Giảm giá (@Model.DiscountPercent%):</span>
+                        <span>-@((subTotal * Model.DiscountPercent / 100).ToString("N0")) VNĐ</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100 text-slate-500">
+                        <span>Thuế VAT (@Model.TaxPercent%):</span>
+                        <span>@taxAmount.ToString("N0") VNĐ</span>
+                    </div>
+                    <div class="flex justify-between py-3 bg-[#725b38]/10 px-4 rounded-xl text-[#0b1c30] mt-2">
+                        <span class="font-bold uppercase tracking-wider text-xs flex items-center">Còn phải thanh toán:</span>
+                        <span class="font-serif text-xl font-bold text-[#725b38]">@finalAmount.ToString("N0") VNĐ</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card-footer">
-        @if (payment == null || payment.PaymentStatus != PaymentStatus.Paid)
-        {
-            <a asp-controller="Payments"
-               asp-action="PaymentQr"
-               asp-route-invoiceId="@Model.Id"
-               class="btn btn-success">
-                <i class="bi bi-qr-code"></i>
-                Thanh toán
-            </a>
-        }
-        else
-        {
-            <a asp-action="ExportPdf"
-               asp-route-id="@Model.Id"
-               class="btn btn-primary">
-                <i class="bi bi-file-earmark-pdf"></i>
-                In hóa đơn PDF
-            </a>
-        }
-        <a asp-controller="Bookings"
-           asp-action="Index"
-           class="btn btn-secondary">
-            Quay lại
-        </a>
     </div>
 </div>

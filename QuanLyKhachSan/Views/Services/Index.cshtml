@@ -6,962 +6,273 @@
     Layout = isAdmin
         ? "~/Views/Shared/_AdminLayout.cshtml"
         : "~/Views/Shared/_ReceptionistLayout.cshtml";
-    ViewData["Title"] = "Quản lý dịch vụ";
-    List<Service> services =
-        Model?.ToList() ?? new List<Service>();
+
+    ViewData["Title"] = "Quản lý dịch vụ & Spa";
+    List<Service> services = Model?.ToList() ?? new List<Service>();
     int totalServices = services.Count;
-    int availableServices =
-        services.Count(service =>
-            service.IsAvailable);
-    int unavailableServices =
-        services.Count(service =>
-            !service.IsAvailable);
-    decimal averagePrice =
-        services.Any()
-            ? services.Average(service =>
-                service.Price)
-            : 0;
-    List<string> categories =
-        services
-            .Where(service =>
-                !string.IsNullOrWhiteSpace(
-                    service.Category))
-            .Select(service =>
-                service.Category!)
-            .Distinct()
-            .OrderBy(category =>
-                category)
-            .ToList();
-    string CategoryText(string? category)
+    int availableServices = services.Count(s => s.IsAvailable);
+    int unavailableServices = services.Count(s => !s.IsAvailable);
+    decimal averagePrice = services.Any() ? services.Average(s => s.Price) : 0;
+    
+    var categories = services
+        .Where(s => !string.IsNullOrWhiteSpace(s.Category))
+        .Select(s => s.Category!)
+        .Distinct()
+        .OrderBy(c => c)
+        .ToList();
+
+    string GetServiceIcon(string? category)
     {
         return category?.Trim().ToLower() switch
         {
-            "ăn uống" => "Ăn uống",
-            "chăm sóc" => "Chăm sóc",
-            "giải trí" => "Giải trí",
-            "tiện ích" => "Tiện ích",
-            "trang trí" => "Trang trí",
-            null or "" => "Chưa phân loại",
-            _ => category!
-        };
-    }
-    string CategoryIcon(string? category)
-    {
-        return category?.Trim().ToLower() switch
-        {
-            "ăn uống" => "bi-cup-hot-fill",
-            "chăm sóc" => "bi-heart-pulse-fill",
-            "giải trí" => "bi-controller",
-            "tiện ích" => "bi-car-front-fill",
-            "trang trí" => "bi-balloon-heart-fill",
-            _ => "bi-bell-fill"
-        };
-    }
-    string CategoryClass(string? category)
-    {
-        return category?.Trim().ToLower() switch
-        {
-            "ăn uống" => "service-category-food",
-            "chăm sóc" => "service-category-spa",
-            "giải trí" => "service-category-entertainment",
-            "tiện ích" => "service-category-transport",
-            "trang trí" => "service-category-decoration",
-            _ => "service-category-other"
+            "ăn uống" or "f&b" or "ẩm thực" => "restaurant",
+            "chăm sóc" or "spa" or "massage" => "spa",
+            "giải trí" or "tour" => "sports_gymnastics",
+            "tiện ích" or "xe" or "di chuyển" => "airport_shuttle",
+            "giặt là" or "laundry" => "local_laundry_service",
+            _ => "room_service"
         };
     }
 }
-<!-- TIÊU ĐỀ -->
-<section class="service-page-heading">
-    <div>
-        <span class="service-page-kicker">
-            Tiện ích khách sạn
-        </span>
-        <h2>
-            Quản lý dịch vụ
-        </h2>
-        <p>
-            Quản lý dịch vụ giặt là, đồ ăn sáng,
-            giá sử dụng và trạng thái phục vụ.
-        </p>
-    </div>
-    <div class="service-heading-actions">
-        <a asp-controller="Services"
-           asp-action="StaffBookService"
-           class="service-heading-button booking">
-            <i class="bi bi-cart-plus-fill"></i>
-            Đặt dịch vụ cho khách
-        </a>
-        <a asp-controller="ServiceBookings"
-           asp-action="Index"
-           class="service-heading-button">
-            <i class="bi bi-list-check"></i>
-            Dịch vụ đã đặt
-        </a>
-        <a asp-controller="Services"
-           asp-action="Create"
-           class="service-heading-button primary">
-            <i class="bi bi-plus-lg"></i>
-            Thêm dịch vụ
-        </a>
-    </div>
-</section>
-<!-- THÔNG BÁO -->
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        @TempData["Success"]
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Đóng">
-        </button>
-    </div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        @TempData["Error"]
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Đóng">
-        </button>
-    </div>
-}
-<!-- THỐNG KÊ -->
-<div class="row g-4 mb-4">
-    <!-- Tổng dịch vụ -->
-    <div class="col-xl-3 col-md-6">
-        <div class="service-stat-card">
-            <div class="service-stat-top">
-                <span class="service-stat-icon blue">
-                    <i class="bi bi-bell-fill"></i>
-                </span>
-                <span class="service-stat-tag">
-                    Tất cả
-                </span>
-            </div>
-            <span class="service-stat-title">
-                Tổng dịch vụ
-            </span>
-            <strong class="service-stat-value">
-                @totalServices
-            </strong>
-            <small>
-                Dịch vụ trong hệ thống
-            </small>
-        </div>
-    </div>
-    <!-- Đang phục vụ -->
-    <div class="col-xl-3 col-md-6">
-        <div class="service-stat-card">
-            <div class="service-stat-top">
-                <span class="service-stat-icon green">
-                    <i class="bi bi-check-circle-fill"></i>
-                </span>
-                <span class="service-stat-tag">
-                    Hoạt động
-                </span>
-            </div>
-            <span class="service-stat-title">
-                Đang phục vụ
-            </span>
-            <strong class="service-stat-value">
-                @availableServices
-            </strong>
-            <small>
-                Khách hàng có thể đặt
-            </small>
-        </div>
-    </div>
-    <!-- Ngừng phục vụ -->
-    <div class="col-xl-3 col-md-6">
-        <div class="service-stat-card">
-            <div class="service-stat-top">
-                <span class="service-stat-icon red">
-                    <i class="bi bi-pause-circle-fill"></i>
-                </span>
-                <span class="service-stat-tag">
-                    Tạm dừng
-                </span>
-            </div>
-            <span class="service-stat-title">
-                Ngừng phục vụ
-            </span>
-            <strong class="service-stat-value">
-                @unavailableServices
-            </strong>
-            <small>
-                Không hiển thị cho khách đặt
-            </small>
-        </div>
-    </div>
-    <!-- Giá trung bình -->
-    <div class="col-xl-3 col-md-6">
-        <div class="service-stat-card">
-            <div class="service-stat-top">
-                <span class="service-stat-icon gold">
-                    <i class="bi bi-cash-stack"></i>
-                </span>
-                <span class="service-stat-tag">
-                    Trung bình
-                </span>
-            </div>
-            <span class="service-stat-title">
-                Giá dịch vụ
-            </span>
-            <strong class="service-stat-value service-stat-money">
-                @averagePrice.ToString("N0")
-                <small>VNĐ</small>
-            </strong>
-            <small>
-                Giá trung bình mỗi dịch vụ
-            </small>
-        </div>
-    </div>
-</div>
-<!-- DANH SÁCH DỊCH VỤ -->
-<div class="service-panel">
-    <div class="service-panel-header">
+
+<div class="space-y-6">
+    <!-- Header: Title & Actions -->
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <span class="service-page-kicker">
-                Danh sách dữ liệu
-            </span>
-            <h3>
-                Dịch vụ khách sạn
-            </h3>
-            <p>
-                Có @totalServices dịch vụ được hiển thị.
-            </p>
-        </div>
-        <div class="service-filter-area">
-            <div class="service-search-box">
-                <i class="bi bi-search"></i>
-                <input type="text"
-                       id="serviceSearch"
-                       placeholder="Tìm tên hoặc mô tả dịch vụ..." />
+            <div class="flex items-center gap-2 text-xs font-bold tracking-widest text-[#725b38] uppercase">
+                <span class="material-symbols-outlined text-[16px]">spa</span>
+                <span>Dịch Vụ &amp; Trải Nghiệm</span>
             </div>
-            <select id="serviceCategoryFilter"
-                    class="form-select">
-                <option value="">
-                    Tất cả loại dịch vụ
-                </option>
-                @foreach (string category in categories)
-                {
-                    <option value="@category">
-                        @CategoryText(category)
-                    </option>
-                }
-            </select>
-            <select id="serviceStatusFilter"
-                    class="form-select">
-                <option value="">
-                    Tất cả trạng thái
-                </option>
-                <option value="available">
-                    Đang phục vụ
-                </option>
-                <option value="unavailable">
-                    Ngừng phục vụ
-                </option>
-            </select>
-        </div>
-    </div>
-    @if (services.Any())
-    {
-        <div class="table-responsive">
-            <table class="table service-table align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th class="ps-4">
-                            Dịch vụ
-                        </th>
-                        <th>
-                            Giá
-                        </th>
-                        <th>
-                            Loại dịch vụ
-                        </th>
-                        <th>
-                            Mô tả
-                        </th>
-                        <th>
-                            Trạng thái
-                        </th>
-                        <th class="text-end pe-4">
-                            Thao tác
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (Service service in services)
-                    {
-                        string serviceStatus =
-                            service.IsAvailable
-                                ? "available"
-                                : "unavailable";
-                        string searchData =
-                            $"{service.ServiceName} {service.Category} {service.Description}"
-                                .ToLower();
-                        <tr class="service-row"
-                            data-category="@service.Category"
-                            data-status="@serviceStatus"
-                            data-search="@searchData">
-                            <!-- Tên dịch vụ -->
-                            <td class="ps-4">
-                                <div class="service-name-cell">
-                                    <span class="service-main-icon
-                                        @CategoryClass(
-                                                service.Category)">
-                                        <i class="bi
-                                            @CategoryIcon(
-                                              service.Category)">
-                                        </i>
-                                    </span>
-                                    <div>
-                                        <strong>
-                                            @service.ServiceName
-                                        </strong>
-                                        <small>
-                                            Mã dịch vụ: #@service.Id
-                                        </small>
-                                    </div>
-                                </div>
-                            </td>
-                            <!-- Giá -->
-                            <td>
-                                <span class="service-price">
-                                    @service.Price.ToString("N0")
-                                    <small>
-                                        VNĐ
-                                    </small>
-                                </span>
-                            </td>
-                            <!-- Loại -->
-                            <td>
-                                <span class="service-category-badge
-                                    @CategoryClass(
-                                            service.Category)">
-                                    <i class="bi
-                                        @CategoryIcon(
-                                          service.Category)">
-                                    </i>
-                                    @CategoryText(
-                                        service.Category)
-                                </span>
-                            </td>
-                            <!-- Mô tả -->
-                            <td>
-                                <span class="service-description"
-                                      title="@service.Description">
-                                    @(string.IsNullOrWhiteSpace(
-                                        service.Description)
-                                        ? "Chưa có mô tả"
-                                        : service.Description)
-                                </span>
-                            </td>
-                            <!-- Trạng thái -->
-                            <td>
-                                @if (service.IsAvailable)
-                                {
-                                    <span class="service-status
-                                        service-status-active">
-                                        <i class="bi
-                                            bi-check-circle-fill">
-                                        </i>
-                                        Đang phục vụ
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="service-status
-                                        service-status-inactive">
-                                        <i class="bi
-                                            bi-pause-circle-fill">
-                                        </i>
-                                        Ngừng phục vụ
-                                    </span>
-                                }
-                            </td>
-                            <!-- Thao tác -->
-                            <td class="text-end pe-4">
-                                <div class="service-action-group">
-                                    <a asp-controller="Services"
-                                       asp-action="Details"
-                                       asp-route-id="@service.Id"
-                                       class="service-action view"
-                                       title="Xem chi tiết">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a asp-controller="Services"
-                                       asp-action="Edit"
-                                       asp-route-id="@service.Id"
-                                       class="service-action edit"
-                                       title="Chỉnh sửa">
-                                        <i class="bi
-                                            bi-pencil-square">
-                                        </i>
-                                    </a>
-                                    @if (isAdmin)
-                                    {
-                                        <a asp-controller="Services"
-                                           asp-action="Delete"
-                                           asp-route-id="@service.Id"
-                                           class="service-action delete"
-                                           title="Xóa dịch vụ">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                    }
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div id="serviceFilterEmpty"
-             class="service-empty-state d-none">
-            <i class="bi bi-search"></i>
-            <h4>
-                Không tìm thấy dịch vụ
-            </h4>
-            <p>
-                Hãy thử từ khóa, loại hoặc trạng thái khác.
+            <h1 class="font-serif text-2xl sm:text-3xl font-bold text-on-surface mt-1">Danh Mục Dịch Vụ &amp; Spa</h1>
+            <p class="text-xs text-on-surface-variant mt-1">
+                Điều phối danh mục F&amp;B, Spa trị liệu, Tour tham quan và dịch vụ tiện ích của resort.
             </p>
         </div>
-    }
-    else
-    {
-        <div class="service-empty-state">
-            <i class="bi bi-bell-slash"></i>
-            <h4>
-                Chưa có dịch vụ
-            </h4>
-            <p>
-                Hãy thêm dịch vụ giặt là, đồ ăn sáng
-                hoặc dịch vụ khách sạn khác.
-            </p>
-            <a asp-controller="Services"
-               asp-action="Create"
-               class="btn btn-primary">
-                <i class="bi bi-plus-circle me-1"></i>
-                Thêm dịch vụ đầu tiên
+        <div class="flex flex-wrap items-center gap-2">
+            <a asp-controller="Services" asp-action="StaffBookService"
+               class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low text-xs font-bold shadow-sm transition-all no-underline">
+                <span class="material-symbols-outlined text-[18px] text-secondary">add_shopping_cart</span>
+                <span>Đặt Dịch Vụ Cho Khách</span>
+            </a>
+            <a asp-controller="ServiceBookings" asp-action="Index"
+               class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low text-xs font-bold shadow-sm transition-all no-underline">
+                <span class="material-symbols-outlined text-[18px]">list_alt</span>
+                <span>Lịch Đặt Dịch Vụ</span>
+            </a>
+            <a asp-controller="Services" asp-action="Create"
+               class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary text-white hover:bg-on-background text-xs font-bold shadow-sm transition-all no-underline">
+                <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                <span>+ Thêm Dịch Vụ</span>
             </a>
         </div>
-    }
-</div>
-@section Styles
-{
-    <style>
-        .service-page-heading {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 26px;
-        }
-            .service-page-heading h2 {
-                margin: 5px 0 7px;
-                color: #252a35;
-                font-weight: 700;
-            }
-            .service-page-heading p {
-                margin: 0;
-                color: #838897;
-            }
-        .service-page-kicker {
-            color: #b58a42;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.7px;
-            text-transform: uppercase;
-        }
-        .service-heading-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 9px;
-        }
-        .service-heading-button {
-            min-height: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            padding: 10px 16px;
-            border: 1px solid #e1e3e9;
-            border-radius: 11px;
-            background: #ffffff;
-            color: #555c69;
-            font-size: 13px;
-            font-weight: 700;
-            transition: 0.2s ease;
-        }
-            .service-heading-button:hover {
-                border-color: #b58a42;
-                color: #8f692f;
-                transform: translateY(-2px);
-            }
-            .service-heading-button.booking {
-                border-color: #27875e;
-                background: linear-gradient(135deg, #36a475, #23734f);
-                color: #ffffff;
-                box-shadow: 0 10px 23px rgba(39, 135, 94, 0.2);
-            }
-                .service-heading-button.booking:hover {
-                    border-color: #23734f;
-                    color: #ffffff;
-                }
-            .service-heading-button.primary {
-                border-color: #b58a42;
-                background: linear-gradient( 135deg, #c49a51, #8f692f );
-                color: #ffffff;
-                box-shadow: 0 10px 23px rgba(181, 138, 66, 0.2);
-            }
-                .service-heading-button.primary:hover {
-                    color: #ffffff;
-                }
-        .service-stat-card {
-            height: 100%;
-            padding: 21px;
-            border: 1px solid #e8e9ee;
-            border-radius: 18px;
-            background: #ffffff;
-            box-shadow: 0 18px 45px rgba(34, 38, 51, 0.065);
-        }
-        .service-stat-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 17px;
-        }
-        .service-stat-icon {
-            width: 48px;
-            height: 48px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 14px;
-            font-size: 21px;
-        }
-            .service-stat-icon.blue {
-                background: #eaf0ff;
-                color: #4f6fd8;
-            }
-            .service-stat-icon.green {
-                background: #e4f7ef;
-                color: #27875e;
-            }
-            .service-stat-icon.red {
-                background: #fde9eb;
-                color: #cf535d;
-            }
-            .service-stat-icon.gold {
-                background: #f4ead7;
-                color: #8f692f;
-            }
-        .service-stat-tag {
-            padding: 5px 9px;
-            border-radius: 20px;
-            background: #f3f4f7;
-            color: #838897;
-            font-size: 10px;
-            font-weight: 700;
-        }
-        .service-stat-title {
-            display: block;
-            color: #838897;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .service-stat-value {
-            display: block;
-            margin: 5px 0 11px;
-            color: #252a35;
-            font-size: 32px;
-            font-weight: 800;
-            line-height: 1.15;
-        }
-        .service-stat-money {
-            font-size: 24px;
-        }
-        .service-stat-value small {
-            color: #8c919d;
-            font-size: 9px;
-        }
-        .service-stat-card > small {
-            color: #9297a3;
-            font-size: 10px;
-        }
-        .service-panel {
-            overflow: hidden;
-            border: 1px solid #e8e9ee;
-            border-radius: 18px;
-            background: #ffffff;
-            box-shadow: 0 18px 45px rgba(34, 38, 51, 0.07);
-        }
-        .service-panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 21px 22px;
-            border-bottom: 1px solid #e8e9ee;
-        }
-            .service-panel-header h3 {
-                margin: 3px 0;
-                color: #292e39;
-                font-size: 20px;
-                font-weight: 700;
-            }
-            .service-panel-header p {
-                margin: 0;
-                color: #858a97;
-                font-size: 11px;
-            }
-        .service-filter-area {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-        .service-search-box {
-            position: relative;
-        }
-            .service-search-box i {
-                position: absolute;
-                top: 50%;
-                left: 13px;
-                color: #999eaa;
-                transform: translateY(-50%);
-            }
-            .service-search-box input {
-                width: 260px;
-                min-height: 42px;
-                padding: 9px 13px 9px 38px;
-                border: 1px solid #e1e3e9;
-                border-radius: 11px;
-                outline: none;
-                font-size: 12px;
-            }
-        .service-filter-area .form-select {
-            width: 175px;
-            min-height: 42px;
-            border-color: #e1e3e9;
-            border-radius: 11px;
-            font-size: 12px;
-        }
-            .service-search-box input:focus,
-            .service-filter-area .form-select:focus {
-                border-color: #b58a42;
-                box-shadow: 0 0 0 3px rgba(181, 138, 66, 0.12);
-            }
-        .service-table thead th {
-            padding: 14px 13px;
-            border-bottom: 1px solid #e8e9ee;
-            background: #fafafb;
-            color: #818795;
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-        .service-table tbody td {
-            padding: 15px 13px;
-            border-bottom: 1px solid #eff0f3;
-            color: #555b68;
-            font-size: 11px;
-            vertical-align: middle;
-        }
-        .service-table tbody tr:hover {
-            background: #fcfbf9;
-        }
-        .service-name-cell {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .service-main-icon {
-            width: 40px;
-            height: 40px;
-            flex: 0 0 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            font-size: 17px;
-        }
-        .service-name-cell div {
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        .service-name-cell strong {
-            color: #343944;
-            font-size: 12px;
-        }
-        .service-name-cell small {
-            color: #9297a3;
-            font-size: 9px;
-        }
-        .service-price {
-            display: block;
-            color: #c34e59;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-            .service-price small {
-                color: #989da9;
-                font-size: 8px;
-            }
-        .service-category-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 9px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .service-category-laundry {
-            background: #eaf0ff;
-            color: #4f6fd8;
-        }
-        .service-category-food {
-            background: #fff1d9;
-            color: #b87610;
-        }
-        .service-category-spa {
-            background: #f0ebff;
-            color: #8567d4;
-        }
-        .service-category-transport {
-            background: #e4f7ef;
-            color: #27875e;
-        }
-        .service-category-entertainment {
-            background: #e8f4ff;
-            color: #0d6efd;
-        }
-        .service-category-decoration {
-            background: #ffe7f1;
-            color: #d63384;
-        }
-        .service-category-other {
-            background: #eceef2;
-            color: #646b79;
-        }
-        .service-description {
-            max-width: 300px;
-            display: block;
-            overflow: hidden;
-            color: #777d89;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .service-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 6px 9px;
-            border-radius: 20px;
-            font-size: 9px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .service-status-active {
-            background: #e3f6ec;
-            color: #258459;
-        }
-        .service-status-inactive {
-            background: #fde7e9;
-            color: #c34c55;
-        }
-        .service-action-group {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 5px;
-        }
-        .service-action {
-            width: 34px;
-            height: 34px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #e1e3e8;
-            border-radius: 9px;
-            background: #ffffff;
-            transition: 0.2s ease;
-        }
-            .service-action:hover {
-                transform: translateY(-2px);
-            }
-            .service-action.view {
-                color: #4f6fd8;
-            }
-            .service-action.edit {
-                color: #b58025;
-            }
-            .service-action.delete {
-                color: #cf535d;
-            }
-            .service-action.view:hover {
-                border-color: #4f6fd8;
-                background: #eaf0ff;
-            }
-            .service-action.edit:hover {
-                border-color: #d49a36;
-                background: #fff3df;
-            }
-            .service-action.delete:hover {
-                border-color: #cf535d;
-                background: #fde9eb;
-            }
-        .service-empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 70px 20px;
-            color: #858b98;
-            text-align: center;
-        }
-            .service-empty-state i {
-                margin-bottom: 12px;
-                color: #c1c5ce;
-                font-size: 48px;
-            }
-            .service-empty-state h4 {
-                color: #454b57;
-            }
-        @@media (max-width: 1199.98px) {
-            .service-panel-header {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-            .service-filter-area {
-                width: 100%;
-            }
-            .service-search-box {
-                flex: 1;
-            }
-                .service-search-box input {
-                    width: 100%;
-                }
-        }
-        @@media (max-width: 767.98px) {
-            .service-page-heading {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-            .service-heading-actions {
-                width: 100%;
-            }
-            .service-heading-button {
-                flex: 1;
-            }
-            .service-filter-area {
-                align-items: stretch;
-                flex-direction: column;
-            }
-                .service-filter-area .form-select {
-                    width: 100%;
-                }
-        }
-    </style>
-}
-@section Scripts
-{
-    <script>
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
-                const searchInput =
-                    document.getElementById(
-                        "serviceSearch"
-                    );
-                const categoryFilter =
-                    document.getElementById(
-                        "serviceCategoryFilter"
-                    );
-                const statusFilter =
-                    document.getElementById(
-                        "serviceStatusFilter"
-                    );
-                const rows =
-                    document.querySelectorAll(
-                        ".service-row"
-                    );
-                const emptyState =
-                    document.getElementById(
-                        "serviceFilterEmpty"
-                    );
-                function filterServices() {
-                    const keyword =
-                        searchInput?.value
-                            .trim()
-                            .toLowerCase()
-                        ?? "";
-                    const category =
-                        categoryFilter?.value
-                        ?? "";
-                    const status =
-                        statusFilter?.value
-                        ?? "";
-                    let visibleCount = 0;
-                    rows.forEach(function (row) {
-                        const rowSearch =
-                            row.dataset.search
-                            ?? "";
-                        const rowCategory =
-                            row.dataset.category
-                            ?? "";
-                        const rowStatus =
-                            row.dataset.status
-                            ?? "";
-                        const keywordMatched =
-                            !keyword ||
-                            rowSearch.includes(keyword);
-                        const categoryMatched =
-                            !category ||
-                            rowCategory === category;
-                        const statusMatched =
-                            !status ||
-                            rowStatus === status;
-                        const visible =
-                            keywordMatched &&
-                            categoryMatched &&
-                            statusMatched;
-                        row.classList.toggle(
-                            "d-none",
-                            !visible
-                        );
-                        if (visible) {
-                            visibleCount++;
-                        }
-                    });
-                    if (emptyState) {
-                        emptyState.classList.toggle(
-                            "d-none",
-                            visibleCount > 0
-                        );
+    </header>
+
+    <!-- KPI Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-2xl border border-outline-variant/60 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Tổng dịch vụ</span>
+                <div class="text-2xl font-bold text-on-surface mt-1">@totalServices</div>
+                <span class="text-[11px] text-on-surface-variant">@categories.Count nhóm dịch vụ</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-surface-container text-secondary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">room_service</span>
+            </div>
+        </div>
+
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-2xl border border-outline-variant/60 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Đang phục vụ</span>
+                <div class="text-2xl font-bold text-emerald-600 mt-1">@availableServices</div>
+                <span class="text-[11px] text-emerald-700 font-semibold">Sẵn sàng nhận khách</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">check_circle</span>
+            </div>
+        </div>
+
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-2xl border border-outline-variant/60 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Tạm dừng</span>
+                <div class="text-2xl font-bold text-rose-600 mt-1">@unavailableServices</div>
+                <span class="text-[11px] text-rose-700 font-semibold">Tạm ngưng nhận lịch</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">block</span>
+            </div>
+        </div>
+
+        <div class="bg-surface-container-lowest p-4 sm:p-5 rounded-2xl border border-outline-variant/60 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Đơn giá TB</span>
+                <div class="text-xl font-bold text-secondary mt-1">@averagePrice.ToString("N0") <small class="text-xs text-on-surface-variant font-normal">đ</small></div>
+                <span class="text-[11px] text-on-surface-variant">Trên toàn danh mục</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-secondary-container text-secondary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">payments</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table Container -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-sm overflow-hidden">
+        <!-- Table Toolbar -->
+        <div class="p-4 sm:p-5 border-b border-outline-variant/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <span class="text-xs font-bold text-secondary uppercase tracking-wider">Danh mục</span>
+                <h2 class="text-base font-bold text-on-surface">Dịch Vụ Niêm Yết (@totalServices)</h2>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="relative">
+                    <input type="text" id="serviceSearch" placeholder="Tìm tên dịch vụ, mô tả..."
+                           class="h-9 pl-8 pr-3 bg-surface-container-low border border-outline-variant text-xs rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:border-secondary w-56 sm:w-64 transition-all" />
+                    <span class="material-symbols-outlined text-[16px] text-outline absolute left-2.5 top-1/2 -translate-y-1/2">search</span>
+                </div>
+                <select id="serviceCategoryFilter"
+                        class="h-9 px-3 bg-surface-container-low border border-outline-variant text-xs rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:border-secondary transition-all">
+                    <option value="">Tất cả phân loại</option>
+                    @foreach (var cat in categories)
+                    {
+                        <option value="@cat">@cat</option>
                     }
-                }
-                searchInput?.addEventListener(
-                    "input",
-                    filterServices
-                );
-                categoryFilter?.addEventListener(
-                    "change",
-                    filterServices
-                );
-                statusFilter?.addEventListener(
-                    "change",
-                    filterServices
-                );
+                </select>
+                <select id="serviceStatusFilter"
+                        class="h-9 px-3 bg-surface-container-low border border-outline-variant text-xs rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:border-secondary transition-all">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="available">Đang phục vụ</option>
+                    <option value="unavailable">Tạm dừng</option>
+                </select>
+            </div>
+        </div>
+
+        @if (services.Any())
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-surface-container-low text-on-surface-variant font-semibold uppercase text-[10px] tracking-wider border-b border-outline-variant/40">
+                        <tr>
+                            <th class="py-3 px-4">Tên Dịch Vụ</th>
+                            <th class="py-3 px-4">Phân Loại</th>
+                            <th class="py-3 px-4">Mô Tả</th>
+                            <th class="py-3 px-4 text-right">Đơn Giá</th>
+                            <th class="py-3 px-4 text-center">Trạng Thái</th>
+                            <th class="py-3 px-4 text-right">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant/30 text-on-surface font-medium">
+                        @foreach (var s in services)
+                        {
+                            string iconName = GetServiceIcon(s.Category);
+                            string searchData = $"{s.ServiceName} {s.Category} {s.Description}".ToLower();
+                            string statusKey = s.IsAvailable ? "available" : "unavailable";
+
+                            <tr class="hover:bg-surface-container-low/60 transition-colors service-row"
+                                data-category="@(s.Category ?? "")" data-status="@statusKey" data-search="@searchData">
+                                <td class="py-3.5 px-4 font-bold text-on-surface">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-xl bg-surface-container text-secondary flex items-center justify-center font-bold shrink-0">
+                                            <span class="material-symbols-outlined text-[20px]">@iconName</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-on-surface text-sm">@s.ServiceName</div>
+                                            <div class="text-[10px] text-outline font-normal">Mã #@s.Id</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="py-3.5 px-4">
+                                    <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-surface-container text-on-surface border border-outline-variant/40">
+                                        @(string.IsNullOrWhiteSpace(s.Category) ? "Khác" : s.Category)
+                                    </span>
+                                </td>
+
+                                <td class="py-3.5 px-4 max-w-xs text-on-surface-variant text-[11px] truncate">
+                                    @(string.IsNullOrWhiteSpace(s.Description) ? "—" : s.Description)
+                                </td>
+
+                                <td class="py-3.5 px-4 text-right font-bold text-secondary text-sm">
+                                    @s.Price.ToString("N0") <span class="text-[10px] text-on-surface-variant font-normal">đ</span>
+                                </td>
+
+                                <td class="py-3.5 px-4 text-center">
+                                    @if (s.IsAvailable)
+                                    {
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Đang phục vụ
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Tạm dừng
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="py-3.5 px-4 text-right">
+                                    <div class="inline-flex items-center gap-1">
+                                        <a asp-action="Details" asp-route-id="@s.Id"
+                                           class="p-1.5 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container transition-colors"
+                                           title="Xem chi tiết">
+                                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@s.Id"
+                                           class="p-1.5 rounded-lg text-on-surface-variant hover:text-amber-600 hover:bg-amber-50 transition-colors"
+                                           title="Chỉnh sửa">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@s.Id"
+                                           class="p-1.5 rounded-lg text-on-surface-variant hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                                           title="Xóa dịch vụ">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-12 text-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-4xl text-outline mb-2">spa</span>
+                <p class="text-sm font-semibold">Chưa có dịch vụ nào trong hệ thống</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('serviceSearch');
+            const categoryFilter = document.getElementById('serviceCategoryFilter');
+            const statusFilter = document.getElementById('serviceStatusFilter');
+            const rows = document.querySelectorAll('.service-row');
+
+            function filterTable() {
+                const query = (searchInput?.value || '').toLowerCase().trim();
+                const selectedCategory = (categoryFilter?.value || '').toLowerCase().trim();
+                const selectedStatus = (statusFilter?.value || '').toLowerCase().trim();
+
+                rows.forEach(row => {
+                    const rowSearch = (row.getAttribute('data-search') || '').toLowerCase();
+                    const rowCat = (row.getAttribute('data-category') || '').toLowerCase();
+                    const rowStat = (row.getAttribute('data-status') || '').toLowerCase();
+
+                    const matchesQuery = !query || rowSearch.includes(query);
+                    const matchesCategory = !selectedCategory || rowCat === selectedCategory;
+                    const matchesStatus = !selectedStatus || rowStat === selectedStatus;
+
+                    row.style.display = (matchesQuery && matchesCategory && matchesStatus) ? '' : 'none';
+                });
             }
-        );
+
+            if (searchInput) searchInput.addEventListener('input', filterTable);
+            if (categoryFilter) categoryFilter.addEventListener('change', filterTable);
+            if (statusFilter) statusFilter.addEventListener('change', filterTable);
+        });
     </script>
 }
